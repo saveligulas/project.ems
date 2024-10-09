@@ -43,6 +43,8 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers("login")
                         .permitAll()
+                        .requestMatchers("error")
+                        .permitAll()
                         .anyRequest()
                         .authenticated()
         );
