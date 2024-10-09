@@ -3,6 +3,7 @@ package fhv.team11.project.ems.security.jwt;
 import com.auth0.jwt.algorithms.Algorithm;
 import fhv.team11.project.ems.security.error.RegistrationEmailAlreadyRegisteredException;
 import fhv.team11.project.ems.security.error.RegistrationInvalidEmailException;
+import fhv.team11.project.ems.security.error.RegistrationWeakPasswordException;
 import fhv.team11.project.ems.security.json.AuthenticationRequest;
 import fhv.team11.project.ems.security.json.AuthenticationResponse;
 import fhv.team11.project.ems.security.json.RegisterRequest;
@@ -35,7 +36,9 @@ public class AuthenticationService {
 
     public AuthenticationResponse register(RegisterRequest request) {
         String email = request.getEmail();
-        if (emailIsInvalid(email)) {
+        String password = request.getPassword();
+
+        if (isEmailInvalid(email)) {
             throw new RegistrationInvalidEmailException();
         }
 
@@ -43,9 +46,11 @@ public class AuthenticationService {
             throw new RegistrationEmailAlreadyRegisteredException();
         }
 
+        checkForWeakPassword(password);
+
         User user = new User();
         user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setPassword(passwordEncoder.encode(password));
         user.setAuthority(Authority.USER);
 
         userRepository.save(user);
@@ -53,9 +58,27 @@ public class AuthenticationService {
         return new AuthenticationResponse("User registration was successful");
     }
 
-    private boolean emailIsInvalid(String email) {
+    private boolean isEmailInvalid(String email) {
         // Implement validation logic here
         return false; // Placeholder for validation logic
+    }
+
+    private void checkForWeakPassword(String password) {
+        if (password.length() < 8) {
+            throw new RegistrationWeakPasswordException("Password must be at least 8 characters long");
+        }
+
+        if (password.contains(" ")) {
+            throw new RegistrationWeakPasswordException("Password cannot contain whitespaces");
+        }
+
+        if (!password.matches(".*[0-9].*")) {
+            throw new RegistrationWeakPasswordException("Password must contain at least one digit");
+        }
+
+        if (!password.matches(".*[A-Z].*")) {
+            throw new RegistrationWeakPasswordException("Password must contain at least one uppercase letter");
+        }
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
