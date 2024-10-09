@@ -10,6 +10,8 @@ import fhv.team11.project.ems.security.json.RegisterRequest;
 import fhv.team11.project.ems.user.Authority;
 import fhv.team11.project.ems.user.User;
 import fhv.team11.project.ems.user.UserRepository;
+import jakarta.mail.internet.AddressException;
+import jakarta.mail.internet.InternetAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -59,8 +61,7 @@ public class AuthenticationService {
     }
 
     private boolean isEmailInvalid(String email) {
-        // Implement validation logic here
-        return false; // Placeholder for validation logic
+        return false; //TODO implement Logic
     }
 
     private void checkForWeakPassword(String password) {
