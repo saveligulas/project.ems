@@ -8,10 +8,12 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-@RestController("/")
+@Controller
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
@@ -20,35 +22,33 @@ public class AuthenticationController {
         this.authenticationService = authenticationService;
     }
 
-    @GetMapping("login-register")
+    @GetMapping("/login-register")
     public ModelAndView loginRegisterPage() {
         ModelAndView modelAndView = new ModelAndView("login-register");
         return modelAndView;
     }
 
-    @PostMapping("register")
-    public ModelAndView register(@ModelAttribute RegisterRequest request) {
-        ModelAndView modelAndView = new ModelAndView("login-register");
+    @PostMapping("/register")
+    public String register(@ModelAttribute RegisterRequest request, RedirectAttributes redirectAttributes) {
         try {
             AuthenticationResponse response = authenticationService.register(request);
-            modelAndView.addObject("registerMessage", "Registration Successful!");
+            redirectAttributes.addFlashAttribute("registerMessage", "Registration Successful!");
         } catch (Exception e) {
-            modelAndView.addObject("registerError", "Registration failed: " + e.getMessage());
+            System.out.println(e.getClass().getSimpleName());
+            redirectAttributes.addFlashAttribute("registerError", "Registration failed: " + e.getMessage());
         }
-        return modelAndView;
+        return "redirect:/login-register";
     }
 
-    @PostMapping("authenticate")
-    @CrossOrigin
-    public ModelAndView authenticate(@ModelAttribute AuthenticationRequest request, HttpServletResponse servlet) {
-        ModelAndView modelAndView = new ModelAndView("login-register");
+    @PostMapping("/authenticate")
+    public String authenticate(@ModelAttribute AuthenticationRequest request, HttpServletResponse servlet, RedirectAttributes redirectAttributes) {
         try {
             AuthenticationResponse response = authenticationService.authenticate(request);
             servlet.addCookie(new Cookie("authToken", response.getAuthToken()));
-            modelAndView.addObject("loginMessage", "Login successful!");
+            redirectAttributes.addFlashAttribute("loginMessage", "Login successful!");
         } catch (Exception e) {
-            modelAndView.addObject("loginError", "Authentication failed: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("loginError", "Authentication failed: " + e.getMessage());
         }
-        return modelAndView;
+        return "redirect:/login-register";
     }
 }
