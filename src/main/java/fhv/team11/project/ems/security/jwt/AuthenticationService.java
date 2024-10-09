@@ -2,6 +2,7 @@ package fhv.team11.project.ems.security.jwt;
 
 import com.auth0.jwt.algorithms.Algorithm;
 import fhv.team11.project.ems.security.error.RegistrationEmailAlreadyRegisteredException;
+import fhv.team11.project.ems.security.error.RegistrationInvalidEmailException;
 import fhv.team11.project.ems.security.json.AuthenticationRequest;
 import fhv.team11.project.ems.security.json.AuthenticationResponse;
 import fhv.team11.project.ems.security.json.RegisterRequest;
@@ -33,7 +34,12 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse register(RegisterRequest request) {
-        if(userRepository.findByEmail(request.getEmail()).isPresent()) {
+        String email = request.getEmail();
+        if (emailIsInvalid(email)) {
+            throw new RegistrationInvalidEmailException();
+        }
+
+        if (userRepository.findByEmail(email).isPresent()) {
             throw new RegistrationEmailAlreadyRegisteredException();
         }
 
@@ -45,6 +51,11 @@ public class AuthenticationService {
         userRepository.save(user);
 
         return new AuthenticationResponse("User registration was successful");
+    }
+
+    private boolean emailIsInvalid(String email) {
+        // Implement validation logic here
+        return false; // Placeholder for validation logic
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
