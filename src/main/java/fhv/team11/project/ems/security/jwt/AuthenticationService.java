@@ -1,6 +1,7 @@
 package fhv.team11.project.ems.security.jwt;
 
 import com.auth0.jwt.algorithms.Algorithm;
+import fhv.team11.project.ems.security.error.RegistrationEmailAlreadyRegisteredException;
 import fhv.team11.project.ems.security.json.AuthenticationRequest;
 import fhv.team11.project.ems.security.json.AuthenticationResponse;
 import fhv.team11.project.ems.security.json.RegisterRequest;
@@ -33,7 +34,7 @@ public class AuthenticationService {
 
     public AuthenticationResponse register(RegisterRequest request) {
         if(userRepository.findByEmail(request.getEmail()).isPresent()) {
-            return new AuthenticationResponse("User already exists");
+            throw new RegistrationEmailAlreadyRegisteredException();
         }
 
         User user = new User();
