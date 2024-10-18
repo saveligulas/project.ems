@@ -1,6 +1,7 @@
 package fhv.team11.project.ems.security.jwt;
 
 import com.auth0.jwt.algorithms.Algorithm;
+import fhv.team11.project.ems.security.error.AuthenticationErrorException;
 import fhv.team11.project.ems.security.error.RegistrationEmailAlreadyRegisteredException;
 import fhv.team11.project.ems.security.error.RegistrationInvalidEmailException;
 import fhv.team11.project.ems.security.error.RegistrationWeakPasswordException;
@@ -8,13 +9,13 @@ import fhv.team11.project.ems.security.json.AuthenticationRequest;
 import fhv.team11.project.ems.security.json.AuthenticationResponse;
 import fhv.team11.project.ems.security.json.RegisterRequest;
 import fhv.team11.project.ems.user.Authority;
-import fhv.team11.project.ems.user.User;
+import fhv.team11.project.ems.user.UserModel;
 import fhv.team11.project.ems.user.UserRepository;
-import jakarta.mail.internet.AddressException;
-import jakarta.mail.internet.InternetAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -50,7 +51,7 @@ public class AuthenticationService {
 
         checkForWeakPassword(password);
 
-        User user = new User();
+        UserModel user = new UserModel();
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(password));
         user.setAuthority(Authority.USER);
@@ -83,18 +84,31 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        //TODO: handle exceptions
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
-        );
+        try {
+            // Authenticate user with email and password
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getEmail(),
+                            request.getPassword()
+                    )
+            );
 
-        User user = userRepository.findByEmail(request.getEmail()).orElseThrow();
-        String authToken = jwtTokenService.generateAuthenticationToken(user);
+            // Find the user by email
+            UserModel user = userRepository.findByEmail(request.getEmail())
+                    .orElseThrow(() -> new UserNotFoundException("User not found with email: " + request.getEmail()));
 
-        return new AuthenticationResponse(authToken, "User login was successful");
+            // Generate JWT token for authenticated user
+            String authToken = jwtTokenService.generateAuthenticationToken(user);
+
+            return new AuthenticationResponse(authToken, "User login was successful");
+
+        } catch (BadCredentialsException e) {
+            throw new AuthenticationErrorException("Invalid email or password");
+        } catch (UsernameNotFoundException e) {
+            throw new AuthenticationErrorException(e.getMessage());
+        } catch (Exception e) {
+            throw new AuthenticationErrorException();
+        }
     }
 
 }
