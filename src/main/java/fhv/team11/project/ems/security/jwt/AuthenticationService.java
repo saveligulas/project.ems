@@ -1,10 +1,7 @@
 package fhv.team11.project.ems.security.jwt;
 
 import com.auth0.jwt.algorithms.Algorithm;
-import fhv.team11.project.ems.security.error.AuthenticationErrorException;
-import fhv.team11.project.ems.security.error.RegistrationEmailAlreadyRegisteredException;
-import fhv.team11.project.ems.security.error.RegistrationInvalidEmailException;
-import fhv.team11.project.ems.security.error.RegistrationWeakPasswordException;
+import fhv.team11.project.ems.security.error.*;
 import fhv.team11.project.ems.security.json.AuthenticationRequest;
 import fhv.team11.project.ems.security.json.AuthenticationResponse;
 import fhv.team11.project.ems.security.json.RegisterRequest;
@@ -95,7 +92,7 @@ public class AuthenticationService {
 
             // Find the user by email
             UserModel user = userRepository.findByEmail(request.getEmail())
-                    .orElseThrow(() -> new UserNotFoundException("User not found with email: " + request.getEmail()));
+                    .orElseThrow(() -> new UserNotFoundException(request.getEmail()));
 
             // Generate JWT token for authenticated user
             String authToken = jwtTokenService.generateAuthenticationToken(user);
