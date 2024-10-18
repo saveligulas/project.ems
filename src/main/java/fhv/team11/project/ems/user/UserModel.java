@@ -1,7 +1,7 @@
 package fhv.team11.project.ems.user;
 
-import jakarta.persistence.*;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,19 +9,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-@Entity
-@Setter
-public class User implements UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+@Data
+@NoArgsConstructor
+public class UserModel implements UserDetails {
+
     private Long id;
-
     private String email;
-
     private String password;
+    private Authority authority;  // Enum for user role
 
-    @Enumerated(EnumType.ORDINAL)
-    private Authority authority;
+    // Getters and setters for the fields
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
