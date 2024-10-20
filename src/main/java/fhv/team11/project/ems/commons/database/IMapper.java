@@ -1,4 +1,4 @@
-package fhv.team11.project.ems.commons.mapper;
+package fhv.team11.project.ems.commons.database;
 
 /**
  * A generic interface for mapping between database entities and domain models.
@@ -10,24 +10,24 @@ public interface IMapper<E, M> {
 
     /**
      *
-     * @param e Entity
+     * @param entity Entity
      * @return Model for use in Services
      */
-    M toDomainModel(E e);
+    M toDomainModel(E entity);
 
     /**
      *
-     * @param m Model
+     * @param model Model
      * @return Entity representing database table
      * @Warning This method can return Entities with missing fields
      */
-    E toEntity(M m);
+    E toEntity(M model);
 
     /**
      *
-     * @param e Entity
-     * @param m Model
-     * @return the updated entity. Is the same instance as the provided Entity in the parameters.
+     * @param entity Entity
+     * @param model Model
+     * @return the updated entity. Is the same instance as the provided Entity in the parameters
      */
-    E updateEntity(E e, M m);
+    E updateEntity(E entity, M model);
 }
