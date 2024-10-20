@@ -1,4 +1,4 @@
-package fhv.team11.project.ems.user;
+package fhv.team11.project.ems.commons.user;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,14 +12,12 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class UserModel implements UserDetails {
+public class UserEntity implements UserDetails {
 
     private Long id;
     private String email;
     private String password;
-    private Authority authority;  // Enum for user role
-
-    // Getters and setters for the fields
+    private Authority authority;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
