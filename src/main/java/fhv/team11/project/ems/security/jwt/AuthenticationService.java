@@ -5,9 +5,9 @@ import fhv.team11.project.ems.security.error.*;
 import fhv.team11.project.ems.security.json.AuthenticationRequest;
 import fhv.team11.project.ems.security.json.AuthenticationResponse;
 import fhv.team11.project.ems.security.json.RegisterRequest;
-import fhv.team11.project.ems.user.Authority;
-import fhv.team11.project.ems.user.UserModel;
-import fhv.team11.project.ems.user.UserRepository;
+import fhv.team11.project.ems.commons.user.Authority;
+import fhv.team11.project.ems.commons.user.UserEntity;
+import fhv.team11.project.ems.commons.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -48,7 +48,7 @@ public class AuthenticationService {
 
         checkForWeakPassword(password);
 
-        UserModel user = new UserModel();
+        UserEntity user = new UserEntity();
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(password));
         user.setAuthority(Authority.USER);
@@ -91,7 +91,7 @@ public class AuthenticationService {
             );
 
             // Find the user by email
-            UserModel user = userRepository.findByEmail(request.getEmail())
+            UserEntity user = userRepository.findByEmail(request.getEmail())
                     .orElseThrow(() -> new UserNotFoundException(request.getEmail()));
 
             // Generate JWT token for authenticated user
