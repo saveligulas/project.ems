@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15  # Or any version of your preference
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ems-postgres-db  # Name your database here
+    ports:
+      - "5432:5432"  # Expose the container's port 5432 to localhost
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Persist your data
+
+volumes:
+  postgres_data:
+    driver: local
