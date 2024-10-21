@@ -4,6 +4,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collections;
@@ -29,15 +31,22 @@ public class UserRepository {
                 .findFirst();
     }
 
-    public void save(UserEntity user) {
+    public UserEntity save(UserEntity user) {
         String sql = "INSERT INTO users (email, password, authority) VALUES (:email, :password, :authority)";
 
-        Map<String, Object> params = new HashMap<>();
-        params.put("email", user.getEmail());
-        params.put("password", user.getPassword());
-        params.put("authority", user.getAuthority().ordinal());
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("email", user.getEmail());
+        params.addValue("password", user.getPassword());
+        params.addValue("authority", user.getAuthority().ordinal());
 
-        namedParameterJdbcTemplate.update(sql, params);
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        namedParameterJdbcTemplate.update(sql, params, keyHolder, new String[] {"id"});
+
+        Long generatedId = keyHolder.getKey().longValue();
+        user.setId(generatedId);
+
+        return user;
     }
 
     public void update(UserEntity user) {
