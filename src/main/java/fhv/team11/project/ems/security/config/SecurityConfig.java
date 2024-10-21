@@ -46,7 +46,7 @@ public class SecurityConfig {
                         .requestMatchers("error")
                         .permitAll()
                         .anyRequest()
-                        .authenticated()
+                        .permitAll()
         );
         http.sessionManagement(
                 session -> session
