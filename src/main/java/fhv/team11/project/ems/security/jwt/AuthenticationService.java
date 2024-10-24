@@ -51,7 +51,6 @@ public class AuthenticationService {
         UserEntity user = new UserEntity();
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(password));
-        user.setAuthority(Authority.USER);
 
         userRepository.save(user);
 
