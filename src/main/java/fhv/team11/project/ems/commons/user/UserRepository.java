@@ -54,7 +54,6 @@ public class UserRepository {
         Map<String, Object> params = new HashMap<>();
         params.put("email", user.getEmail());
         params.put("password", user.getPassword());
-        params.put("authority", user.getAuthority().ordinal());
         params.put("id", user.getId());
 
         namedParameterJdbcTemplate.update(sql, params);
