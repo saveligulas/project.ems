@@ -23,7 +23,7 @@ public class UserRepository {
     }
 
     public Optional<UserEntity> findByEmail(String email) {
-        String sql = "SELECT * FROM users WHERE email = :email";
+        String sql = "SELECT * FROM user WHERE email = :email";
         Map<String, Object> params = Collections.singletonMap("email", email);
 
         return namedParameterJdbcTemplate.query(sql, params, new UserRowMapper())
@@ -32,12 +32,11 @@ public class UserRepository {
     }
 
     public UserEntity save(UserEntity user) {
-        String sql = "INSERT INTO users (email, password, authority) VALUES (:email, :password, :authority)";
+        String sql = "INSERT INTO user (email, password) VALUES (:email, :password, :authority)";
 
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("email", user.getEmail());
         params.addValue("password", user.getPassword());
-        params.addValue("authority", user.getAuthority().ordinal());
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -50,7 +49,7 @@ public class UserRepository {
     }
 
     public void update(UserEntity user) {
-        String sql = "UPDATE users SET email = :email, password = :password, authority = :authority WHERE id = :id";
+        String sql = "UPDATE user SET email = :email, password = :password WHERE id = :id";
 
         Map<String, Object> params = new HashMap<>();
         params.put("email", user.getEmail());
@@ -62,7 +61,7 @@ public class UserRepository {
     }
 
     public void deleteById(Long id) {
-        String sql = "DELETE FROM users WHERE id = :id";
+        String sql = "DELETE FROM user WHERE id = :id";
         SqlParameterSource params = new MapSqlParameterSource("id", id);
 
         namedParameterJdbcTemplate.update(sql, params);
