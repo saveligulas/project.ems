@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Data
@@ -17,11 +18,13 @@ public class UserEntity implements UserDetails {
     private Long id;
     private String email;
     private String password;
-    private Authority authority;
+    private List<Authority> authorities;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(authority.name()));
+        return authorities.stream()
+                .map(authority -> new SimpleGrantedAuthority(authority.name()))
+                .collect(Collectors.toList());
     }
 
     @Override
