@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Canyoning Adventure</title>
+    <link rel="stylesheet" href="../static/css/stylesheet.css" th:href="@{/css/stylesheet.css}">
+</head>
+<body>
+<header th:fragment="header" class="main-header">
+    <div class="header-left">
+        <h1>Eventastic</h1>
+    </div>
+
+    <nav class="header-center">
+        <ul>
+            <li><a href="./index.html" th:href="@{/}">Home</a></li>
+            <li><a href="./events.html" th:href="@{/events}">Events</a></li>
+            <li><a href="./users.html" th:href="@{/users}">Users</a></li>
+        </ul>
+    </nav>
+
+    <div class="header-right">
+        <a href="./login.html" class="btn btn-outline header-btn">Login</a>
+        <a href="./register.html" class="btn btn-primary header-btn">Register</a>
+    </div>
+</header>
+
+<main id="event-details" class="container card">
+    <h2 class="card-title text-center">Canyoning Adventure</h2>
+    <p class="text-bold"><strong>Organizer:</strong> Alpine Outdoor Adventures</p>
+    <p><strong>Description:</strong> An exciting canyoning experience with expert guides. Explore the beauty of nature while navigating through canyons and waterfalls.</p>
+    <p class="appointments text-muted"><strong>Appointments:</strong> May 15, 2024, and June 20, 2024</p>
+    <p class="price"><strong>Price:</strong> $150 per person</p>
+    <p class="participants"><strong>Participants:</strong> Min 5, Max 20</p>
+    <p class="requirements"><strong>Requirements:</strong> Must be able to swim; physically fit</p>
+    <p class="equipment"><strong>Equipment:</strong> Wetsuit, helmet, harness (provided)</p>
+    <p class="location"><strong>Location:</strong> River Gorge, Cascade National Park</p>
+
+    <div class="btn-group">
+        <a href="events-view.html" class="btn btn-outline back-btn">Back to Events</a>
+        <a href="#" class="btn btn-primary book-btn">Book Event</a>
+    </div>
+</main>
+</body>
+</html>
