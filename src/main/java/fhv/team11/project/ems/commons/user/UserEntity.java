@@ -1,7 +1,6 @@
 package fhv.team11.project.ems.commons.user;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,20 +9,21 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class UserEntity implements UserDetails {
 
     private Long id;
     private String email;
+    @Getter(AccessLevel.NONE)
     private String password;
-    private List<Authority> authorities;
+    private List<Role> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities.stream()
-                .map(authority -> new SimpleGrantedAuthority(authority.name()))
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority(role.name()))
                 .collect(Collectors.toList());
     }
 
