@@ -31,22 +31,8 @@ public class SecurityConfig {
         http.cors(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(
                 req -> req
-                        .requestMatchers(HttpMethod.GET, "/verify")
-                        .permitAll()
-                        .requestMatchers(HttpMethod.POST,"/register")
-                        .permitAll()
-                        .requestMatchers(HttpMethod.POST,"/authenticate")
-                        .permitAll()
-                        .requestMatchers(HttpMethod.GET, "/login-register")
-                        .permitAll()
-                        .requestMatchers("refresh")
-                        .permitAll()
-                        .requestMatchers("login")
-                        .permitAll()
-                        .requestMatchers("error")
-                        .permitAll()
                         .anyRequest()
-                        .authenticated()
+                        .permitAll()
         );
         http.sessionManagement(
                 session -> session
