@@ -3,6 +3,7 @@ package fhv.team11.project.ems.commons.user;
 import fhv.team11.project.ems.commons.error.EntityNotFoundException;
 import fhv.team11.project.ems.commons.database.IDatabaseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,13 +23,22 @@ public class UserDatabaseService implements IDatabaseMapper<UserEntity, Long> {
         this.passwordEncoder = passwordEncoder;
     }
 
+    public Optional<UserEntity> findByEmail(String email) {
+        Optional<UserEntity> userEntity;
+        try {
+            userEntity = Optional.of(userRepository.findByEmail(email));
+        } catch (UsernameNotFoundException e) {
+            userEntity = Optional.empty();
+        }
+        return userEntity;
+    }
+
 
     @Override
     public UserEntity save(UserEntity entity) {
         entity.setPassword(passwordEncoder.encode(entity.getPassword()));
         userRepository.save(entity);
-        return userRepository.findByEmail(entity.getEmail())
-                .orElseThrow(() -> new UsernameNotFoundException("User could not be found after account creation"));
+        return userRepository.findByEmail(entity.getEmail());
     }
 
     @Override
