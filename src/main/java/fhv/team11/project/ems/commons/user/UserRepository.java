@@ -1,17 +1,16 @@
 package fhv.team11.project.ems.commons.user;
 
-import org.springframework.jdbc.core.JdbcTemplate;
+import fhv.team11.project.ems.commons.error.EntityNotFoundException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 public class UserRepository {
@@ -22,17 +21,31 @@ public class UserRepository {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
-    public Optional<UserEntity> findByEmail(String email) {
-        String sql = "SELECT * FROM user WHERE email = :email";
-        Map<String, Object> params = Collections.singletonMap("email", email);
+    public UserEntity findByEmail(String email) {
+        String sql = "SELECT * FROM public.user WHERE email = :email";
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("email", email);
 
-        return namedParameterJdbcTemplate.query(sql, params, new UserRowMapper())
+        UserEntity userEntity = namedParameterJdbcTemplate.query(sql, params, new UserRowMapper())
                 .stream()
-                .findFirst();
+                .findFirst()
+                .orElseThrow(() -> new UsernameNotFoundException("User with email not found"));
+
+        String roleSql = "SELECT * FROM user_roles WHERE user_id = :id";
+        MapSqlParameterSource roleParams = new MapSqlParameterSource();
+        roleParams.addValue("id", userEntity.getId());
+
+        List<Role> roles = namedParameterJdbcTemplate.query(roleSql, roleParams, new RoleRowMapper())
+                .stream()
+                .toList();
+
+        userEntity.setRoles(roles);
+
+        return userEntity;
     }
 
     public UserEntity save(UserEntity user) {
-        String sql = "INSERT INTO user (email, password) VALUES (:email, :password, :authority)";
+        String sql = "INSERT INTO public.user (email, password) VALUES (:email, :password)";
 
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("email", user.getEmail());
@@ -45,11 +58,21 @@ public class UserRepository {
         Long generatedId = keyHolder.getKey().longValue();
         user.setId(generatedId);
 
+        String roleSql = "INSERT INTO user_roles (user_id, role_ordinal) VALUES (:id, :role_ordinal)";
+
+        for (Role role : user.getRoles()) {
+            MapSqlParameterSource paramsRoles = new MapSqlParameterSource();
+            paramsRoles.addValue("id", user.getId());
+            paramsRoles.addValue("role_ordinal", role.ordinal());
+
+            namedParameterJdbcTemplate.update(roleSql, paramsRoles);
+        }
+
         return user;
     }
 
     public void update(UserEntity user) {
-        String sql = "UPDATE user SET email = :email, password = :password WHERE id = :id";
+        String sql = "UPDATE public.user SET email = :email, password = :password WHERE id = :id";
 
         Map<String, Object> params = new HashMap<>();
         params.put("email", user.getEmail());
@@ -60,7 +83,7 @@ public class UserRepository {
     }
 
     public void deleteById(Long id) {
-        String sql = "DELETE FROM user WHERE id = :id";
+        String sql = "DELETE FROM public.user WHERE id = :id";
         SqlParameterSource params = new MapSqlParameterSource("id", id);
 
         namedParameterJdbcTemplate.update(sql, params);
