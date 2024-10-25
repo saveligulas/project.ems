@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Event List</title>
+    <link rel="stylesheet" href="../static/css/stylesheet.css" th:href="@{/css/stylesheet.css}">
+</head>
+<body>
+<header th:fragment="header" class="main-header">
+    <div class="header-left">
+        <h1>Eventastic</h1>
+    </div>
+
+    <nav class="header-center">
+        <ul>
+            <li><a href="./index.html" th:href="@{/}">Home</a></li>
+            <li><a href="./events.html" th:href="@{/events}">Events</a></li>
+            <li><a href="./users.html" th:href="@{/users}">Users</a></li>
+        </ul>
+    </nav>
+
+    <div class="header-right">
+        <a href="./login.html" class="btn btn-outline header-btn">Login</a>
+        <a href="./register.html" class="btn btn-primary header-btn">Register</a>
+    </div>
+</header>
+<main class="event-list container">
+    <!-- Event 1 -->
+    <div class="card event-card">
+        <h2 class="card-title">Canyoning Adventure</h2>
+        <p><span class="text-bold">Organizer:</span> Alpine Outdoor Adventures</p>
+        <p><span class="text-bold">Appointments:</span> May 15, 2024, and June 20, 2024</p>
+        <p><span class="text-bold">Price:</span> $150 per person</p>
+        <p><span class="text-bold">Participants:</span> Min 5, Max 20</p>
+        <p><span class="text-bold">Requirements:</span> Must be able to swim; physically fit</p>
+        <p><span class="text-bold">Equipment:</span> Wetsuit, helmet, harness (provided)</p>
+        <p><span class="text-bold">Location:</span> River Gorge, Cascade National Park</p>
+        <a href="event-canyoning.html" class="btn btn-primary view-event-btn">View Event</a>
+    </div>
+
+    <!-- Event 2 -->
+    <div class="card event-card">
+        <h2 class="card-title">Guided Glacier Course</h2>
+        <p><span class="text-bold">Organizer:</span> Summit Ice Climbers</p>
+        <p><span class="text-bold">Appointments:</span> July 10, 2024, and August 5, 2024</p>
+        <p><span class="text-bold">Price:</span> $250 per person</p>
+        <p><span class="text-bold">Participants:</span> Min 4, Max 12</p>
+        <p><span class="text-bold">Requirements:</span> Basic ice climbing experience</p>
+        <p><span class="text-bold">Equipment:</span> Crampons, ice axe, helmet (provided)</p>
+        <p><span class="text-bold">Location:</span> Glacier Point, Alaska</p>
+        <a href="event-glacier.html" class="btn btn-primary view-event-btn">View Event</a>
+    </div>
+
+    <!-- Event 3 -->
+    <div class="card event-card">
+        <h2 class="card-title">Football Tournament</h2>
+        <p><span class="text-bold">Organizer:</span> City Sports Club</p>
+        <p><span class="text-bold">Appointments:</span> June 12, 2024 – June 19, 2024</p>
+        <p><span class="text-bold">Price:</span> $200 per team</p>
+        <p><span class="text-bold">Participants:</span> Min 8 players per team, Max 16 teams</p>
+        <p><span class="text-bold">Requirements:</span> Age 18 and above, team registration</p>
+        <p><span class="text-bold">Equipment:</span> Football kits, shin guards, cleats (team responsibility)</p>
+        <p><span class="text-bold">Location:</span> Central Park Stadium</p>
+        <a href="#" class="btn btn-primary view-event-btn">View Event</a>
+    </div>
+
+    <!-- Event 4 -->
+    <div class="card event-card">
+        <h2 class="card-title">Wilderness Camping Trip</h2>
+        <p><span class="text-bold">Organizer:</span> Wild Expeditions</p>
+        <p><span class="text-bold">Appointments:</span> August 14, 2024 – August 17, 2024</p>
+        <p><span class="text-bold">Price:</span> $300 per person</p>
+        <p><span class="text-bold">Participants:</span> Min 6, Max 15</p>
+        <p><span class="text-bold">Requirements:</span> Basic camping experience, good physical condition</p>
+        <p><span class="text-bold">Equipment:</span> Tent, sleeping bag, cooking gear (provided)</p>
+        <p><span class="text-bold">Location:</span> Bear Ridge Wilderness, Rocky Mountains</p>
+        <a href="#" class="btn btn-primary view-event-btn">View Event</a>
+    </div>
+
+    <!-- Event 5 -->
+    <div class="card event-card">
+        <h2 class="card-title">Avalanche Awareness Course</h2>
+        <p><span class="text-bold">Organizer:</span> SnowSafe Institute</p>
+        <p><span class="text-bold">Appointments:</span> January 12, 2024, and February 9, 2024</p>
+        <p><span class="text-bold">Price:</span> $100 per person</p>
+        <p><span class="text-bold">Participants:</span> Min 5, Max 25</p>
+        <p><span class="text-bold">Requirements:</span> Basic skiing skills</p>
+        <p><span class="text-bold">Equipment:</span> Beacon, probe, shovel (provided)</p>
+        <p><span class="text-bold">Location:</span> Snow Valley, Colorado</p>
+        <a href="#" class="btn btn-primary view-event-btn">View Event</a>
+    </div>
+</main>
+
+</body>
+</html>
