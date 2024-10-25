@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blueprint Details</title>
+    <link rel="stylesheet" href="../static/css/stylesheet.css">
+</head>
+<body>
+
+<header th:fragment="header" class="main-header">
+    <div class="header-left">
+        <h1>Eventastic</h1>
+    </div>
+
+    <nav class="header-center">
+        <ul>
+            <li><a href="./index.html" th:href="@{/}">Home</a></li>
+            <li><a href="./events.html" th:href="@{/events}">Events</a></li>
+            <li><a href="./users.html" th:href="@{/users}">Users</a></li>
+        </ul>
+    </nav>
+
+    <div class="header-right">
+        <a href="./login.html" class="btn btn-outline header-btn">Login</a>
+        <a href="./register.html" class="btn btn-primary header-btn">Register</a>
+    </div>
+</header>
+
+<main class="container">
+    <h2 class="text-center">Blueprint Details</h2>
+
+    <!-- Blueprint Information -->
+    <div class="card">
+        <div class="card-body">
+            <div class="info-group">
+                <label for="name"><strong>Name:</strong></label>
+                <p id="name">Summer Festival</p>
+            </div>
+
+            <div class="info-group">
+                <label for="category"><strong>Category:</strong></label>
+                <p id="category">Music</p>
+            </div>
+
+            <div class="info-group">
+                <label for="price"><strong>Price:</strong></label>
+                <p id="price">$20</p>
+            </div>
+
+            <div class="info-group">
+                <label for="maxParticipants"><strong>Max Participants:</strong></label>
+                <p id="maxParticipants">100</p>
+            </div>
+
+            <div class="info-group">
+                <label for="minParticipants"><strong>Min Participants:</strong></label>
+                <p id="minParticipants">20</p>
+            </div>
+
+            <div class="info-group">
+                <label for="location"><strong>Location:</strong></label>
+                <p id="location">City Park</p>
+            </div>
+
+            <div class="info-group">
+                <label for="county"><strong>County:</strong></label>
+                <p id="county">Example County</p>
+            </div>
+
+            <div class="info-group">
+                <label for="zip"><strong>ZIP Code:</strong></label>
+                <p id="zip">12345</p>
+            </div>
+
+            <div class="info-group">
+                <label for="street"><strong>Street:</strong></label>
+                <p id="street">Main St</p>
+            </div>
+
+            <div class="info-group">
+                <label for="houseNumber"><strong>House Number:</strong></label>
+                <p id="houseNumber">100</p>
+            </div>
+
+            <div class="info-group">
+                <label for="optionalLine"><strong>Optional Line:</strong></label>
+                <p id="optionalLine">Bring your own chair!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Plan Event Button -->
+    <div class="text-center mt-4">
+        <button class="btn btn-primary" onclick="window.location.href='./plan-event.html';">Plan Event</button>
+    </div>
+</main>
+
+</body>
+</html>
