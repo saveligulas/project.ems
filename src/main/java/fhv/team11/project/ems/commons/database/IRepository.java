@@ -5,4 +5,5 @@ public interface IRepository<E, ID> {
     E update(E entity);
     E findById(ID id);
     E deleteById(ID id);
+    String constructSqlStatement(String action, String clause);
 }
