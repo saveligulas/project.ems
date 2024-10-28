@@ -371,6 +371,16 @@ nav li {
     border-color: #2980b9;
 }
 
+.input-error {
+    border: 1px solid red;
+    background-color: #ffe6e6;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.9em;
+}
+
 /* Spacing utilities */
 .mt-1 { margin-top: 1em; }
 .mt-2 { margin-top: 2em; }
