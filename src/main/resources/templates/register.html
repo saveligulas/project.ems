@@ -14,7 +14,7 @@
       <label for="email">Email:</label>
       <input type="email" id="email" name="email"
              th:field="*{email}"
-             th:classappend="${#fields.hasErrors('email') || emailError} ? 'input-error'">
+             th:classappend="${hasEmailError} ? 'input-error'">
       <span th:if="${emailError}"
             class="error-message"
             th:text="${emailError}"></span>
