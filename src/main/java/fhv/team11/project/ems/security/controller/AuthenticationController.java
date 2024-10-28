@@ -9,6 +9,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -55,8 +56,8 @@ public class AuthenticationController {
     }
 
     @GetMapping("/success")
-    public String successPage() {
-        return "success";
+    public ResponseEntity<String> successPage() {
+        return ResponseEntity.accepted().body("success");
     }
 
     @PostMapping("/authenticate")
