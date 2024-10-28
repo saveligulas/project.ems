@@ -6,7 +6,6 @@ import fhv.team11.project.ems.commons.user.UserDatabaseService;
 import fhv.team11.project.ems.security.error.*;
 import fhv.team11.project.ems.security.json.AuthenticationRequest;
 import fhv.team11.project.ems.security.json.AuthenticationResponse;
-import fhv.team11.project.ems.security.json.RegisterRequest;
 import fhv.team11.project.ems.commons.user.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -36,19 +35,11 @@ public class AuthenticationService {
 
     }
 
-    public AuthenticationResponse register(RegisterRequest request) {
-        String email = request.getEmail();
-        String password = request.getPassword();
-
-        if (isEmailInvalid(email)) {
-            throw new RegistrationInvalidEmailException();
-        }
+    public AuthenticationResponse register(String email, String password) {
 
         if (userDatabaseService.findByEmail(email).isPresent()) {
             throw new RegistrationEmailAlreadyRegisteredException();
         }
-
-        checkForWeakPassword(password);
 
         UserEntity user = new UserEntity();
         user.setEmail(email);
@@ -60,27 +51,6 @@ public class AuthenticationService {
         return new AuthenticationResponse("User registration was successful");
     }
 
-    private boolean isEmailInvalid(String email) {
-        return false; //TODO implement Logic
-    }
-
-    private void checkForWeakPassword(String password) {
-        if (password.length() < 8) {
-            throw new RegistrationWeakPasswordException("Password must be at least 8 characters long");
-        }
-
-        if (password.contains(" ")) {
-            throw new RegistrationWeakPasswordException("Password cannot contain whitespaces");
-        }
-
-        if (!password.matches(".*[0-9].*")) {
-            throw new RegistrationWeakPasswordException("Password must contain at least one digit");
-        }
-
-        if (!password.matches(".*[A-Z].*")) {
-            throw new RegistrationWeakPasswordException("Password must contain at least one uppercase letter");
-        }
-    }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         try {
