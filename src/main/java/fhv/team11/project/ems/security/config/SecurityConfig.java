@@ -36,7 +36,7 @@ public class SecurityConfig {
         );
         http.sessionManagement(
                 session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
         );
         http.userDetailsService(userDetailsService);
         http.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
