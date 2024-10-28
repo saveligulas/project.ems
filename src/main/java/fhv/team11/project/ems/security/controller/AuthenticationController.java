@@ -8,6 +8,7 @@ import fhv.team11.project.ems.security.json.RegisterRequest;
 import fhv.team11.project.ems.security.jwt.AuthenticationService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
@@ -77,8 +78,13 @@ public class AuthenticationController {
     public ModelAndView authenticate(@Valid @ModelAttribute("authenticationRequest") AuthenticationRequest request,
                                     BindingResult bindingResult,
                                     HttpServletResponse servlet,
+                                    HttpSession session,
                                     RedirectAttributes redirectAttributes) {
         ModelAndView errorModelAndView = new ModelAndView("redirect:/login");
+
+        if (!bindingResult.hasFieldErrors("email")) {
+            session.setAttribute("cachedEmail", request.getEmail());
+        }
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("hasError", "Please fill out the fields");
