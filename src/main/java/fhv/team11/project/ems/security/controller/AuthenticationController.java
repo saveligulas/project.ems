@@ -42,6 +42,9 @@ public class AuthenticationController {
         ModelAndView errorModel = new ModelAndView("register");
 
         if (bindingResult.hasErrors()) {
+            if (bindingResult.hasFieldErrors("email")) {
+                errorModel.addObject("hasEmailError", true);
+            }
             errorModel.addObject("registerRequest", registerRequest);
             return errorModel;
         }
@@ -50,6 +53,7 @@ public class AuthenticationController {
             AuthenticationResponse response = authenticationService.register(registerRequest.getEmail(), registerRequest.getPassword());
             return new ModelAndView("redirect:/success");
         } catch (RegistrationError e) {
+            errorModel.addObject("hasEmailError", true);
             errorModel.addObject("emailError", e.getMessage());
             return errorModel;
         }
