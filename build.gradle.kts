@@ -27,6 +27,7 @@ dependencies {
     runtimeOnly(libs.org.postgresql.postgresql)
     testImplementation(libs.org.springframework.boot.spring.boot.starter.test)
     testImplementation(libs.org.springframework.security.spring.security.test)
+    annotationProcessor(libs.org.projectlombok.lombok)
 }
 
 group = "fhv.team11"
