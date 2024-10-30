@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details</title>
+    <link rel="stylesheet" href="../static/css/stylesheet.css">
+</head>
+<body>
+
+<header th:fragment="header" class="main-header">
+    <div class="header-left">
+        <h1>Eventastic</h1>
+    </div>
+
+    <nav class="header-center">
+        <ul>
+            <li><a href="./index.html" th:href="@{/}">Home</a></li>
+            <li><a href="./events.html" th:href="@{/events}">Events</a></li>
+            <li><a href="./users.html" th:href="@{/users}">Users</a></li>
+        </ul>
+    </nav>
+
+    <div class="header-right">
+        <a href="./login.html" class="btn btn-outline header-btn">Login</a>
+        <a href="./register.html" class="btn btn-primary header-btn">Register</a>
+    </div>
+</header>
+
+<main class="user-details container">
+    <h2 class="text-center">User Details</h2>
+
+    <!-- User Info Card -->
+    <div class="info-card card">
+        <h3>User Information</h3>
+        <p><strong>Email:</strong> jane.doe@example.com</p>
+        <p><strong>Password:</strong> ********</p>
+        <p><strong>Roles:</strong> Admin</p>
+    </div>
+
+    <!-- Back-Office Info Card -->
+    <div class="info-card card">
+        <h3>Back-Office Information</h3>
+        <p>No information available.</p>
+    </div>
+
+    <!-- Front-Office Info Card -->
+    <div class="info-card card">
+        <h3>Front-Office Information</h3>
+        <p>No information available.</p>
+    </div>
+
+    <!-- Event Organizer Info Card -->
+    <div class="info-card card">
+        <h3>Event Organizer Information</h3>
+        <p>No information available.</p>
+    </div>
+
+    <!-- System Admin Info Card -->
+    <div class="info-card card">
+        <h3>System Admin Information</h3>
+        <p>No information available.</p>
+    </div>
+
+    <!-- Customer Info Card -->
+    <div class="info-card card">
+        <h3>Customer Information</h3>
+        <p>No information available.</p>
+    </div>
+
+    <div class="btn-group">
+        <a href="./users-view.html" class="btn btn-outline back-btn">Back to Users</a>
+    </div>
+</main>
+
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="../static/css/stylesheet.css" th:href="@{/css/stylesheet.css}">
+</head>
+<body>
+<header th:fragment="header" class="main-header">
+    <div class="header-left">
+        <h1>Eventastic</h1>
+    </div>
+
+    <nav class="header-center">
+        <ul>
+            <li><a href="./index.html" th:href="@{/}">Home</a></li>
+            <li><a href="./events.html" th:href="@{/events}">Events</a></li>
+            <li><a href="./users.html" th:href="@{/users}">Users</a></li>
+        </ul>
+    </nav>
+
+    <div class="header-right">
+        <a href="./login.html" class="btn btn-outline header-btn">Login</a>
+        <a href="./register.html" class="btn btn-primary header-btn">Register</a>
+    </div>
+</header>
+<main class="auth-form">
+    <div class="card p-2" style="display: inline-block;">
+        <h2 class="card-title">Select Your Dashboard</h2>
+        <div class="btn-group mt-2">
+            <a href="./events-view.html" class="btn btn-primary">Back-office</a>
+            <a href="./event-organizer.html" class="btn btn-primary">Event Organizer</a>
+        </div>
+    </div>
+</main>
+</body>
+</html>

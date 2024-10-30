@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bookings</title>
+    <link rel="stylesheet" href="../static/css/stylesheet.css">
+</head>
+<body>
+
+<header th:fragment="header" class="main-header">
+    <div class="header-left">
+        <h1>Eventastic</h1>
+    </div>
+
+    <nav class="header-center">
+        <ul>
+            <li><a href="./index.html" th:href="@{/}">Home</a></li>
+            <li><a href="./events.html" th:href="@{/events}">Events</a></li>
+            <li><a href="./users.html" th:href="@{/users}">Users</a></li>
+        </ul>
+    </nav>
+
+    <div class="header-right">
+        <a href="./login.html" class="btn btn-outline header-btn">Login</a>
+        <a href="./register.html" class="btn btn-primary header-btn">Register</a>
+    </div>
+</header>
+
+<main class="container bookings-list">
+    <h2 class="text-center">Bookings</h2>
+
+    <!-- Canyoning Adventure Booking Card -->
+    <div class="card booking-card">
+        <h3>Canyoning Adventure</h3>
+        <p><strong>Date:</strong> June 20, 2024</p>
+        <p><strong>Participants:</strong> 2</p>
+        <a href="./booking-view.html" class="btn btn-primary view-event-btn">View Booking</a>
+    </div>
+
+    <!-- Guided Glacier Course Booking Card -->
+    <div class="card booking-card">
+        <h3>Guided Glacier Course</h3>
+        <p><strong>Date:</strong> July 10, 2024</p>
+        <p><strong>Participants:</strong> 1</p>
+        <a href="./booking-view.html" class="btn btn-primary view-event-btn">View Booking</a>
+    </div>
+
+    <!-- Wilderness Camping Trip Booking Card -->
+    <div class="card booking-card">
+        <h3>Wilderness Camping Trip</h3>
+        <p><strong>Date:</strong> August 14, 2024</p>
+        <p><strong>Participants:</strong> 3</p>
+        <a href="./booking-view.html" class="btn btn-primary view-event-btn">View Booking</a>
+    </div>
+</main>
+
+</body>
+</html>
