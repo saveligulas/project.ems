@@ -1,6 +1,7 @@
 package fhv.team11.project.ems.security.jwt;
 
 import com.auth0.jwt.algorithms.Algorithm;
+import fhv.team11.project.ems.security.error.UserNotFoundException;
 import fhv.team11.project.ems.commons.user.Role;
 import fhv.team11.project.ems.commons.user.UserDatabaseService;
 import fhv.team11.project.ems.security.error.*;
