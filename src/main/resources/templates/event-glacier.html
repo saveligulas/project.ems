@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Guided Glacier Course</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header th:fragment="header" class="main-header">
+    <div class="header-left">
+        <h1>Eventastic</h1>
+    </div>
+
+    <nav class="header-center">
+        <ul>
+            <li><a href="./index.html" th:href="@{/}">Home</a></li>
+            <li><a href="./events.html" th:href="@{/events}">Events</a></li>
+            <li><a href="./users.html" th:href="@{/users}">Users</a></li>
+        </ul>
+    </nav>
+
+    <div class="header-right">
+        <a href="./login.html" class="btn btn-outline header-btn">Login</a>
+        <a href="./register.html" class="btn btn-primary header-btn">Register</a>
+    </div>
+</header>
+
+<main id="event-details" class="container card">
+    <h2 class="card-title text-center">Guided Glacier Course</h2>
+    <p class="text-bold"><strong>Organizer:</strong> Summit Ice Climbers</p>
+    <p><strong>Description:</strong> A thrilling glacier adventure with expert climbers. Learn essential glacier climbing techniques and safety protocols.</p>
+    <p class="appointments text-muted"><strong>Appointments:</strong> July 10, 2024, and August 5, 2024</p>
+    <p class="price"><strong>Price:</strong> $250 per person</p>
+    <p class="participants"><strong>Participants:</strong> Min 4, Max 12</p>
+    <p class="requirements"><strong>Requirements:</strong> Basic ice climbing experience</p>
+    <p class="equipment"><strong>Equipment:</strong> Crampons, ice axe, helmet (provided)</p>
+    <p class="location"><strong>Location:</strong> Glacier Point, Alaska</p>
+
+    <div class="btn-group">
+        <a href="events-view.html" class="btn btn-outline back-btn">Back to Events</a>
+        <a href="book-event.html" class="btn btn-primary book-btn">Book Event</a>
+    </div>
+</main>
+</body>
+</html>
