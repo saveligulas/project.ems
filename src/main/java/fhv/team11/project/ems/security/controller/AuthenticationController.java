@@ -1,5 +1,6 @@
 package fhv.team11.project.ems.security.controller;
 
+import fhv.team11.project.ems.security.error.AuthenticationErrorException;
 import fhv.team11.project.ems.security.error.RegistrationError;
 import fhv.team11.project.ems.security.json.AuthenticationRequest;
 import fhv.team11.project.ems.security.json.AuthenticationResponse;
@@ -7,8 +8,10 @@ import fhv.team11.project.ems.security.json.RegisterRequest;
 import fhv.team11.project.ems.security.jwt.AuthenticationService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -29,7 +32,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("/register")
-    public ModelAndView loginRegisterPage() {
+    public ModelAndView registerPage() {
         ModelAndView modelAndView = new ModelAndView("register");
         modelAndView.addObject("registerRequest", new RegisterRequest());
         return modelAndView;
@@ -64,15 +67,37 @@ public class AuthenticationController {
         return ResponseEntity.accepted().body("success");
     }
 
+    @GetMapping("/login")
+    public ModelAndView loginPage() {
+        ModelAndView modelAndView = new ModelAndView("login");
+        modelAndView.addObject("authenticationRequest", new AuthenticationRequest());
+        return modelAndView;
+    }
+
     @PostMapping("/authenticate")
-    public String authenticate(@ModelAttribute AuthenticationRequest request, HttpServletResponse servlet, RedirectAttributes redirectAttributes) {
+    public ModelAndView authenticate(@Valid @ModelAttribute("authenticationRequest") AuthenticationRequest request,
+                                    BindingResult bindingResult,
+                                    HttpServletResponse servlet,
+                                    HttpSession session,
+                                    RedirectAttributes redirectAttributes) {
+        ModelAndView errorModelAndView = new ModelAndView("redirect:/login");
+
+        if (!bindingResult.hasFieldErrors("email")) {
+            session.setAttribute("cachedEmail", request.getEmail());
+        }
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("hasError", "Please fill out the fields");
+            return errorModelAndView;
+        }
+
         try {
             AuthenticationResponse response = authenticationService.authenticate(request);
             servlet.addCookie(new Cookie("authToken", response.getAuthToken()));
-            redirectAttributes.addFlashAttribute("loginMessage", "Login successful!");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("loginError", "Authentication failed: " + e.getMessage());
+        } catch (AuthenticationErrorException e) {
+            redirectAttributes.addFlashAttribute("hasError", "Authentication failed! Please check your credentials");
+            return errorModelAndView;
         }
-        return "redirect:/login-register";
+        return new ModelAndView("redirect:/success");
     }
 }
