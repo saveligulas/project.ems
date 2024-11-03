@@ -1,4 +1,4 @@
-package fhv.team11.project.ems.commons.user;
+package fhv.team11.project.ems.commons.user.repo;
 
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;

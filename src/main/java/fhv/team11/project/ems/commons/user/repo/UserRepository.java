@@ -1,6 +1,5 @@
-package fhv.team11.project.ems.commons.user;
+package fhv.team11.project.ems.commons.user.repo;
 
-import fhv.team11.project.ems.commons.error.EntityNotFoundException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -10,7 +9,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Repository
 public class UserRepository {
