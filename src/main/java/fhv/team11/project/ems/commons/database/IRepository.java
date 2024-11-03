@@ -1,5 +1,7 @@
 package fhv.team11.project.ems.commons.database;
 
+import fhv.team11.project.ems.commons.error.DatabaseException;
+
 import java.util.Optional;
 
 public interface IRepository<E, ID> {
@@ -7,5 +9,4 @@ public interface IRepository<E, ID> {
     E update(E entity);
     Optional<E> findById(ID id);
     void deleteById(ID id);
-    String constructSqlStatement(String action, String clause);
 }
