@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Event Blueprint</title>
-    <link rel="stylesheet" href="../static/css/stylesheet.css">
+    <link rel="stylesheet" href="../static/css/stylesheet.css" th:href="@{/css/stylesheet.css}">
 </head>
 <body>
 
@@ -27,63 +27,84 @@
     </div>
 </header>
 
-<main class="form-container">
+<div class="form-container">
     <h2 class="text-center">Create Event Blueprint</h2>
-    <form action="/create-blueprint" method="post">
+    <form th:action="@{/blueprint}" method="post" th:object="${blueprint}" novalidate>
 
         <div class="form-group">
             <label for="name"><strong>Name *</strong></label>
-            <input type="text" id="name" name="name" required>
+            <input type="text" id="name" name="name"
+                   th:field="*{name}">
         </div>
 
         <div class="form-group">
             <label for="category"><strong>Category *</strong></label>
-            <input type="text" id="category" name="category" required>
+            <select id="category" th:field="*{category}">
+                <option name="category"
+                        th:each="categoryOption : ${categories}"
+                        th:text="${categories}"
+                        th:value="${categoryOption}"></option>
+            </select>
         </div>
 
         <div class="form-group">
             <label for="price"><strong>Price *</strong></label>
-            <input type="number" id="price" name="price" required>
+            <input type="number" id="price" name="price" step="0.01"
+                   th:field="*{price}">
         </div>
 
         <div class="form-group">
             <label for="maxParticipants"><strong>Max Participants *</strong></label>
-            <input type="number" id="maxParticipants" name="maxParticipants" required>
+            <input type="number" id="maxParticipants" name="maxParticipants"
+                   th:field="*{maxParticipants}">
         </div>
 
         <div class="form-group">
             <label for="minParticipants"><strong>Min Participants *</strong></label>
-            <input type="number" id="minParticipants" name="minParticipants" required>
+            <input type="number" id="minParticipants" name="minParticipants"
+                   th:field="*{minParticipants}">
         </div>
 
         <div class="form-group">
-            <label for="location"><strong>Location *</strong></label>
-            <input type="text" id="location" name="location" required>
+            <label for="country"><strong>Country *</strong></label>
+            <input type="text" id="country" name="location"
+                   th:field="*{address.country}">
         </div>
 
         <div class="form-group">
-            <label for="county"><strong>County</strong></label>
-            <input type="text" id="county" name="county" class="optional">
+            <label for="county"><strong>Region</strong></label>
+            <input type="text" id="county" name="county"
+                   th:field="*{address.region}">
         </div>
 
         <div class="form-group">
-            <label for="zip"><strong>ZIP Code</strong></label>
-            <input type="text" id="zip" name="zip" class="optional">
+            <label for="city"><strong>City</strong></label>
+            <input type="text" id="city" name="zip"
+                   th:field="*{address.city}">
+        </div>
+
+        <div class="form-group">
+            <label for="zip"><strong>ZIP</strong></label>
+            <input type="text" id="zip" name="street"
+                   th:field="*{address.zip}">
         </div>
 
         <div class="form-group">
             <label for="street"><strong>Street</strong></label>
-            <input type="text" id="street" name="street" class="optional">
+            <input type="text" id="street" name="houseNumber"
+                   th:field="*{address.street}">
         </div>
 
         <div class="form-group">
-            <label for="houseNumber"><strong>House Number</strong></label>
-            <input type="text" id="houseNumber" name="houseNumber" class="optional">
+            <label for="house-number"><strong>House Number</strong></label>
+            <input type="text" id="house-number" name="optionalLine"
+                   th:field="*{address.houseNumber}">
         </div>
 
         <div class="form-group">
             <label for="optionalLine"><strong>Optional Line</strong></label>
-            <input type="text" id="optionalLine" name="optionalLine" class="optional">
+            <input type="text" id="optionalLine" name="optionalLine"
+                   th:field="*{address.optionalText}">
         </div>
 
         <!-- Submit Button -->
@@ -92,7 +113,7 @@
         </div>
 
     </form>
-</main>
+</div>
 
 </body>
 </html>
