@@ -15,13 +15,4 @@ public class AddressConfig {
         this.addressRepository = addressRepository;
     }
 
-    @Bean
-    public CommandLineRunner commandLineRunner() {
-        return new CommandLineRunner() {
-            @Override
-            public void run(String... args) throws Exception {
-
-            }
-        };
-    }
 }
