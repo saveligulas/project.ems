@@ -1,6 +1,5 @@
-package fhv.team11.project.ems.commons.user;
+package fhv.team11.project.ems.commons.user.repo;
 
-import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
