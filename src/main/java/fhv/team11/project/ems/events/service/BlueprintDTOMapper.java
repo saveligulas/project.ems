@@ -17,7 +17,7 @@ public class BlueprintDTOMapper {
         blueprint.setMinParticipants(dto.getMinParticipants());
         blueprint.setMaxParticipants(dto.getMaxParticipants());
         blueprint.setOverbookingPlaces(2);
-        blueprint.setAddress(AddressDTOMapper.getAddress(dto.getAddress()));
+        blueprint.setAddress(AddressDTOMapper.INSTANCE.toEntity(dto.getAddress()));
         blueprint.setUser(JwtSecurityContextHolder.getUser());
         return blueprint;
     }

@@ -1,7 +1,7 @@
 package fhv.team11.project.ems.events.repo;
 
 import fhv.team11.project.ems.commons.error.DatabaseException;
-import fhv.team11.project.ems.commons.user.User;
+import fhv.team11.project.ems.commons.user.repo.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;

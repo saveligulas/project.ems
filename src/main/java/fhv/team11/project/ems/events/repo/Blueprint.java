@@ -1,10 +1,8 @@
 package fhv.team11.project.ems.events.repo;
 
 import fhv.team11.project.ems.commons.address.Address;
-import fhv.team11.project.ems.commons.user.User;
-import fhv.team11.project.ems.commons.user.UserEntity;
+import fhv.team11.project.ems.commons.user.repo.User;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Digits;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
