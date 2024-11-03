@@ -20,8 +20,8 @@ public class Address {
     private String country;
     private String region;
     private String city;
-    private String zip;
+    private Integer zip;
     private String street;
-    private String number;
+    private String houseNumber;
     private String optionalText;
 }
