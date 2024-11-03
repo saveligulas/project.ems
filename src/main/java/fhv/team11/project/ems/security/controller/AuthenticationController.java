@@ -84,10 +84,12 @@ public class AuthenticationController {
 
         if (!bindingResult.hasFieldErrors("email")) {
             session.setAttribute("cachedEmail", request.getEmail());
+        } else {
+            session.removeAttribute("cachedEmail");
         }
 
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("hasError", "Please fill out the fields");
+            redirectAttributes.addFlashAttribute("hasError", "Please enter a valid email address and enter a password");
             return errorModelAndView;
         }
 
