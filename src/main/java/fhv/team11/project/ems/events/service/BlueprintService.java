@@ -1,15 +1,16 @@
 package fhv.team11.project.ems.events.service;
 
-import fhv.team11.project.ems.commons.user.User;
-import fhv.team11.project.ems.commons.user.UserEntity;
+import fhv.team11.project.ems.commons.error.BackEndError;
+import fhv.team11.project.ems.commons.error.DatabaseException;
 import fhv.team11.project.ems.events.repo.Blueprint;
 import fhv.team11.project.ems.events.repo.BlueprintRepository;
+import fhv.team11.project.ems.events.transfer.BlueprintDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class BlueprintService {
 
     private final BlueprintRepository blueprintRepository;
@@ -20,11 +21,13 @@ public class BlueprintService {
     }
 
     public void createNewBlueprint(BlueprintDTO blueprintDTO) {
-        Blueprint blueprint = new Blueprint();
-        // UserEntity userEntity = (UserEntity) SecurityContextHolder.getContext().getAuthentication();
-        // blueprint.setUser(new User(userEntity.getId()));
-
-        blueprintRepository.save(blueprint);
+        Blueprint blueprint = BlueprintDTOMapper.getBlueprint(blueprintDTO);
+        try {
+            blueprintRepository.persist(blueprint);
+        } catch (DatabaseException e) {
+            log.error("Failed to create blueprint:{}", e.getMessage());
+            throw new BackEndError(e.getMessage());
+        }
     }
 
 }
