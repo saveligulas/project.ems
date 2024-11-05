@@ -3,11 +3,11 @@ package fhv.team11.project.ems.security.jwt;
 import com.auth0.jwt.algorithms.Algorithm;
 import fhv.team11.project.ems.security.error.UserNotFoundException;
 import fhv.team11.project.ems.commons.user.repo.Role;
-import fhv.team11.project.ems.commons.user.repo.UserDatabaseService;
+import fhv.team11.project.ems.commons.user.repo.UserJDBCRepository;
 import fhv.team11.project.ems.security.error.*;
 import fhv.team11.project.ems.security.json.AuthenticationRequest;
 import fhv.team11.project.ems.security.json.AuthenticationResponse;
-import fhv.team11.project.ems.commons.user.repo.UserEntity;
+import fhv.team11.project.ems.commons.user.repo.UserJDBC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -20,15 +20,15 @@ import java.util.List;
 
 @Service
 public class AuthenticationService {
-    private final UserDatabaseService userDatabaseService;
+    private final UserJDBCRepository userJDBCRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final Algorithm algorithm;
     private final JwtTokenService jwtTokenService;
 
     @Autowired
-    public AuthenticationService(UserDatabaseService userDatabaseService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, Algorithm algorithm, JwtTokenService jwtTokenService) {
-        this.userDatabaseService = userDatabaseService;
+    public AuthenticationService(UserJDBCRepository userJDBCRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, Algorithm algorithm, JwtTokenService jwtTokenService) {
+        this.userJDBCRepository = userJDBCRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.algorithm = algorithm;
@@ -38,16 +38,16 @@ public class AuthenticationService {
 
     public AuthenticationResponse register(String email, String password) {
 
-        if (userDatabaseService.findByEmail(email).isPresent()) {
+        if (userJDBCRepository.findByEmail(email).isPresent()) {
             throw new RegistrationEmailAlreadyRegisteredException();
         }
 
-        UserEntity user = new UserEntity();
+        UserJDBC user = new UserJDBC();
         user.setEmail(email);
         user.setPassword(password);
         user.setRoles(List.of(Role.USER, Role.ADMIN, Role.EMPLOYEE));
 
-        userDatabaseService.save(user);
+        userJDBCRepository.save(user);
 
         return new AuthenticationResponse("User registration was successful");
     }
@@ -64,7 +64,7 @@ public class AuthenticationService {
             );
 
             // Find the user by email
-            UserEntity user = userDatabaseService.findByEmail(request.getEmail())
+            UserJDBC user = userJDBCRepository.findByEmail(request.getEmail())
                     .orElseThrow(() -> new UserNotFoundException(request.getEmail()));
 
             // Generate JWT token for authenticated user

@@ -22,12 +22,7 @@ public class BlueprintService {
 
     public void createNewBlueprint(BlueprintDTO blueprintDTO) {
         Blueprint blueprint = BlueprintDTOMapper.getBlueprint(blueprintDTO);
-        try {
-            blueprintRepository.persist(blueprint);
-        } catch (DatabaseException e) {
-            log.error("Failed to create blueprint:{}", e.getMessage());
-            throw new BackEndError(e.getMessage());
-        }
+        blueprintRepository.persist(blueprint);
     }
 
 }

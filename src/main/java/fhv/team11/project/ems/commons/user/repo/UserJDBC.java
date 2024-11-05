@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserEntity implements UserDetails {
+public class UserJDBC implements UserDetails {
 
     private Long id;
     private String email;

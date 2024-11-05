@@ -11,21 +11,21 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserDatabaseService implements IDatabaseMapper<UserEntity, Long> {
+public class UserJDBCRepository implements IDatabaseMapper<UserJDBC, Long> {
 
-    private final UserRepository userRepository;
+    private final UserRepositoryQuery userRepositoryQuery;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserDatabaseService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
+    public UserJDBCRepository(UserRepositoryQuery userRepositoryQuery, PasswordEncoder passwordEncoder) {
+        this.userRepositoryQuery = userRepositoryQuery;
         this.passwordEncoder = passwordEncoder;
     }
 
-    public Optional<UserEntity> findByEmail(String email) {
-        Optional<UserEntity> userEntity;
+    public Optional<UserJDBC> findByEmail(String email) {
+        Optional<UserJDBC> userEntity;
         try {
-            userEntity = Optional.of(userRepository.findByEmail(email));
+            userEntity = Optional.of(userRepositoryQuery.findByEmail(email));
         } catch (UsernameNotFoundException e) {
             userEntity = Optional.empty();
         }
@@ -34,24 +34,24 @@ public class UserDatabaseService implements IDatabaseMapper<UserEntity, Long> {
 
 
     @Override
-    public UserEntity save(UserEntity entity) {
+    public UserJDBC save(UserJDBC entity) {
         entity.setPassword(passwordEncoder.encode(entity.getPassword()));
-        userRepository.save(entity);
-        return userRepository.findByEmail(entity.getEmail());
+        userRepositoryQuery.save(entity);
+        return userRepositoryQuery.findByEmail(entity.getEmail());
     }
 
     @Override
-    public Optional<UserEntity> findById(Long aLong) throws EntityNotFoundException {
+    public Optional<UserJDBC> findById(Long aLong) throws EntityNotFoundException {
         return null;
     }
 
     @Override
-    public List<UserEntity> findAll() {
+    public List<UserJDBC> findAll() {
         return null;
     }
 
     @Override
-    public UserEntity update(UserEntity entity) {
+    public UserJDBC update(UserJDBC entity) {
         return null;
     }
 
