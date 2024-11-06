@@ -54,17 +54,22 @@ public class AuthenticationController {
 
         try {
             AuthenticationResponse response = authenticationService.register(registerRequest.getEmail(), registerRequest.getPassword());
-            return new ModelAndView("redirect:/success");
+            return new ModelAndView("redirect:/login");
         } catch (RegistrationError e) {
             errorModel.addObject("hasEmailError", true);
             errorModel.addObject("emailError", e.getMessage());
             return errorModel;
         }
     }
-
+    /*
     @GetMapping("/success")
     public ResponseEntity<String> successPage() {
         return ResponseEntity.accepted().body("success");
+    }
+    */
+    @GetMapping("/index")
+    public ModelAndView index(){
+        return new ModelAndView("index");
     }
 
     @GetMapping("/login")
@@ -96,10 +101,12 @@ public class AuthenticationController {
         try {
             AuthenticationResponse response = authenticationService.authenticate(request);
             servlet.addCookie(new Cookie("authToken", response.getAuthToken()));
+            session.setAttribute("authenticatedEmail", request.getEmail());
+
         } catch (AuthenticationErrorException e) {
             redirectAttributes.addFlashAttribute("hasError", "Authentication failed! Please check your credentials");
             return errorModelAndView;
         }
-        return new ModelAndView("redirect:/success");
+        return new ModelAndView("redirect:/index");
     }
 }

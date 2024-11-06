@@ -21,8 +21,15 @@
     </nav>
 
     <div class="header-right">
-        <a href="../login.html" class="btn btn-outline header-btn">Login</a>
-        <a href="../register.html" class="btn btn-primary header-btn">Register</a>
+        <span th:if="${session.authenticatedEmail}">
+            <a href="./view-user.html" th:href="@{/view-user}" class="btn btn-outline header-btn" th:text="${session.authenticatedEmail}"></a>
+        </span>
+
+        <span th:unless="${session.authenticatedEmail}">
+            <a href="./login.html" th:href="@{/login}" class="btn btn-outline header-btn">Login</a>
+            <a href="./register.html" th:href="@{/register}" class="btn btn-primary header-btn">Register</a>
+        </span>
+
     </div>
 </header>
 </body>
