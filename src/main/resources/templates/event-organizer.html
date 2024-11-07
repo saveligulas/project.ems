@@ -1,46 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event Blueprints</title>
-    <link rel="stylesheet" href="../static/css/stylesheet.css">
+    <link rel="stylesheet" href="../static/css/stylesheet.css" th:href="@{/css/stylesheet.css}">
 </head>
 <body>
-<header th:fragment="header" class="main-header">
-    <div class="header-left">
-        <h1>Eventastic</h1>
-    </div>
-
-    <nav class="header-center">
-        <ul>
-            <li><a href="./index.html" th:href="@{/}">Home</a></li>
-            <li><a href="./events.html" th:href="@{/events}">Events</a></li>
-            <li><a href="./users.html" th:href="@{/users}">Users</a></li>
-        </ul>
-    </nav>
-
-    <div class="header-right">
-        <a href="./login.html" class="btn btn-outline header-btn">Login</a>
-        <a href="./register.html" class="btn btn-primary header-btn">Register</a>
-    </div>
-</header>
+<div th:replace="fragments/header :: header"></div>
 
 <main class="container">
     <h2 class="text-center">Event Blueprints</h2>
 
     <!-- Create Blueprint Button -->
     <div class="text-center my-4">
-        <a href="./create-blueprint.html" class="btn btn-primary">Create New Blueprint</a>
+        <a href="./create-blueprint.html" th:href="@{/create-blueprint}" class="btn btn-primary">Create New Blueprint</a>
     </div>
 
     <!-- List of Event Blueprints -->
     <div class="card my-4">
         <h3 class="card-title">Your Blueprints</h3>
         <ul class="list-group">
-            <li class="list-group-item"><a href="./view-blueprint.html">Conference 2024</a></li>
-            <li class="list-group-item"><a href="./view-blueprint.html">Product Launch</a></li>
-            <li class="list-group-item"><a href="./view-blueprint.html">Training Session</a></li>
+            <li class="list-group-item"th:each="blueprint: ${blueprints}">
+                <a  th:text="${blueprint.name}"></a>
+            </li>
         </ul>
     </div>
 
