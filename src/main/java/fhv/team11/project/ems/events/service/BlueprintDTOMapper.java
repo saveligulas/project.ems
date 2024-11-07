@@ -21,4 +21,15 @@ public class BlueprintDTOMapper {
         blueprint.setUser(JwtSecurityContextHolder.getUser());
         return blueprint;
     }
+
+    public static BlueprintDTO getBlueprintDTO(Blueprint blueprint) {
+        BlueprintDTO dto = new BlueprintDTO();
+        dto.setName(blueprint.getName());
+        dto.setCategory(blueprint.getCategory());
+        dto.setAddress(AddressDTOMapper.INSTANCE.toDTO(blueprint.getAddress()));
+        dto.setMaxParticipants(blueprint.getMaxParticipants());
+        dto.setMinParticipants(blueprint.getMinParticipants());
+        dto.setPrice(blueprint.getPrice().doubleValue());
+        return dto;
+    }
 }

@@ -12,4 +12,16 @@ public class UserController {
         return new ModelAndView("view-user");
     }
 
+    @GetMapping("/events")
+    public ModelAndView viewEvents() {
+
+        return new ModelAndView("events");
+    }
+
+    @GetMapping("/event-organizer")
+    public ModelAndView viewEventorganizer() {
+
+        return new ModelAndView("event-organizer");
+    }
+
 }

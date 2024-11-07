@@ -9,6 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @Slf4j
 public class BlueprintService {
@@ -25,4 +28,12 @@ public class BlueprintService {
         blueprintRepository.persist(blueprint);
     }
 
+    public List<BlueprintDTO> getListOfBlueprints(int num) {
+        List<Blueprint> bps = blueprintRepository.listNumberOfBlueprints(num);
+        List<BlueprintDTO> bpDTOs = new ArrayList<BlueprintDTO>();
+        for(Blueprint b:bps){
+            bpDTOs.add(BlueprintDTOMapper.getBlueprintDTO(b));
+        }
+        return bpDTOs;
+    }
 }

@@ -1,5 +1,6 @@
 package fhv.team11.project.ems.events.controller;
 
+import fhv.team11.project.ems.events.repo.Blueprint;
 import fhv.team11.project.ems.events.repo.Category;
 import fhv.team11.project.ems.events.service.BlueprintService;
 import fhv.team11.project.ems.events.transfer.BlueprintDTO;
@@ -15,10 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/blueprint")
+//@RequestMapping("/blueprint")
 public class BlueprintController {
 
     private final BlueprintService blueprintService;
@@ -28,7 +30,7 @@ public class BlueprintController {
         this.blueprintService = blueprintService;
     }
 
-    @GetMapping
+    @GetMapping("/create-blueprint")
     public ModelAndView createBlueprintPage(Model model) {
         ModelAndView modelAndView = new ModelAndView("create-blueprint");
         modelAndView.addObject("blueprint", new BlueprintDTO());
@@ -36,7 +38,7 @@ public class BlueprintController {
         return modelAndView;
     }
 
-    @PostMapping("/manage")
+    @PostMapping("/blueprint/manage")
     public ModelAndView createBlueprint(@ModelAttribute("blueprint") BlueprintDTO blueprintDTO,
                                         BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -44,5 +46,13 @@ public class BlueprintController {
         }
         blueprintService.createNewBlueprint(blueprintDTO);
         return new ModelAndView("events");
+    }
+
+    @GetMapping("/eventorganizer")
+    public ModelAndView viewBlueprints() {
+        List<BlueprintDTO> bps = blueprintService.getListOfBlueprints(50);
+        ModelAndView model = new ModelAndView("event-organizer");
+        model.addObject("blueprints", bps);
+        return model;
     }
 }
