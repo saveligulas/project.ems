@@ -61,16 +61,6 @@ public class AuthenticationController {
             return errorModel;
         }
     }
-    /*
-    @GetMapping("/success")
-    public ResponseEntity<String> successPage() {
-        return ResponseEntity.accepted().body("success");
-    }
-    */
-    @GetMapping("/index")
-    public ModelAndView index(){
-        return new ModelAndView("index");
-    }
 
     @GetMapping("/login")
     public ModelAndView loginPage() {
