@@ -1,11 +1,11 @@
 package fhv.team11.project.ems.events.repo;
 
-public enum Category {
+public enum EventCategory {
     SKI("Ski Courses");
 
     private final String name;
 
-    Category(String name) {
+    EventCategory(String name) {
         this.name = name;
     }
 

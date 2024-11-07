@@ -1,7 +1,7 @@
 package fhv.team11.project.ems.events.repo;
 
 import fhv.team11.project.ems.commons.address.Address;
-import fhv.team11.project.ems.commons.user.repo.User;
+import fhv.team11.project.ems.user.repo.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,14 +14,14 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @Setter
-public class Blueprint {
+public class EventTemplate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
 
     @Enumerated(EnumType.ORDINAL)
-    private Category category;
+    private EventCategory eventCategory;
     private BigDecimal price;
     private int minParticipants;
     private int maxParticipants;

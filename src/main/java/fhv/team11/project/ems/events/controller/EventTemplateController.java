@@ -1,10 +1,8 @@
 package fhv.team11.project.ems.events.controller;
 
-import fhv.team11.project.ems.events.repo.Blueprint;
-import fhv.team11.project.ems.events.repo.Category;
-import fhv.team11.project.ems.events.service.BlueprintService;
-import fhv.team11.project.ems.events.transfer.BlueprintDTO;
-import jakarta.validation.Valid;
+import fhv.team11.project.ems.events.repo.EventCategory;
+import fhv.team11.project.ems.events.service.EventTemplateService;
+import fhv.team11.project.ems.events.transfer.EventTemplateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,45 +10,43 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 //@RequestMapping("/blueprint")
-public class BlueprintController {
+public class EventTemplateController {
 
-    private final BlueprintService blueprintService;
+    private final EventTemplateService eventTemplateService;
 
     @Autowired
-    public BlueprintController(BlueprintService blueprintService) {
-        this.blueprintService = blueprintService;
+    public EventTemplateController(EventTemplateService eventTemplateService) {
+        this.eventTemplateService = eventTemplateService;
     }
 
     @GetMapping("/create-blueprint")
     public ModelAndView createBlueprintPage(Model model) {
         ModelAndView modelAndView = new ModelAndView("create-blueprint");
-        modelAndView.addObject("blueprint", new BlueprintDTO());
-        modelAndView.addObject("categories", Arrays.stream(Category.values()).toList());
+        modelAndView.addObject("blueprint", new EventTemplateDTO());
+        modelAndView.addObject("categories", Arrays.stream(EventCategory.values()).toList());
         return modelAndView;
     }
 
     @PostMapping("/blueprint/manage")
-    public ModelAndView createBlueprint(@ModelAttribute("blueprint") BlueprintDTO blueprintDTO,
+    public ModelAndView createBlueprint(@ModelAttribute("blueprint") EventTemplateDTO eventTemplateDTO,
                                         BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             // return new ModelAndView("redirect:/blueprint");
         }
-        blueprintService.createNewBlueprint(blueprintDTO);
+        eventTemplateService.createNewBlueprint(eventTemplateDTO);
         return new ModelAndView("events");
     }
 
     @GetMapping("/eventorganizer")
     public ModelAndView viewBlueprints() {
-        List<BlueprintDTO> bps = blueprintService.getListOfBlueprints(50);
+        List<EventTemplateDTO> bps = eventTemplateService.getListOfBlueprints(50);
         ModelAndView model = new ModelAndView("event-organizer");
         model.addObject("blueprints", bps);
         return model;
