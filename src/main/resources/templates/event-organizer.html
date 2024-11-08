@@ -14,15 +14,15 @@
 
     <!-- Create Blueprint Button -->
     <div class="text-center my-4">
-        <a href="./create-blueprint.html" th:href="@{/create-blueprint}" class="btn btn-primary">Create New Blueprint</a>
+        <a href="./create-eventTemplate.html" th:href="@{/create-eventTemplate}" class="btn btn-primary">Create New Blueprint</a>
     </div>
 
     <!-- List of Event Blueprints -->
     <div class="card my-4">
         <h3 class="card-title">Your Blueprints</h3>
         <ul class="list-group">
-            <li class="list-group-item"th:each="blueprint: ${blueprints}">
-                <a  th:text="${blueprint.name}"></a>
+            <li class="list-group-item"th:each="eventTemplate: ${blueprints}">
+                <a  th:text="${eventTemplate.name}"></a>
             </li>
         </ul>
     </div>

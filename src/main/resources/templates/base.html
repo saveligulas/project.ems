@@ -1,0 +1,27 @@
+<!-- base.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title th:fragment="title">
+        Eventastic -
+        <span th:text="${title}"></span>
+    </title>
+    <!-- Include global stylesheets -->
+    <link rel="stylesheet" href="../static/css/stylesheet.css" th:href="@{/css/stylesheet.css}">
+</head>
+<body>
+
+<!-- Header Section -->
+    <th:block th:if="${!#bools.isTrue(hideHeader)}">
+        <div layout:fragment="header" th:replace="fragments/header :: header"></div>
+    </th:block>
+
+
+    <div layout:fragment="content">
+
+    </div>
+
+    <!--<div layout:footer th:replace="fragments/footer :: footer"></div>-->
+
+</body>
+</html>
