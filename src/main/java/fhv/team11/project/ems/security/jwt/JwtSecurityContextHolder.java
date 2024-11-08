@@ -1,7 +1,7 @@
 package fhv.team11.project.ems.security.jwt;
 
-import fhv.team11.project.ems.commons.user.repo.User;
-import fhv.team11.project.ems.commons.user.repo.UserJDBC;
+import fhv.team11.project.ems.user.repo.entity.User;
+import fhv.team11.project.ems.user.repo.entity.UserJDBC;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 

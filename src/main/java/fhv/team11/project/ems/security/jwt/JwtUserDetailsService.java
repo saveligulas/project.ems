@@ -1,6 +1,6 @@
 package fhv.team11.project.ems.security.jwt;
 
-import fhv.team11.project.ems.commons.user.repo.UserJDBCRepository;
+import fhv.team11.project.ems.user.repo.UserJDBCRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
