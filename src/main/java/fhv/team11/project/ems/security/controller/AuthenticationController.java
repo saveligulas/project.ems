@@ -66,6 +66,7 @@ public class AuthenticationController {
     public ModelAndView loginPage() {
         ModelAndView modelAndView = new ModelAndView("login");
         modelAndView.addObject("authenticationRequest", new AuthenticationRequest());
+        modelAndView.addObject("hideHeader", true);
         return modelAndView;
     }
 
