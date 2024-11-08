@@ -1,4 +1,4 @@
-package fhv.team11.project.ems.commons.user.repo;
+package fhv.team11.project.ems.user.repo.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

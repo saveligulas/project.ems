@@ -1,5 +1,6 @@
-package fhv.team11.project.ems.commons.user.repo;
+package fhv.team11.project.ems.user.repo.entity;
 
+import fhv.team11.project.ems.user.repo.Role;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

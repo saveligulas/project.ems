@@ -1,7 +1,8 @@
-package fhv.team11.project.ems.commons.user.repo;
+package fhv.team11.project.ems.user.repo;
 
 import fhv.team11.project.ems.commons.error.EntityNotFoundException;
 import fhv.team11.project.ems.commons.database.IDatabaseMapper;
+import fhv.team11.project.ems.user.repo.entity.UserJDBC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
