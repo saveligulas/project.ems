@@ -2,12 +2,12 @@ package fhv.team11.project.ems.security.jwt;
 
 import com.auth0.jwt.algorithms.Algorithm;
 import fhv.team11.project.ems.security.error.UserNotFoundException;
-import fhv.team11.project.ems.commons.user.repo.Role;
-import fhv.team11.project.ems.commons.user.repo.UserJDBCRepository;
+import fhv.team11.project.ems.user.repo.Role;
+import fhv.team11.project.ems.user.repo.UserJDBCRepository;
 import fhv.team11.project.ems.security.error.*;
 import fhv.team11.project.ems.security.json.AuthenticationRequest;
 import fhv.team11.project.ems.security.json.AuthenticationResponse;
-import fhv.team11.project.ems.commons.user.repo.UserJDBC;
+import fhv.team11.project.ems.user.repo.entity.UserJDBC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -45,7 +45,7 @@ public class AuthenticationService {
         UserJDBC user = new UserJDBC();
         user.setEmail(email);
         user.setPassword(password);
-        user.setRoles(List.of(Role.USER, Role.ADMIN, Role.EMPLOYEE));
+        user.setRoles(List.of(Role.CUSTOMER, Role.ADMIN, Role.EMPLOYEE));
 
         userJDBCRepository.save(user);
 
