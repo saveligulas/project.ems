@@ -50,4 +50,9 @@ public class EventTemplateRepositoryQueryImpl implements EventTemplateRepository
 
         return entityManager.createQuery("SELECT b FROM EventTemplate b", EventTemplate.class).setMaxResults(num).getResultList();
     }
+
+    @Override
+    public EventTemplate getEventTemplateByName(String templateName) {
+        return entityManager.createQuery("SELECT t from EventTemplate t where t.name= :name", EventTemplate.class).setParameter("name", templateName).getSingleResult();
+    }
 }

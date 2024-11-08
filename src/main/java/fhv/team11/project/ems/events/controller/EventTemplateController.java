@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Arrays;
@@ -26,9 +27,9 @@ public class EventTemplateController {
         this.eventTemplateService = eventTemplateService;
     }
 
-    @GetMapping("/event")
+    @GetMapping("/create-eventTemplate")
     public ModelAndView createBlueprintPage(Model model) {
-        ModelAndView modelAndView = new ModelAndView("create-blueprint");
+        ModelAndView modelAndView = new ModelAndView("create-eventTemplate");
         modelAndView.addObject("eventTemplate", new EventTemplateDTO());
         modelAndView.addObject("categories", Arrays.stream(EventCategory.values()).toList());
         return modelAndView;
@@ -41,14 +42,21 @@ public class EventTemplateController {
             // return new ModelAndView("redirect:/blueprint");
         }
         eventTemplateService.createNewBlueprint(eventTemplateDTO);
-        return new ModelAndView("redirect:/event/manage");
+        return new ModelAndView("redirect:/eventorganizer");
     }
 
-    @GetMapping("/event/manage")
-    public ModelAndView viewBlueprints() {
+    @GetMapping("/eventorganizer")
+    public ModelAndView viewEventOrganizer() {
         List<EventTemplateDTO> bps = eventTemplateService.getListOfBlueprints(50);
         ModelAndView model = new ModelAndView("event-organizer");
         model.addObject("blueprints", bps);
+        return model;
+    }
+
+    @GetMapping("/view-eventTemplate")
+    public ModelAndView viewEventTemplate(@RequestParam("name") String TemplateName){
+        ModelAndView model = new ModelAndView("view-eventTemplate");
+        model.addObject("Template",eventTemplateService.getTemplateByName(TemplateName));
         return model;
     }
 }

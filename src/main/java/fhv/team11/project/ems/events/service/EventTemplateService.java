@@ -34,4 +34,8 @@ public class EventTemplateService {
         }
         return bpDTOs;
     }
+
+    public EventTemplateDTO getTemplateByName(String name) {
+        return EventTemplateDTOMapper.INSTANCE.getDTO(eventTemplateRepository.getEventTemplateByName(name));
+    }
 }

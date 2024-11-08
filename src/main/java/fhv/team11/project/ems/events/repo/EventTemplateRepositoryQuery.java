@@ -7,4 +7,5 @@ import java.util.List;
 public interface EventTemplateRepositoryQuery extends IRepository<EventTemplate, Long> {
 
     List<EventTemplate> listNumberOfBlueprints(int num);
+    EventTemplate getEventTemplateByName(String templateName);
 }
