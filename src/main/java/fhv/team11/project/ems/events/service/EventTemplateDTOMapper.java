@@ -4,7 +4,6 @@ import fhv.team11.project.ems.commons.address.AddressDTOMapper;
 import fhv.team11.project.ems.commons.database.IDTOMapper;
 import fhv.team11.project.ems.events.repo.EventTemplate;
 import fhv.team11.project.ems.events.transfer.EventTemplateDTO;
-import fhv.team11.project.ems.security.error.AuthenticationErrorException;
 import fhv.team11.project.ems.security.jwt.JwtSecurityContextHolder;
 
 import java.math.BigDecimal;
@@ -19,7 +18,7 @@ public class EventTemplateDTOMapper implements IDTOMapper<EventTemplate, EventTe
     public EventTemplate getEntity(EventTemplateDTO dto) {
         EventTemplate eventTemplate = new EventTemplate();
         eventTemplate.setName(dto.getName());
-        eventTemplate.setEventCategory(dto.getEventCategory());
+        eventTemplate.setCategory(dto.getCategory());
         eventTemplate.setPrice(BigDecimal.valueOf(dto.getPrice()));
         eventTemplate.setMinParticipants(dto.getMinParticipants());
         eventTemplate.setMaxParticipants(dto.getMaxParticipants());
@@ -32,7 +31,7 @@ public class EventTemplateDTOMapper implements IDTOMapper<EventTemplate, EventTe
     public EventTemplateDTO getDTO(EventTemplate eventTemplate) {
         EventTemplateDTO dto = new EventTemplateDTO();
         dto.setName(eventTemplate.getName());
-        dto.setEventCategory(eventTemplate.getEventCategory());
+        dto.setCategory(eventTemplate.getCategory());
         dto.setAddress(AddressDTOMapper.INSTANCE.toDTO(eventTemplate.getAddress()));
         dto.setMaxParticipants(eventTemplate.getMaxParticipants());
         dto.setMinParticipants(eventTemplate.getMinParticipants());

@@ -9,7 +9,7 @@ import lombok.Data;
 public class EventTemplateDTO {
     @NotBlank
     private String name;
-    private EventCategory eventCategory;
+    private EventCategory category;
 
     @DecimalMax("1000.0")
     @DecimalMin("0.0")

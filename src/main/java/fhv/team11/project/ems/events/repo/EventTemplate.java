@@ -21,7 +21,7 @@ public class EventTemplate {
     private String name;
 
     @Enumerated(EnumType.ORDINAL)
-    private EventCategory eventCategory;
+    private EventCategory category;
     private BigDecimal price;
     private int minParticipants;
     private int maxParticipants;

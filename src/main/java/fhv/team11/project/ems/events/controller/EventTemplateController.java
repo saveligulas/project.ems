@@ -26,25 +26,25 @@ public class EventTemplateController {
         this.eventTemplateService = eventTemplateService;
     }
 
-    @GetMapping("/create-blueprint")
+    @GetMapping("/event")
     public ModelAndView createBlueprintPage(Model model) {
         ModelAndView modelAndView = new ModelAndView("create-blueprint");
-        modelAndView.addObject("blueprint", new EventTemplateDTO());
+        modelAndView.addObject("eventTemplate", new EventTemplateDTO());
         modelAndView.addObject("categories", Arrays.stream(EventCategory.values()).toList());
         return modelAndView;
     }
 
-    @PostMapping("/blueprint/manage")
+    @PostMapping("/event/manage")
     public ModelAndView createBlueprint(@ModelAttribute("blueprint") EventTemplateDTO eventTemplateDTO,
                                         BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             // return new ModelAndView("redirect:/blueprint");
         }
         eventTemplateService.createNewBlueprint(eventTemplateDTO);
-        return new ModelAndView("events");
+        return new ModelAndView("redirect:/event/manage");
     }
 
-    @GetMapping("/eventorganizer")
+    @GetMapping("/event/manage")
     public ModelAndView viewBlueprints() {
         List<EventTemplateDTO> bps = eventTemplateService.getListOfBlueprints(50);
         ModelAndView model = new ModelAndView("event-organizer");
