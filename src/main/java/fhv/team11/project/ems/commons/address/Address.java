@@ -1,7 +1,6 @@
 package fhv.team11.project.ems.commons.address;
 
-import fhv.team11.project.ems.events.repo.Blueprint;
-import fhv.team11.project.ems.events.repo.Category;
+import fhv.team11.project.ems.events.repo.EventTemplate;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +14,7 @@ public class Address {
     private Long id;
 
     @OneToOne(mappedBy = "address")
-    private Blueprint blueprint;
+    private EventTemplate eventTemplate;
 
     private String country;
     private String region;
