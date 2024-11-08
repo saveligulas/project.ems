@@ -4,6 +4,7 @@ import fhv.team11.project.ems.commons.address.AddressDTOMapper;
 import fhv.team11.project.ems.commons.database.IDTOMapper;
 import fhv.team11.project.ems.events.repo.EventTemplate;
 import fhv.team11.project.ems.events.transfer.EventTemplateDTO;
+import fhv.team11.project.ems.security.error.AuthenticationErrorException;
 import fhv.team11.project.ems.security.jwt.JwtSecurityContextHolder;
 
 import java.math.BigDecimal;
