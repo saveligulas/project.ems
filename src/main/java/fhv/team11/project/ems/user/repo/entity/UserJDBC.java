@@ -1,5 +1,10 @@
-package fhv.team11.project.ems.commons.user;
+package fhv.team11.project.ems.user.repo.entity;
 
+import fhv.team11.project.ems.user.repo.Role;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,12 +17,20 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserEntity implements UserDetails {
+public class UserJDBC implements UserDetails {
 
+    @NotNull
+    @Min(0)
     private Long id;
+
+    @NotBlank
     private String email;
+
     @Getter(AccessLevel.NONE)
+    @NotBlank
     private String password;
+
+    @NotEmpty
     private List<Role> roles;
 
     @Override

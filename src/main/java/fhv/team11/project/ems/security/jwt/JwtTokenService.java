@@ -3,7 +3,7 @@ package fhv.team11.project.ems.security.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
-import fhv.team11.project.ems.commons.user.UserEntity;
+import fhv.team11.project.ems.user.repo.entity.UserJDBC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ public class JwtTokenService {
         this.algorithm = algorithm;
     }
 
-    public String generateAuthenticationToken(UserEntity user) {
+    public String generateAuthenticationToken(UserJDBC user) {
         String token;
         try {
             Instant expiration = Instant.now().plus(1, ChronoUnit.DAYS);
