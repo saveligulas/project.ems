@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="../../static/css/stylesheet.css" th:href="@{/css/stylesheet.css}">
 </head>
 <body>
-<!-- Header Fragment -->
+<!--@thymesVar id="universal" type="fhv.team11.project.ems.commons.home.base.attribute.GlobalAttributes"-->
 <header th:fragment="header" class="main-header">
     <div class="header-left">
         <h1>Eventastic</h1>
@@ -21,11 +21,11 @@
     </nav>
 
     <div class="header-right">
-        <span th:if="${session.authenticatedEmail}">
-            <a href="./view-user.html" th:href="@{/view-user}" class="btn btn-outline header-btn" th:text="${session.authenticatedEmail}"></a>
+        <span th:if="${universal?.isAuthenticated()}">
+            <a href="./view-user.html" th:href="@{/view-user}" class="btn btn-outline header-btn" th:text="${universal?.user?.username}"></a>
         </span>
 
-        <span th:unless="${session.authenticatedEmail}">
+        <span th:unless="${universal?.isAuthenticated()}">
             <a href="./login.html" th:href="@{/login}" class="btn btn-outline header-btn">Login</a>
             <a href="./register.html" th:href="@{/register}" class="btn btn-primary header-btn">Register</a>
         </span>

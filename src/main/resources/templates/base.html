@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="../static/css/stylesheet.css" th:href="@{/css/stylesheet.css}">
 </head>
 <body>
-
+<!--@thymesVar id="universal" type="fhv.team11.project.ems.commons.home.base.attribute.GlobalAttributes"-->
 <!-- Header Section -->
     <th:block th:if="${!#bools.isTrue(hideHeader)}">
         <div layout:fragment="header" th:replace="fragments/header :: header"></div>
@@ -18,7 +18,6 @@
 
 
     <div layout:fragment="content">
-
     </div>
 
     <!--<div layout:footer th:replace="fragments/footer :: footer"></div>-->
