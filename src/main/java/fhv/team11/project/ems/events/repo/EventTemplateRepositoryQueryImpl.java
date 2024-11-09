@@ -47,8 +47,19 @@ public class EventTemplateRepositoryQueryImpl implements EventTemplateRepository
 
     @Override
     public List<EventTemplate> listNumberOfBlueprints(int num) {
-
         return entityManager.createQuery("SELECT b FROM EventTemplate b", EventTemplate.class).setMaxResults(num).getResultList();
+    }
+
+    @Override
+    public List<EventTemplate> getEventTemplatesForPageNumber(int pageNumber, int pageSize, Long userId) {
+       String sqlQuery = "SELECT * FROM event_template WHERE user_id = :user_id ORDER BY created_at DESC";
+       Query query = entityManager.createNativeQuery(sqlQuery, EventTemplate.class);
+
+       query.setParameter("user_id", userId);
+       query.setFirstResult(pageNumber * pageSize);
+       query.setMaxResults(pageSize);
+
+       return query.getResultList();
     }
 
     @Override
