@@ -2,22 +2,17 @@ package fhv.team11.project.ems.security.controller;
 
 import fhv.team11.project.ems.security.error.AuthenticationErrorException;
 import fhv.team11.project.ems.security.error.RegistrationError;
-import fhv.team11.project.ems.security.json.AuthenticationRequest;
-import fhv.team11.project.ems.security.json.AuthenticationResponse;
-import fhv.team11.project.ems.security.json.RegisterRequest;
+import fhv.team11.project.ems.security.transfer.AuthenticationRequest;
+import fhv.team11.project.ems.security.transfer.AuthenticationResponse;
+import fhv.team11.project.ems.security.transfer.RegisterRequest;
 import fhv.team11.project.ems.security.jwt.AuthenticationService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -53,7 +48,7 @@ public class AuthenticationController {
         }
 
         try {
-            AuthenticationResponse response = authenticationService.register(registerRequest.getEmail(), registerRequest.getPassword());
+            AuthenticationResponse response = authenticationService.register(registerRequest);
             return new ModelAndView("redirect:/login");
         } catch (RegistrationError e) {
             errorModel.addObject("hasEmailError", true);
