@@ -3,6 +3,7 @@ package fhv.team11.project.ems.events.controller;
 import fhv.team11.project.ems.events.repo.EventCategory;
 import fhv.team11.project.ems.events.service.EventTemplateService;
 import fhv.team11.project.ems.events.transfer.EventTemplateDTO;
+import fhv.team11.project.ems.security.jwt.JwtSecurityContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,7 +48,7 @@ public class EventTemplateController {
 
     @GetMapping("/eventorganizer")
     public ModelAndView viewEventOrganizer() {
-        List<EventTemplateDTO> bps = eventTemplateService.getListOfBlueprints(50);
+        List<EventTemplateDTO> bps = eventTemplateService.getListOfBlueprints(0, 25);
         ModelAndView model = new ModelAndView("event-organizer");
         model.addObject("blueprints", bps);
         return model;
