@@ -1,4 +1,4 @@
-package fhv.team11.project.ems.security.json;
+package fhv.team11.project.ems.security.transfer;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
