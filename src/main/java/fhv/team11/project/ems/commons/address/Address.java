@@ -2,6 +2,7 @@ package fhv.team11.project.ems.commons.address;
 
 import fhv.team11.project.ems.events.repo.EventTemplate;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,11 +17,22 @@ public class Address {
     @OneToOne(mappedBy = "address")
     private EventTemplate eventTemplate;
 
+    @NotNull
     private String country;
+
+    @NotNull
     private String region;
+
+    @NotNull
     private String city;
+
+    @NotNull
     private Integer zip;
+
+    @NotNull
     private String street;
+
+    @NotNull
     private String houseNumber;
     private String optionalText;
 }
