@@ -5,11 +5,11 @@ import fhv.team11.project.ems.user.repo.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.Instant;
 
 @Entity
 @Getter
@@ -35,9 +35,9 @@ public class EventTemplate {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @CreatedDate
-    private LocalDate createdAt;
+    @CreationTimestamp
+    private Instant createdAt;
 
-    @LastModifiedDate
-    private LocalDate updatedAt;
+    @UpdateTimestamp
+    private Instant updatedAt;
 }
