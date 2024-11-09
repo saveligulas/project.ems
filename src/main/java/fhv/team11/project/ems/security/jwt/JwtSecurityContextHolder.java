@@ -6,8 +6,6 @@ import fhv.team11.project.ems.user.repo.entity.UserJDBC;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.util.Optional;
-
 public class JwtSecurityContextHolder {
 
     public static User getUser() {
