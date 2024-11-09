@@ -1,12 +1,9 @@
-<!-- base.html -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <title th:fragment="title">
-        Eventastic -
-        <span th:text="${title}"></span>
+    <title>
+        Eventastic - [[${title}]]
     </title>
-    <!-- Include global stylesheets -->
     <link rel="stylesheet" href="../static/css/stylesheet.css" th:href="@{/css/stylesheet.css}">
 </head>
 <body>
