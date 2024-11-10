@@ -7,8 +7,9 @@ import lombok.Data;
 
 @Data
 public class EventTemplateDTO {
-    @NotBlank(message = "Bitte geben sie ein Namen ein")
+    @NotBlank(message = "Bitte geben sie einen Namen ein")
     private String name;
+    @NotNull(message = "Bitte wählen Sie eine Kategorie aus")
     private EventCategory category;
 
     @DecimalMax(value = "1000.0", message = "Der Preis darf nicht höher als 1000 sein")
@@ -25,4 +26,6 @@ public class EventTemplateDTO {
 
     @NotNull(message = "Die Adresse darf nicht leer sein")
     private AddressDTO address;
+
+
 }

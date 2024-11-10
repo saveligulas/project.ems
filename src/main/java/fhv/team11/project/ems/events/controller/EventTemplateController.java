@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Controller
-//@RequestMapping("/blueprint")
+@RequestMapping("/blueprint")
 public class EventTemplateController {
 
     private final EventTemplateService eventTemplateService;
@@ -31,23 +31,25 @@ public class EventTemplateController {
     @GetMapping("/create-eventTemplate")
     public ModelAndView createBlueprintPage(Model model) {
         ModelAndView modelAndView = new ModelAndView("create-eventTemplate");
-        modelAndView.addObject("eventTemplate", new EventTemplateDTO());
+        modelAndView.addObject("blueprint", new EventTemplateDTO());
         modelAndView.addObject("categories", Arrays.stream(EventCategory.values()).toList());
         return modelAndView;
     }
 
     @PostMapping("/event/manage")
     public ModelAndView createBlueprint(@ModelAttribute("blueprint") @Valid EventTemplateDTO eventTemplateDTO,
-                                        Errors errors, RedirectAttributes redirectAttributes) {
-        if (errors.hasErrors()) {
+                                        BindingResult result, RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("blueprint", eventTemplateDTO);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.blueprint", errors);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.blueprint", result);
 
             return new ModelAndView("redirect:/blueprint");
         }
         eventTemplateService.createNewBlueprint(eventTemplateDTO);
         return new ModelAndView("redirect:/eventorganizer");
     }
+
+
 
     @GetMapping("/eventorganizer")
     public ModelAndView viewEventOrganizer() {
