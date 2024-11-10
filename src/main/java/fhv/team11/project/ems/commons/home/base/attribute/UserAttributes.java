@@ -3,12 +3,10 @@ package fhv.team11.project.ems.commons.home.base.attribute;
 import lombok.Data;
 
 @Data
-public class GlobalAttributes {
-    private final EventAttributes event;
+public class UserAttributes {
     private final UserViewModel user;
 
-    public GlobalAttributes() {
-        this.event = new EventAttributes();
+    public UserAttributes() {
         this.user = new UserViewModel();
     }
 
