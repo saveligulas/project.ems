@@ -37,7 +37,7 @@ public class EventTemplateController {
     }
 
     @PostMapping("/event/manage")
-    public ModelAndView createBlueprint(@ModelAttribute("blueprint") @Valid EventTemplateDTO eventTemplateDTO,
+    public ModelAndView createBlueprint(@Valid @ModelAttribute("blueprint") EventTemplateDTO eventTemplateDTO,
                                         BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("blueprint", eventTemplateDTO);
