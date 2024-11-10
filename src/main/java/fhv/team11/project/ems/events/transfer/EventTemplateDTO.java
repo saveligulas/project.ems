@@ -7,22 +7,22 @@ import lombok.Data;
 
 @Data
 public class EventTemplateDTO {
-    @NotBlank
+    @NotBlank(message = "Bitte geben sie ein Namen ein")
     private String name;
     private EventCategory category;
 
-    @DecimalMax("1000.0")
-    @DecimalMin("0.0")
+    @DecimalMax(value = "1000.0", message = "Der Preis darf nicht höher als 1000 sein")
+    @DecimalMin(value = "0.0", message = "Der Preis darf nicht negativ sein")
     private double price;
 
-    @Max(1000L)
-    @Min(0L)
+    @Max(value = 1000L, message = "Die Anzahl der Teilnehmer darf nicht 1000 überschrieten")
+    @Min(value = 0L, message = "Die Anzahl der Teilnehmer darf nicht negativ sein")
     private int maxParticipants;
 
-    @Max(1000L)
-    @Min(0L)
+    @Max(value = 1000L, message = "Die Anzahl der Teilnehmer darf nicht 1000 überschreiten")
+    @Min(value = 0L, message = "Die Anzahl der Teilnehmer darf nicht negativ sein")
     private int minParticipants;
 
-    @NotNull
+    @NotNull(message = "Die Adresse darf nicht leer sein")
     private AddressDTO address;
 }

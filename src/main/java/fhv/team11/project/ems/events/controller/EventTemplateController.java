@@ -4,15 +4,15 @@ import fhv.team11.project.ems.events.repo.EventCategory;
 import fhv.team11.project.ems.events.service.EventTemplateService;
 import fhv.team11.project.ems.events.transfer.EventTemplateDTO;
 import fhv.team11.project.ems.security.jwt.JwtSecurityContextHolder;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Arrays;
 import java.util.List;
@@ -37,10 +37,13 @@ public class EventTemplateController {
     }
 
     @PostMapping("/event/manage")
-    public ModelAndView createBlueprint(@ModelAttribute("blueprint") EventTemplateDTO eventTemplateDTO,
-                                        BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            // return new ModelAndView("redirect:/blueprint");
+    public ModelAndView createBlueprint(@ModelAttribute("blueprint") @Valid EventTemplateDTO eventTemplateDTO,
+                                        Errors errors, RedirectAttributes redirectAttributes) {
+        if (errors.hasErrors()) {
+            redirectAttributes.addFlashAttribute("blueprint", eventTemplateDTO);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.blueprint", errors);
+
+            return new ModelAndView("redirect:/blueprint");
         }
         eventTemplateService.createNewBlueprint(eventTemplateDTO);
         return new ModelAndView("redirect:/eventorganizer");
