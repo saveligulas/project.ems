@@ -41,7 +41,7 @@ public class EventTemplateController {
                                         BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("blueprint", eventTemplateDTO);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.blueprint", result);
+            redirectAttributes.addFlashAttribute("error", result);
 
             return new ModelAndView("redirect:/blueprint/create-eventTemplate");
         }
