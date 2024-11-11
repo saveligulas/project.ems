@@ -1,7 +1,14 @@
 package fhv.team11.project.ems.events.repo;
 
 public enum EventCategory {
-    SKI("Ski Courses");
+    SKI("Ski Courses"),
+    CANYONING("Canyoning"),
+    CAMPING("Camping"),
+    TREKKING("Trekking"),
+    GUIDED_HIKES("Guided Hikes"),
+    FOOTBALL_TOURNAMENTS("Football Tournaments"),
+    GLACIER_COURSES("Glacier Courses"),
+    AVALANCHE_COURSES("Avalanche Courses");
 
     private final String name;
 
@@ -13,3 +20,4 @@ public enum EventCategory {
         return name;
     }
 }
+
