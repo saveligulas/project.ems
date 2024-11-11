@@ -1,4 +1,4 @@
-package fhv.team11.project.ems.security.json;
+package fhv.team11.project.ems.security.transfer;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

@@ -6,6 +6,6 @@ public class AuthenticationErrorException extends RuntimeException {
     }
 
     public AuthenticationErrorException() {
-        super("An unexpected error occurred");
+        super("You need to be logged in to perform this action");
     }
 }

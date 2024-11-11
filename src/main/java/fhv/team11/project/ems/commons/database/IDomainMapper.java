@@ -6,7 +6,7 @@ package fhv.team11.project.ems.commons.database;
  * @param <E> the type of the entity representing the database table.
  * @param <M> the type of the model used in the services.
  */
-public interface IMapper<E, M> {
+public interface IDomainMapper<E, M> {
 
     /**
      *
