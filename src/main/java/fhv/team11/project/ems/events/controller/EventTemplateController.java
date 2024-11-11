@@ -10,7 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -50,7 +53,7 @@ public class EventTemplateController {
 
 
 
-    @GetMapping("/event-organizer")
+    @GetMapping("/eventorganizer")
     public ModelAndView viewEventOrganizer() {
         List<EventTemplateDTO> bps = eventTemplateService.getListOfBlueprints(0, 25);
         ModelAndView model = new ModelAndView("event-organizer");
@@ -59,7 +62,7 @@ public class EventTemplateController {
     }
 
     @GetMapping("/view-eventTemplate")
-    public ModelAndView viewEventTemplate(@RequestParam("name") String TemplateName){
+    public ModelAndView vgiewEventTemplate(@RequestParam("name") String TemplateName){
         ModelAndView model = new ModelAndView("view-eventTemplate");
         model.addObject("Template",eventTemplateService.getTemplateByName(TemplateName));
         return model;
