@@ -18,7 +18,6 @@ import java.util.Arrays;
 import java.util.List;
 
 @Controller
-@RequestMapping("/blueprint")
 public class EventTemplateController {
 
     private final EventTemplateService eventTemplateService;
@@ -46,12 +45,12 @@ public class EventTemplateController {
             return new ModelAndView("redirect:/blueprint/create-eventTemplate");
         }
         eventTemplateService.createNewBlueprint(eventTemplateDTO);
-        return new ModelAndView("redirect:/eventorganizer");
+        return new ModelAndView("redirect:/event-organizer");
     }
 
 
 
-    @GetMapping("/eventorganizer")
+    @GetMapping("/event-organizer")
     public ModelAndView viewEventOrganizer() {
         List<EventTemplateDTO> bps = eventTemplateService.getListOfBlueprints(0, 25);
         ModelAndView model = new ModelAndView("event-organizer");
