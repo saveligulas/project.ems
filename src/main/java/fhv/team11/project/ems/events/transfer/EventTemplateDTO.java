@@ -2,6 +2,7 @@ package fhv.team11.project.ems.events.transfer;
 
 import fhv.team11.project.ems.commons.address.AddressDTO;
 import fhv.team11.project.ems.events.repo.EventCategory;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
@@ -25,6 +26,7 @@ public class EventTemplateDTO {
     private int minParticipants;
 
     @NotNull(message = "Die Adresse darf nicht leer sein")
+    @Valid
     private AddressDTO address;
 
 

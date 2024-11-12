@@ -10,15 +10,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 @Controller
 public class EventTemplateController {
@@ -30,41 +28,47 @@ public class EventTemplateController {
         this.eventTemplateService = eventTemplateService;
     }
 
-    @GetMapping("/create-eventTemplate")
-    public ModelAndView createBlueprintPage(Model model) {
+    private ModelAndView getCreateTemplatePage() {
         ModelAndView modelAndView = new ModelAndView("create-eventTemplate");
-        modelAndView.addObject("blueprint", new EventTemplateDTO());
+        modelAndView.addObject("eventTemplate", new EventTemplateDTO());
         modelAndView.addObject("categories", Arrays.stream(EventCategory.values()).toList());
         return modelAndView;
     }
 
-    @PostMapping("/event/manage")
-    public ModelAndView createBlueprint(@Valid @ModelAttribute("blueprint") EventTemplateDTO eventTemplateDTO,
-                                        BindingResult result, RedirectAttributes redirectAttributes) {
-        if (result.hasErrors()) {
-            redirectAttributes.addFlashAttribute("blueprint", eventTemplateDTO);
-            redirectAttributes.addFlashAttribute("error", result);
+    @GetMapping("/event/manage")
+    public ModelAndView createBlueprintPage(RedirectAttributes redirectAttributes) {
+        return getCreateTemplatePage();
+    }
 
-            return new ModelAndView("redirect:/blueprint/create-eventTemplate");
+    @PostMapping("/event/create")
+    public ModelAndView createBlueprint(@Valid @ModelAttribute("eventTemplate") EventTemplateDTO eventTemplateDTO,
+                                        BindingResult result, RedirectAttributes redirectAttributes) {
+        ModelAndView errorModel = getCreateTemplatePage();
+
+        if (result.hasErrors()) {
+            errorModel.addObject("eventTemplate", eventTemplateDTO);
+            errorModel.addObject("error", result);
+
+            return errorModel;
         }
         eventTemplateService.createNewBlueprint(eventTemplateDTO);
-        return new ModelAndView("redirect:/event-organizer");
+        return new ModelAndView("redirect:/event");
     }
 
 
 
-    @GetMapping("/eventorganizer")
+    @GetMapping("/event")
     public ModelAndView viewEventOrganizer() {
         List<EventTemplateDTO> bps = eventTemplateService.getListOfBlueprints(0, 25);
         ModelAndView model = new ModelAndView("event-organizer");
-        model.addObject("blueprints", bps);
+        model.addObject("templates", bps);
         return model;
     }
 
-    @GetMapping("/view-eventTemplate")
-    public ModelAndView vgiewEventTemplate(@RequestParam("name") String TemplateName){
+    @GetMapping("/event/manage/{id}")
+    public ModelAndView vgiewEventTemplate(@PathVariable("id") String TemplateName){
         ModelAndView model = new ModelAndView("view-eventTemplate");
-        model.addObject("Template",eventTemplateService.getTemplateByName(TemplateName));
+        model.addObject("Template", eventTemplateService.getTemplateByName(TemplateName));
         return model;
     }
 }
