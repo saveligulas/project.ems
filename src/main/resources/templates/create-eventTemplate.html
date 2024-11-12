@@ -11,81 +11,79 @@
 
 <div class="form-container">
     <h2 class="text-center">Create Event Blueprint</h2>
-    <form th:action="@{/event/manage}" method="post" th:object="${eventTemplate}" novalidate>
+    <form th:action="@{/blueprint/manage}" method="post" th:object="${blueprint}" novalidate>
 
         <div class="form-group">
             <label for="name"><strong>Name *</strong></label>
-            <input type="text" id="name" name="name"
-                   th:field="*{name}">
+            <input type="text" id="name" name="name" th:field="*{name}"
+                   th:classappend="${#fields.hasErrors('name') ? 'input-error' : ''}" placeholder="e.g., Max Mustermann">
         </div>
 
         <div class="form-group">
             <label for="category"><strong>Category *</strong></label>
-            <select id="category" th:field="*{category}">
-                <option th:each="categoryOption : ${categories}"
-                        th:text="${categoryOption.getName()}"
-                        th:value="${categoryOption}"></option>
+            <select id="category" th:field="*{category}" th:classappend="${#fields.hasErrors('category') ? 'input-error' : ''}">
+                <option th:each="categoryOption : ${categories}" th:text="${categoryOption.getName()}" th:value="${categoryOption}"></option>
             </select>
         </div>
 
         <div class="form-group">
             <label for="price"><strong>Price *</strong></label>
-            <input type="number" id="price" name="price" step="0.01"
-                   th:field="*{price}">
+            <input type="number" id="price" name="price" step="0.01" th:field="*{price}"
+                   th:classappend="${#fields.hasErrors('price') ? 'input-error' : ''}" placeholder="e.g., 11.11">
         </div>
 
         <div class="form-group">
             <label for="maxParticipants"><strong>Max Participants *</strong></label>
-            <input type="number" id="maxParticipants" name="maxParticipants"
-                   th:field="*{maxParticipants}">
+            <input type="number" id="maxParticipants" name="maxParticipants" th:field="*{maxParticipants}"
+                   th:classappend="${#fields.hasErrors('maxParticipants') ? 'input-error' : ''}" placeholder="e.g., 11">
         </div>
 
         <div class="form-group">
             <label for="minParticipants"><strong>Min Participants *</strong></label>
-            <input type="number" id="minParticipants" name="minParticipants"
-                   th:field="*{minParticipants}">
+            <input type="number" id="minParticipants" name="minParticipants" th:field="*{minParticipants}"
+                   th:classappend="${#fields.hasErrors('minParticipants') ? 'input-error' : ''}" placeholder="e.g., 5">
         </div>
 
         <div class="form-group">
             <label for="country"><strong>Country *</strong></label>
-            <input type="text" id="country" name="location"
-                   th:field="*{address.country}">
+            <input type="text" id="country" name="location" th:field="*{address.country}"
+                   th:classappend="${#fields.hasErrors('address.country') ? 'input-error' : ''}" placeholder="e.g., Austria">
         </div>
 
         <div class="form-group">
             <label for="county"><strong>Region</strong></label>
-            <input type="text" id="county" name="county"
-                   th:field="*{address.region}">
+            <input type="text" id="county" name="county" th:field="*{address.region}"
+                   th:classappend="${#fields.hasErrors('address.region') ? 'input-error' : ''}" placeholder="e.g., Vorarlberg">
         </div>
 
         <div class="form-group">
             <label for="city"><strong>City</strong></label>
-            <input type="text" id="city" name="zip"
-                   th:field="*{address.city}">
+            <input type="text" id="city" name="zip" th:field="*{address.city}"
+                   th:classappend="${#fields.hasErrors('address.city') ? 'input-error' : ''}" placeholder="e.g., Musterstadt">
         </div>
 
         <div class="form-group">
             <label for="zip"><strong>ZIP</strong></label>
-            <input type="number" id="zip" name="zip"
-                   th:field="*{address.zip}">
+            <input type="number" id="zip" name="zip" th:field="*{address.zip}"
+                   th:classappend="${#fields.hasErrors('address.zip') ? 'input-error' : ''}" placeholder="e.g., 11111">
         </div>
 
         <div class="form-group">
             <label for="street"><strong>Street</strong></label>
-            <input type="text" id="street" name="street"
-                   th:field="*{address.street}">
+            <input type="text" id="street" name="street" th:field="*{address.street}"
+                   th:classappend="${#fields.hasErrors('address.street') ? 'input-error' : ''}" placeholder="e.g., Musterstrasse">
         </div>
 
         <div class="form-group">
             <label for="house-number"><strong>House Number</strong></label>
-            <input type="text" id="house-number" name="house-number"
-                   th:field="*{address.houseNumber}">
+            <input type="text" id="house-number" name="house-number" th:field="*{address.houseNumber}"
+                   th:classappend="${#fields.hasErrors('address.houseNumber') ? 'input-error' : ''}" placeholder="e.g., 11">
         </div>
 
         <div class="form-group">
             <label for="optionalLine"><strong>Optional Line</strong></label>
-            <input type="text" id="optionalLine" name="optionalLine"
-                   th:field="*{address.optionalText}">
+            <input type="text" id="optionalLine" name="optionalLine" th:field="*{address.optionalText}" maxlength="150"
+                   th:classappend="${#fields.hasErrors('address.optionalText') ? 'input-error' : ''}" placeholder="max 150 characters">
         </div>
 
         <!-- Submit Button -->
@@ -93,8 +91,17 @@
             <input type="submit" value="Create Blueprint" class="btn btn-primary">
         </div>
 
+        <!-- Display All Form Errors Below the Button -->
+        <div th:if="${#fields.hasErrors()}" class="alert alert-danger">
+            <ul>
+                <li class="error-message" th:each="err : ${#fields.errors()}" th:text="${err}"></li>
+            </ul>
+        </div>
+
     </form>
 </div>
 
 </body>
 </html>
+
+

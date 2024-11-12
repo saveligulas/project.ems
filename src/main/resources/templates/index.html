@@ -2,11 +2,37 @@
 <html lang="en"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{base}"
-      th:with="title='Home'">>
+      th:with="title='Home'">
 <head>
     <meta charset="UTF-8">
+    <title>Home</title>
 </head>
 <body>
 
+<div class="auth-form">
+    <h1>Welcome to Eventastic</h1>
+</div>
+
+<!-- Suchleiste und Kategorien-Grid -->
+<div class="search-section">
+    <div class="search-bar">
+        <input type="text" placeholder="Suchen">
+    </div>
+</div>
+
+<div class="categories-section">
+    <h2>Categories</h2>
+    <div class="categories-grid">
+        <button class="category-item">Canyoning</button>
+        <button class="category-item">Camping</button>
+        <button class="category-item">Trekking</button>
+        <button class="category-item">Guided Hikes</button>
+        <button class="category-item">Football Tournaments</button>
+        <button class="category-item">Glacier Courses</button>
+        <button class="category-item">Avalanche Courses</button>
+        <button class="category-item">Ski Courses</button>
+    </div>
+    <button class="register-button">Registrieren</button>
+</div>
 </body>
 </html>
