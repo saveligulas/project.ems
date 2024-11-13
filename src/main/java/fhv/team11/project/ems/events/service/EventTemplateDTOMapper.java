@@ -1,14 +1,14 @@
 package fhv.team11.project.ems.events.service;
 
 import fhv.team11.project.ems.commons.address.AddressDTOMapper;
-import fhv.team11.project.ems.commons.database.IDTOMapper;
+import fhv.team11.project.ems.commons.database.IDTOEntityBidirectionalMapper;
 import fhv.team11.project.ems.events.repo.EventTemplate;
 import fhv.team11.project.ems.events.transfer.EventTemplateDTO;
 import fhv.team11.project.ems.security.jwt.JwtSecurityContextHolder;
 
 import java.math.BigDecimal;
 
-public class EventTemplateDTOMapper implements IDTOMapper<EventTemplate, EventTemplateDTO> {
+public class EventTemplateDTOMapper implements IDTOEntityBidirectionalMapper<EventTemplate, EventTemplateDTO> {
 
     public static final EventTemplateDTOMapper INSTANCE = new EventTemplateDTOMapper();
 
