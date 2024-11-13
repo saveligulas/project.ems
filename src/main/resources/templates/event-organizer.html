@@ -21,8 +21,8 @@
     <div class="card my-4">
         <h3 class="card-title">Your Blueprints</h3>
         <ul class="list-group">
-            <li class="list-group-item"th:each="eventTemplate: ${templates}">
-                <a th:text="${eventTemplate.name}" th:href="@{/event/manage/${eventTemplate.id}}"></a>
+            <li class="list-group-item" th:each="eventTemplate: ${templates}">
+                <a th:text="${eventTemplate.name}" th:href="@{/event/manage/{id}(id=${eventTemplate.id})}"></a>
             </li>
         </ul>
     </div>
