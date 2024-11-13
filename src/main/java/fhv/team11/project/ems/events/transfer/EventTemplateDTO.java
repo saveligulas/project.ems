@@ -28,6 +28,4 @@ public class EventTemplateDTO {
     @NotNull(message = "Die Adresse darf nicht leer sein")
     @Valid
     private AddressDTO address;
-
-
 }
