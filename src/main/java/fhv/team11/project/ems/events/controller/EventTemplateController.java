@@ -3,6 +3,7 @@ package fhv.team11.project.ems.events.controller;
 import fhv.team11.project.ems.events.repo.EventCategory;
 import fhv.team11.project.ems.events.service.EventTemplateService;
 import fhv.team11.project.ems.events.transfer.EventTemplateDTO;
+import fhv.team11.project.ems.events.transfer.EventTemplateListDTO;
 import fhv.team11.project.ems.security.jwt.JwtSecurityContextHolder;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,16 +62,16 @@ public class EventTemplateController {
 
     @GetMapping("/event")
     public ModelAndView viewEventOrganizer() {
-        List<EventTemplateDTO> bps = eventTemplateService.getListOfBlueprints(0, 25);
+        List<EventTemplateListDTO> bps = eventTemplateService.getListOfBlueprints(0, 25);
         ModelAndView model = new ModelAndView("event-organizer");
         model.addObject("templates", bps);
         return model;
     }
 
     @GetMapping("/event/manage/{id}")
-    public ModelAndView vgiewEventTemplate(@PathVariable("id") String TemplateName){
+    public ModelAndView viewEventTemplate(@PathVariable("id") String templateId){
         ModelAndView model = new ModelAndView("view-eventTemplate");
-        model.addObject("Template", eventTemplateService.getTemplateByName(TemplateName));
+        model.addObject("Template", eventTemplateService.getTemplateById(Long.valueOf(templateId)));
         return model;
     }
 }
