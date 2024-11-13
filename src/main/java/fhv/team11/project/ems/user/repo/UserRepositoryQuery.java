@@ -93,7 +93,6 @@ public class UserRepositoryQuery implements IRepository<UserJDBC, Long> {
                 .orElseThrow(() -> new PersistenceException("Could not retrieve updated user from database"));
     }
 
-    @Override
     public Optional<UserJDBC> findById(Long aLong) {
         String selectSql = "SELECT * FROM public.user WHERE id = :id";
         MapSqlParameterSource params = new MapSqlParameterSource("id", aLong);
@@ -101,7 +100,6 @@ public class UserRepositoryQuery implements IRepository<UserJDBC, Long> {
         return Optional.ofNullable(namedParameterJdbcTemplate.queryForObject(selectSql, params, new UserRowMapper()));
     }
 
-    @Override
     public void deleteById(Long id) {
         String sql = "DELETE FROM public.user WHERE id = :id";
         SqlParameterSource params = new MapSqlParameterSource("id", id);
