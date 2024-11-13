@@ -26,53 +26,60 @@ public class AuthenticationController {
         this.authenticationService = authenticationService;
     }
 
-    @GetMapping("/register")
-    public ModelAndView registerPage() {
-        ModelAndView modelAndView = new ModelAndView("register");
-        modelAndView.addObject("registerRequest", new RegisterRequest());
-        return modelAndView;
+    @ModelAttribute("registerRequest")
+    public RegisterRequest getRegisterRequest() {
+        return new RegisterRequest();
     }
 
-    @PostMapping("/register")
-    public ModelAndView register(@Valid @ModelAttribute("registerRequest") RegisterRequest registerRequest,
-                                 BindingResult bindingResult,
-                                 RedirectAttributes redirectAttributes) {
+    @ModelAttribute
+    public AuthenticationRequest getAuthenticationRequest() {
+        return new AuthenticationRequest();
+    }
+
+    @GetMapping("/register")
+    public ModelAndView registerPage() {
+        return new ModelAndView("register");
+    }
+
+    @PostMapping("/register-user")
+    public String register(
+            @Valid @ModelAttribute("registerRequest") RegisterRequest registerRequest,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes) {
         ModelAndView errorModel = new ModelAndView("register");
 
         if (bindingResult.hasErrors()) {
             if (bindingResult.hasFieldErrors("email")) {
-                errorModel.addObject("hasEmailError", true);
+                redirectAttributes.addFlashAttribute("hasEmailError", true);
             }
-            errorModel.addObject("registerRequest", registerRequest);
-            return errorModel;
+            redirectAttributes.addFlashAttribute("registerRequest", registerRequest);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.registerRequest", bindingResult);
+            return "redirect:/register";
         }
 
         try {
             AuthenticationResponse response = authenticationService.register(registerRequest);
-            return new ModelAndView("redirect:/login");
+            return "redirect:/login";
         } catch (RegistrationError e) {
-            errorModel.addObject("hasEmailError", true);
-            errorModel.addObject("emailError", e.getMessage());
-            return errorModel;
+            redirectAttributes.addFlashAttribute("hasEmailError", true);
+            redirectAttributes.addFlashAttribute("emailError", e.getMessage());
+            return "redirect:/register";
         }
     }
 
     @GetMapping("/login")
     public ModelAndView loginPage() {
         ModelAndView modelAndView = new ModelAndView("login");
-        modelAndView.addObject("authenticationRequest", new AuthenticationRequest());
         modelAndView.addObject("hideHeader", true);
         return modelAndView;
     }
 
     @PostMapping("/authenticate")
-    public ModelAndView authenticate(@Valid @ModelAttribute("authenticationRequest") AuthenticationRequest request,
+    public String authenticate(@Valid @ModelAttribute("authenticationRequest") AuthenticationRequest request,
                                     BindingResult bindingResult,
                                     HttpServletResponse servlet,
                                     HttpSession session,
                                     RedirectAttributes redirectAttributes) {
-        ModelAndView errorModelAndView = new ModelAndView("redirect:/login");
-
         if (!bindingResult.hasFieldErrors("email")) {
             session.setAttribute("cachedEmail", request.getEmail());
         } else {
@@ -81,7 +88,8 @@ public class AuthenticationController {
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("hasError", "Please enter a valid email address and enter a password");
-            return errorModelAndView;
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.authenticationRequest", bindingResult);
+            return "redirect:/login";
         }
 
         try {
@@ -91,8 +99,8 @@ public class AuthenticationController {
 
         } catch (AuthenticationErrorException e) {
             redirectAttributes.addFlashAttribute("hasError", "Authentication failed! Please check your credentials");
-            return errorModelAndView;
+            return "redirect:/login";
         }
-        return new ModelAndView("redirect:/index");
+        return "redirect:/index";
     }
 }

@@ -30,29 +30,31 @@ public class EventTemplateController {
 
     private ModelAndView getCreateTemplatePage() {
         ModelAndView modelAndView = new ModelAndView("create-eventTemplate");
-        modelAndView.addObject("eventTemplate", new EventTemplateDTO());
         modelAndView.addObject("categories", Arrays.stream(EventCategory.values()).toList());
         return modelAndView;
     }
 
+    @ModelAttribute("eventTemplate")
+    public EventTemplateDTO eventTemplate() {
+        return new EventTemplateDTO();
+    }
+
     @GetMapping("/event/manage")
-    public ModelAndView createBlueprintPage(RedirectAttributes redirectAttributes) {
+    public ModelAndView createBlueprintPage() {
         return getCreateTemplatePage();
     }
 
     @PostMapping("/event/create")
-    public ModelAndView createBlueprint(@Valid @ModelAttribute("eventTemplate") EventTemplateDTO eventTemplateDTO,
+    public String createBlueprint(@Valid @ModelAttribute("eventTemplate") EventTemplateDTO eventTemplateDTO,
                                         BindingResult result, RedirectAttributes redirectAttributes) {
-        ModelAndView errorModel = getCreateTemplatePage();
-
         if (result.hasErrors()) {
-            errorModel.addObject("eventTemplate", eventTemplateDTO);
-            errorModel.addObject("error", result);
+            redirectAttributes.addFlashAttribute("eventTemplate", eventTemplateDTO);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.eventTemplate", result);
 
-            return errorModel;
+            return "redirect:/event/manage";
         }
         eventTemplateService.createNewBlueprint(eventTemplateDTO);
-        return new ModelAndView("redirect:/event");
+        return "redirect:/event";
     }
 
 
