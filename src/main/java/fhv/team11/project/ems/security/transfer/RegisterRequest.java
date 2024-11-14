@@ -1,5 +1,6 @@
 package fhv.team11.project.ems.security.transfer;
 
+import fhv.team11.project.ems.commons.model.IModelAttributeName;
 import fhv.team11.project.ems.commons.validation.FieldsMatch;
 import fhv.team11.project.ems.commons.validation.order.FirstValidation;
 import fhv.team11.project.ems.commons.validation.order.SecondValidation;
@@ -17,13 +18,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @FieldsMatch(fieldOne = "password", fieldTwo = "confirmPassword", message = "Passwords do not match")
 @GroupSequence({FirstValidation.class, SecondValidation.class, ThirdValidation.class, RegisterRequest.class})
-public class RegisterRequest {
+public class RegisterRequest implements IModelAttributeName {
     @NotBlank(message = "Please enter an email address", groups = FirstValidation.class)
     @Email(message = "Please enter a valid email address", groups = FirstValidation.class)
     private String email;
 
     @NotBlank(message = "Please enter a password", groups = SecondValidation.class)
-    @PasswordConstraint(groups = ThirdValidation.class)
     private String password;
 
     @NotBlank(message = "Please confirm the password", groups = ThirdValidation.class)

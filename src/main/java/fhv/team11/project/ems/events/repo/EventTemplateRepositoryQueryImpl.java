@@ -35,17 +35,6 @@ public class EventTemplateRepositoryQueryImpl implements EventTemplateRepository
     }
 
     @Override
-    public Optional<EventTemplate> findById(Long aLong) {
-        return Optional.empty();
-    }
-
-    @Override
-    public void deleteById(Long aLong) {
-
-    }
-
-
-    @Override
     public List<EventTemplate> listNumberOfBlueprints(int num) {
         return entityManager.createQuery("SELECT b FROM EventTemplate b", EventTemplate.class).setMaxResults(num).getResultList();
     }
