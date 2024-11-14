@@ -1,4 +1,4 @@
-package fhv.team11.project.ems.commons.home.base.attribute;
+package fhv.team11.project.ems.commons.controller.base.attribute;
 
 import fhv.team11.project.ems.security.error.AuthenticationErrorException;
 import fhv.team11.project.ems.security.jwt.JwtSecurityContextHolder;
