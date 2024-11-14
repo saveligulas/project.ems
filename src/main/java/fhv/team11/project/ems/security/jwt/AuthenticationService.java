@@ -1,7 +1,10 @@
 package fhv.team11.project.ems.security.jwt;
 
 import com.auth0.jwt.algorithms.Algorithm;
+import fhv.team11.project.ems.commons.validation.domain.DomainValidatorFactory;
+import fhv.team11.project.ems.commons.validation.domain.IDomainValidator;
 import fhv.team11.project.ems.security.error.UserNotFoundException;
+import fhv.team11.project.ems.security.jwt.domain.error.RegisterRequestValidationException;
 import fhv.team11.project.ems.security.transfer.RegisterRequest;
 import fhv.team11.project.ems.user.repo.Role;
 import fhv.team11.project.ems.user.repo.UserJDBCRepository;
@@ -16,29 +19,32 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
 import java.util.List;
 
 @Service
 public class AuthenticationService {
     private final UserJDBCRepository userJDBCRepository;
-    private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-    private final Algorithm algorithm;
     private final JwtTokenService jwtTokenService;
+    private final DomainValidatorFactory factory;
 
     @Autowired
-    public AuthenticationService(UserJDBCRepository userJDBCRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, Algorithm algorithm, JwtTokenService jwtTokenService) {
+    public AuthenticationService(UserJDBCRepository userJDBCRepository, AuthenticationManager authenticationManager, JwtTokenService jwtTokenService, DomainValidatorFactory domainValidatorFactory) {
         this.userJDBCRepository = userJDBCRepository;
-        this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
-        this.algorithm = algorithm;
         this.jwtTokenService = jwtTokenService;
-
+        this.factory = domainValidatorFactory;
     }
 
     //!ALERT - do not encode the password here
     public AuthenticationResponse register(RegisterRequest registerRequest) {
+        BindingResult bindingResult = factory.getValidator(RegisterRequest.class).validate(registerRequest);
+        if (bindingResult.hasErrors()) {
+            throw new RegisterRequestValidationException(bindingResult, "register");
+        }
+
         String email = registerRequest.getEmail();
         String password = registerRequest.getPassword();
 
