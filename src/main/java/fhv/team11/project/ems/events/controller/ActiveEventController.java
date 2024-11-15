@@ -1,5 +1,6 @@
 package fhv.team11.project.ems.events.controller;
 
+import ch.qos.logback.core.model.Model;
 import fhv.team11.project.ems.events.service.ActiveEventWizardService;
 import fhv.team11.project.ems.events.service.EventTemplateService;
 import fhv.team11.project.ems.events.transfer.ActiveEventDateDTO;
@@ -31,18 +32,26 @@ public class ActiveEventController {
     }
 
     @GetMapping("/event/manage/{id}/plan")
-    public ModelAndView viewEventTemplate(@PathVariable("id") String templateId,@ModelAttribute("ListTemplate") EventTemplateListDTO eventTemplateListDTO){
+    public ModelAndView viewEventTemplate(@PathVariable("id") String templateId, @ModelAttribute("wizard") ActiveEventWizardDTO wizardDTO/*,@ModelAttribute("ListTemplate") EventTemplateListDTO eventTemplateListDTO*/){
         ModelAndView modelAndView = new ModelAndView("plan-event");
-        modelAndView.addObject("ListTemplate",eventTemplateListDTO);
+
+        modelAndView.addObject("ListTemplate",eventTemplateService.getTemplateListByID(Long.valueOf(templateId)));
+        modelAndView.addObject("eventDate", new ActiveEventDateDTO());
+        modelAndView.addObject("wizard", wizardDTO);
         return modelAndView;
     }
 
     @PostMapping("event/manage/{id}/plan")
     public String addEventDate(
             @ModelAttribute("eventDate") ActiveEventDateDTO eventDateDTO,
-            ActiveEventWizardDTO activeEventWizardDTO,
-            RedirectAttributes redirectAttributes) {
-            return "";
+            RedirectAttributes redirectAttributes,
+            @ModelAttribute("wizard") ActiveEventWizardDTO wizardDTO,
+            @PathVariable("id") String templateId) {
+        wizardDTO.addActiveEvent(eventDateDTO);
+        //redirectAttributes.addAttribute("ListTemplate", eventTemplateService.getTemplateListByID(Long.valueOf(templateId)));
+        //redirectAttributes.addAttribute("eventDate", eventDateDTO);
+        //redirectAttributes.addAttribute("ListTemplate", eventTemplateService.getTemplateListByID(Long.valueOf(templateId)));
+        return "redirect:/event/manage/{id}/plan";
     }
 
 }
