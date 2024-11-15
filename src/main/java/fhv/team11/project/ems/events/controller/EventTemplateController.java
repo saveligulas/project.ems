@@ -4,6 +4,7 @@ import fhv.team11.project.ems.events.repo.EventCategory;
 import fhv.team11.project.ems.events.service.EventTemplateService;
 import fhv.team11.project.ems.events.transfer.EventTemplateDTO;
 import fhv.team11.project.ems.events.transfer.EventTemplateListDTO;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -65,10 +66,20 @@ public class EventTemplateController {
     }
 
     @GetMapping("/event/manage/{id}")
-    public ModelAndView viewEventTemplate(@PathVariable("id") String templateId){
+    public ModelAndView viewEventTemplate(@PathVariable("id") String templateId, RedirectAttributes redirectAttributes){
         ModelAndView model = new ModelAndView("view-eventTemplate");
         model.addObject("Template", eventTemplateService.getTemplateById(Long.valueOf(templateId)));
-        model.addObject("ListTemplate",eventTemplateService.getTemplateListByID(Long.valueOf(templateId)));
+        EventTemplateListDTO eventlist = eventTemplateService.getTemplateListByID(Long.valueOf(templateId));
+        model.addObject("ListTemplate",eventlist);
         return model;
+    }
+
+    @GetMapping("/event/manage/{id}/redirect")
+    public String listEventTemplates(HttpSession httpSession,
+                                     @RequestParam("name") String name,
+                                     @PathVariable("id") String templateId) {
+        EventTemplateListDTO eventlist = new EventTemplateListDTO(Long.valueOf(templateId),name);
+        httpSession.setAttribute("ListTemplate", eventlist);
+        return "redirect:/event/manage/{id}/plan";
     }
 }
