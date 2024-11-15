@@ -1,4 +1,4 @@
-package fhv.team11.project.ems.security.jwt.domain.error;
+package fhv.team11.project.ems.security.transfer.domain.validators;
 
 import fhv.team11.project.ems.commons.validation.domain.IDomainValidator;
 import fhv.team11.project.ems.commons.validation.domain.ValidatorFor;
@@ -23,7 +23,7 @@ public class RegisterRequestValidator implements IDomainValidator<RegisterReques
     }
 
     @AllArgsConstructor
-    private class RegisterRequestValidation {
+    private static class RegisterRequestValidation {
         @PasswordConstraint
         @NotNull
         private String password;

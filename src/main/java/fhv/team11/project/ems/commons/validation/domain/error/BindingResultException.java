@@ -1,4 +1,4 @@
-package fhv.team11.project.ems.commons.controller.error.validation;
+package fhv.team11.project.ems.commons.validation.domain.error;
 
 import fhv.team11.project.ems.commons.controller.error.RedirectionException;
 import lombok.Getter;
