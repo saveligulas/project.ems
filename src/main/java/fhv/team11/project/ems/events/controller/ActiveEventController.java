@@ -6,6 +6,8 @@ import fhv.team11.project.ems.events.service.EventTemplateService;
 import fhv.team11.project.ems.events.transfer.ActiveEventDateDTO;
 import fhv.team11.project.ems.events.transfer.ActiveEventWizardDTO;
 import fhv.team11.project.ems.events.transfer.EventTemplateListDTO;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -16,7 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.Date;
 
 @Controller
-@SessionAttributes("wizard")
+@SessionAttributes({"wizard", "ListTemplate"})
 public class ActiveEventController {
 
     private final EventTemplateService eventTemplateService;
@@ -34,23 +36,27 @@ public class ActiveEventController {
     }
 
     @GetMapping("/event/manage/{id}/plan")
-    public ModelAndView viewEventTemplate(@PathVariable("id") String templateId, @ModelAttribute("wizard") ActiveEventWizardDTO wizardDTO/*,@ModelAttribute("ListTemplate") EventTemplateListDTO eventTemplateListDTO*/){
+    public ModelAndView viewEventTemplate(@PathVariable("id") String templateId,
+                                          @ModelAttribute("wizard") ActiveEventWizardDTO wizardDTO,
+                                          HttpSession httpSession){
         ModelAndView modelAndView = new ModelAndView("plan-event");
-        modelAndView.addObject("ListTemplate",eventTemplateService.getTemplateListByID(Long.valueOf(templateId)));
+
+        if(httpSession.isNew()){
+            modelAndView.addObject("ListTemplate", eventTemplateService.getTemplateListByID(Long.valueOf(templateId)));
+        }else {
+            modelAndView.addObject("ListTemplate",httpSession.getAttribute("ListTemplate"));
+        }
+
         modelAndView.addObject("eventDate", new ActiveEventDateDTO());
-        modelAndView.addObject("wizard", wizardDTO);
         return modelAndView;
     }
 
     @PostMapping("event/manage/{id}/plan")
     public String addEventDate(
             @ModelAttribute("eventDate") ActiveEventDateDTO activeEventDateDTO,
-            RedirectAttributes redirectAttributes,
             @ModelAttribute("wizard") ActiveEventWizardDTO wizardDTO,
             @PathVariable("id") String templateId) {
         wizardDTO.addActiveEvent(activeEventDateDTO);
-        //redirectAttributes.addAttribute("ListTemplate", eventTemplateService.getTemplateListByID(Long.valueOf(templateId)));
-        //redirectAttributes.addAttribute("wizard", wizardDTO);
         return "redirect:/event/manage/{id}/plan";
     }
 
