@@ -71,8 +71,9 @@
 
     <!-- Plan Event Button -->
     <div class="text-center mt-4">
-        <button class="btn btn-primary" th:href="@{/event/manage/{id}(id=${ListTemplate.id})/plan}">Plan Event</button>
+        <a class="btn btn-primary" th:href="@{/event/manage/{id}/plan(id=${ListTemplate.id})}">Plan Event</a>
     </div>
+
 </main>
 
 </body>
