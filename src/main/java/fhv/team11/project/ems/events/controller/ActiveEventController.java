@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Date;
+
 @Controller
 @SessionAttributes("wizard")
 public class ActiveEventController {
@@ -34,7 +36,6 @@ public class ActiveEventController {
     @GetMapping("/event/manage/{id}/plan")
     public ModelAndView viewEventTemplate(@PathVariable("id") String templateId, @ModelAttribute("wizard") ActiveEventWizardDTO wizardDTO/*,@ModelAttribute("ListTemplate") EventTemplateListDTO eventTemplateListDTO*/){
         ModelAndView modelAndView = new ModelAndView("plan-event");
-
         modelAndView.addObject("ListTemplate",eventTemplateService.getTemplateListByID(Long.valueOf(templateId)));
         modelAndView.addObject("eventDate", new ActiveEventDateDTO());
         modelAndView.addObject("wizard", wizardDTO);
@@ -43,14 +44,13 @@ public class ActiveEventController {
 
     @PostMapping("event/manage/{id}/plan")
     public String addEventDate(
-            @ModelAttribute("eventDate") ActiveEventDateDTO eventDateDTO,
+            @ModelAttribute("eventDate") ActiveEventDateDTO activeEventDateDTO,
             RedirectAttributes redirectAttributes,
             @ModelAttribute("wizard") ActiveEventWizardDTO wizardDTO,
             @PathVariable("id") String templateId) {
-        wizardDTO.addActiveEvent(eventDateDTO);
+        wizardDTO.addActiveEvent(activeEventDateDTO);
         //redirectAttributes.addAttribute("ListTemplate", eventTemplateService.getTemplateListByID(Long.valueOf(templateId)));
-        //redirectAttributes.addAttribute("eventDate", eventDateDTO);
-        //redirectAttributes.addAttribute("ListTemplate", eventTemplateService.getTemplateListByID(Long.valueOf(templateId)));
+        //redirectAttributes.addAttribute("wizard", wizardDTO);
         return "redirect:/event/manage/{id}/plan";
     }
 
