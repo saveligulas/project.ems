@@ -14,7 +14,7 @@
 
 <main class="container">
     <div layout:fragment="content">
-    <h2 class="text-center" th:text="${ListTemplate.name}"></h2>
+        <h2 class="text-center" th:text="${ListTemplate.name}"></h2>
 
     <form th:action="@{/event/manage/{id}/plan(id=${ListTemplate.id})}" method="post" th:object="${eventDate}" novalidate>
 
@@ -36,14 +36,25 @@
         </div>
 
     </form>
-        <!--
-        <ul class="list-group">
-            <li class="list-group-item" th:each="wizardDate: ${wizard}">
-                <a th:text="${wizardDate.name}" ></a>
-                <a th:text="${wizardDate.date}" ></a>
-            </li>
-        </ul>
-        -->
+
+        <div>
+
+            <div th:if="${#lists.isEmpty(wizard)}">
+                <p>No dates available.</p>
+            </div>
+
+
+            <ul class="list-group" th:if="${!wizard.activeEventDates.isEmpty()}">
+                <li class="list-group-item" th:each="wizardDate: ${#lists.sort(wizard.activeEventDates)}">
+                    <div>
+                        <p>Name: <a th:text="${wizardDate.name}" ></a></p>
+                        <p>Date: <a th:text="${wizardDate.date}" ></a></p>
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
     </div>
 </main>
 
