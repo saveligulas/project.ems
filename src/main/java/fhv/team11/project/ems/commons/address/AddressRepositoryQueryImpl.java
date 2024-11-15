@@ -31,13 +31,4 @@ public class AddressRepositoryQueryImpl implements AddressRepositoryQuery {
     public Address update(Address entity) {
         return null;
     }
-
-    @Override
-    public Optional<Address> findById(Long aLong) {
-        return null;
-    }
-
-    @Override
-    public void deleteById(Long aLong) {
-    }
 }
