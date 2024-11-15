@@ -4,20 +4,16 @@ import fhv.team11.project.ems.events.repo.EventCategory;
 import fhv.team11.project.ems.events.service.EventTemplateService;
 import fhv.team11.project.ems.events.transfer.EventTemplateDTO;
 import fhv.team11.project.ems.events.transfer.EventTemplateListDTO;
-import fhv.team11.project.ems.security.jwt.JwtSecurityContextHolder;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 @Controller
 public class EventTemplateController {
@@ -54,7 +50,7 @@ public class EventTemplateController {
 
             return "redirect:/event/manage";
         }
-        eventTemplateService.createNewBlueprint(eventTemplateDTO);
+        eventTemplateService.createNewTemplate(eventTemplateDTO);
         return "redirect:/event";
     }
 
@@ -62,7 +58,7 @@ public class EventTemplateController {
 
     @GetMapping("/event")
     public ModelAndView viewEventOrganizer() {
-        List<EventTemplateListDTO> bps = eventTemplateService.getListOfBlueprints(0, 25);
+        List<EventTemplateListDTO> bps = eventTemplateService.getListOfTemplates(0, 25);
         ModelAndView model = new ModelAndView("event-organizer");
         model.addObject("templates", bps);
         return model;
@@ -72,6 +68,7 @@ public class EventTemplateController {
     public ModelAndView viewEventTemplate(@PathVariable("id") String templateId){
         ModelAndView model = new ModelAndView("view-eventTemplate");
         model.addObject("Template", eventTemplateService.getTemplateById(Long.valueOf(templateId)));
+        model.addObject("ListTemplate",eventTemplateService.getTemplateListByID(Long.valueOf(templateId)));
         return model;
     }
 }
