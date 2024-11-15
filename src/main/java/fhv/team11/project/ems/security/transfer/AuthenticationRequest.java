@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class AuthenticationRequest {
 
     @NotBlank(message = "Please enter an email address")
-    @Email(message = "Please enter a valid email address")
+    //@Email(message = "Please enter a valid email address") - Removed this for future domain validation if User is Admin and does not use an email
     private String email;
 
     @NotBlank(message = "Please enter a password")
