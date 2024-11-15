@@ -1,6 +1,6 @@
 package fhv.team11.project.ems.commons.validation.domain;
 
-import fhv.team11.project.ems.commons.model.IModelAttributeName;
+import fhv.team11.project.ems.commons.validation.model.IModelAttributeName;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 

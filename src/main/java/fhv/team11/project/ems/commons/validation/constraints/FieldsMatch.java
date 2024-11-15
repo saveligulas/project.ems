@@ -1,8 +1,7 @@
-package fhv.team11.project.ems.commons.validation;
+package fhv.team11.project.ems.commons.validation.constraints;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.lang.annotation.*;
 

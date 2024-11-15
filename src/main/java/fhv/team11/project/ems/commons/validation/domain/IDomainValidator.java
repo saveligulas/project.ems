@@ -1,6 +1,6 @@
 package fhv.team11.project.ems.commons.validation.domain;
 
-import fhv.team11.project.ems.commons.model.IModelAttributeName;
+import fhv.team11.project.ems.commons.validation.model.IModelAttributeName;
 import jakarta.validation.ConstraintViolation;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
