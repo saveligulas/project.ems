@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{base}"
+      th:with="title='Login'">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan Event</title>
+    <link rel="stylesheet" href="../static/css/stylesheet.css">
+</head>
+<body>
+
+<main class="container">
+    <div layout:fragment="content">
+        <h2 class="text-center" th:text="${ActiveEvent.name}"></h2>
+        <p th:text="${ActiveEvent.date}"></p>
+
+        <form th:action="@{/event/manage/{id}/plan/appointments(id=${ListTemplate.id})}" method="post" th:object="${dateTime}" novalidate>
+
+            <div class="form-group">
+                <label ><strong></strong></label>
+                <input type="time" id="starttime" name="starttime" required th:field="*{startTime}">
+                <input type="time" id="endtime" name="endtime" required th:field="*{endTime}">
+            </div>
+
+            <!-- Plan Event Button -->
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-primary">Plan Event</button>
+            </div>
+
+        </form>
+
+        <div>
+
+            <div th:if="${#lists.isEmpty(?)}">
+                <p>No dates available.</p>
+            </div>
+
+
+            <ul class="list-group" th:if="${!wizard.activeEventDates.isEmpty()}">
+                <li class="list-group-item" th:each="ActiveEventTimes: ${#lists.sort(?)}">
+                    <div>
+                        <p>Name: <a th:text="${ActiveEventTimes.time}" ></a></p>
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</main>
+
+</body>
+</html>
