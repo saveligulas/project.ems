@@ -41,7 +41,7 @@ public class AuthenticationController {
         return new ModelAndView("register");
     }
 
-    @PostMapping("/register-user")
+    @PostMapping("/register/user")
     public String register(
             @Valid @ModelAttribute("registerRequest") RegisterRequest registerRequest,
             BindingResult bindingResult,
