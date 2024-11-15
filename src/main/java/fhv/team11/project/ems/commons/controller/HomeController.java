@@ -1,4 +1,4 @@
-package fhv.team11.project.ems.commons.home;
+package fhv.team11.project.ems.commons.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
