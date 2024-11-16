@@ -9,6 +9,7 @@ import java.util.Set;
 @Data
 public class ActiveEventWizardDTO {
     private Set<ActiveEventDateDTO> activeEventDates = new HashSet<>();
+    private ScheduleEventDTO scheduleEvent;
 
     public void addActiveEvent(ActiveEventDateDTO activeEventDateDTO) {
         activeEventDates.add(activeEventDateDTO);
