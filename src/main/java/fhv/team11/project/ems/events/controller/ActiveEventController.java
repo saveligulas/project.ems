@@ -18,7 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.Date;
 
 @Controller
-@SessionAttributes({"wizard", "ListTemplate"})
+@SessionAttributes({"wizard", "listTemplate"})
 public class ActiveEventController {
 
     private final EventTemplateService eventTemplateService;
@@ -42,9 +42,9 @@ public class ActiveEventController {
         ModelAndView modelAndView = new ModelAndView("plan-event");
 
         if(httpSession.isNew()){
-            modelAndView.addObject("ListTemplate", eventTemplateService.getTemplateListByID(Long.valueOf(templateId)));
+            modelAndView.addObject("listTemplate", eventTemplateService.getTemplateListByID(Long.valueOf(templateId)));
         }else {
-            modelAndView.addObject("ListTemplate",httpSession.getAttribute("ListTemplate"));
+            modelAndView.addObject("listTemplate",httpSession.getAttribute("listTemplate"));
         }
 
         modelAndView.addObject("eventDate", new ActiveEventDateDTO());
@@ -58,6 +58,17 @@ public class ActiveEventController {
             @PathVariable("id") String templateId) {
         wizardDTO.addActiveEvent(activeEventDateDTO);
         return "redirect:/event/manage/{id}/plan";
+    }
+
+    @GetMapping("/event/manage/{id}/plan/redirect")
+    public String planAppointmentsRedirect(HttpSession httpSession,
+                                           @ModelAttribute("wizard") ActiveEventWizardDTO wizardDTO,
+                                           @PathVariable("id") String templateId,
+                                           @RequestParam("name") String name) {
+        EventTemplateListDTO eventlist = new EventTemplateListDTO(Long.valueOf(templateId),name);
+        httpSession.setAttribute("listTemplate", eventlist);
+        httpSession.setAttribute("wizard", wizardDTO);
+        return "redirect:/event/manage/{id}/plan/appointments";
     }
 
 }
