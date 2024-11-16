@@ -66,20 +66,21 @@ public class EventTemplateController {
     }
 
     @GetMapping("/event/manage/{id}")
-    public ModelAndView viewEventTemplate(@PathVariable("id") String templateId, RedirectAttributes redirectAttributes){
+    public ModelAndView viewEventTemplate(@PathVariable("id") String templateId,
+                                          RedirectAttributes redirectAttributes){
         ModelAndView model = new ModelAndView("view-eventTemplate");
         model.addObject("Template", eventTemplateService.getTemplateById(Long.valueOf(templateId)));
         EventTemplateListDTO eventlist = eventTemplateService.getTemplateListByID(Long.valueOf(templateId));
-        model.addObject("ListTemplate",eventlist);
+        model.addObject("listTemplate",eventlist);
         return model;
     }
 
     @GetMapping("/event/manage/{id}/redirect")
-    public String listEventTemplates(HttpSession httpSession,
+    public String planEventRedirect(HttpSession httpSession,
                                      @RequestParam("name") String name,
                                      @PathVariable("id") String templateId) {
         EventTemplateListDTO eventlist = new EventTemplateListDTO(Long.valueOf(templateId),name);
-        httpSession.setAttribute("ListTemplate", eventlist);
+        httpSession.setAttribute("listTemplate", eventlist);
         return "redirect:/event/manage/{id}/plan";
     }
 }
