@@ -46,7 +46,6 @@ public class ActiveEventController {
         }else {
             modelAndView.addObject("listTemplate",httpSession.getAttribute("listTemplate"));
         }
-
         modelAndView.addObject("eventDate", new ActiveEventDateDTO());
         return modelAndView;
     }
@@ -55,8 +54,10 @@ public class ActiveEventController {
     public String addEventDate(
             @ModelAttribute("eventDate") ActiveEventDateDTO activeEventDateDTO,
             @ModelAttribute("wizard") ActiveEventWizardDTO wizardDTO,
-            @PathVariable("id") String templateId) {
+            @PathVariable("id") String templateId, HttpSession httpSession)
+    {
         wizardDTO.addActiveEvent(activeEventDateDTO);
+        httpSession.setAttribute("wizard",wizardDTO);
         return "redirect:/event/manage/{id}/plan";
     }
 
@@ -67,7 +68,6 @@ public class ActiveEventController {
                                            @RequestParam("name") String name) {
         EventTemplateListDTO eventlist = new EventTemplateListDTO(Long.valueOf(templateId),name);
         httpSession.setAttribute("listTemplate", eventlist);
-        httpSession.setAttribute("wizard", wizardDTO);
         return "redirect:/event/manage/{id}/plan/appointments";
     }
 
