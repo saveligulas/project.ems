@@ -26,7 +26,13 @@
         <div class="form-group">
             <label for="date"><strong>Date *</strong></label>
             <input type="date" id="date" name="date" required th:field="*{date}">
+
+
+            <div class="error-message" th:if="${#fields.hasErrors('date')}" th:errors="*{date}">
+
+            </div>
         </div>
+
 
 
 
@@ -37,6 +43,9 @@
         </div>
 
     </form>
+        <div th:if="${session.bindingErrors != null}">
+            <p th:each="error : ${session.bindingErrors.allErrors}" th:text="${error.defaultMessage}" class="error"></p>
+        </div>
 
         <div>
 
@@ -45,15 +54,17 @@
             </div>
 
 
-            <ul class="list-group" th:if="${!wizard.activeEventDates.isEmpty()}">
-                <li class="list-group-item" th:each="wizardDate: ${#lists.sort(wizard.activeEventDates)}">
-                    <div>
-                        <p>Name: <a th:text="${wizardDate.name}" ></a></p>
-                        <p>Date: <a th:text="${wizardDate.date}" ></a></p>
-                    </div>
-
+            <ul>
+                <li th:each="eventDate : ${wizard.activeEventDates}">
+                    <!-- Display the date -->
+                    <span th:if="${eventDate.date != null}"
+                          th:text="${eventDate.date}"></span>
+                    <span th:if="${eventDate.date == null}">No Date Provided</span> -
+                    <!-- Display the name -->
+                    <span th:text="${eventDate.name}"></span>
                 </li>
             </ul>
+
         </div>
 
     </div>
