@@ -16,11 +16,9 @@
     <div layout:fragment="content">
         <p th:text="${eventTemplate.name}">Name</p>
         <ul>
-            <!-- Iterate through activeEventDates in wizard -->
+
             <li th:each="eventDate : ${wizard.activeEventDates}">
-                <!-- Check if the eventDate is null -->
                 <span th:text="${eventDate.getDate()}"></span>
-                <!-- Display the name -->
                 <span th:text="${eventDate.name}"></span>
             </li>
 

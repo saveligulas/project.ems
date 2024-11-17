@@ -56,11 +56,9 @@
 
             <ul>
                 <li th:each="eventDate : ${wizard.activeEventDates}">
-                    <!-- Display the date -->
                     <span th:if="${eventDate.date != null}"
                           th:text="${eventDate.date}"></span>
                     <span th:if="${eventDate.date == null}">No Date Provided</span> -
-                    <!-- Display the name -->
                     <span th:text="${eventDate.name}"></span>
                 </li>
             </ul>

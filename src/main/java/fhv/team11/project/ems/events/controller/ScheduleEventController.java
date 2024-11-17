@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Set;
+
 @Controller
 @SessionAttributes({"wizard", "listTemplate"})
 public class ScheduleEventController {
@@ -24,18 +26,14 @@ public class ScheduleEventController {
         this.activeEventWizardService = activeEventWizardService;
     }
 
-    @ModelAttribute("wizard")
-    public ActiveEventWizardDTO addActiveEventWizardDTO() {
-        return new ActiveEventWizardDTO();
-    }
-
     @GetMapping("event/manage/{id}/plan/appointments")
     public ModelAndView planAppointments(@PathVariable("id") String templateId,
                                          HttpSession httpSession,
                                          @ModelAttribute("EventDate")ActiveEventDateDTO activeEventDateDTO,
                                          @ModelAttribute("wizard") ActiveEventWizardDTO wizardDTO) {
         ModelAndView model = new ModelAndView("plan-appointments");
-        model.addObject("wizard",wizardDTO);
+        ActiveEventWizardDTO activeEventWizard= (ActiveEventWizardDTO) httpSession.getAttribute("wizard");
+        model.addObject("wizard",activeEventWizard);
         model.addObject("eventTemplate",eventTemplateService.getTemplateById(Long.valueOf(templateId)));
         model.addObject("dateTime", new ScheduleEventDTO());
 
