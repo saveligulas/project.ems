@@ -2,6 +2,7 @@ package fhv.team11.project.ems.events.controller;
 
 import fhv.team11.project.ems.events.service.ActiveEventWizardService;
 import fhv.team11.project.ems.events.service.EventTemplateService;
+import fhv.team11.project.ems.events.transfer.ActiveEventDateDTO;
 import fhv.team11.project.ems.events.transfer.ActiveEventWizardDTO;
 import fhv.team11.project.ems.events.transfer.ScheduleEventDTO;
 import jakarta.servlet.http.HttpSession;
@@ -31,8 +32,11 @@ public class ScheduleEventController {
     @GetMapping("event/manage/{id}/plan/appointments")
     public ModelAndView planAppointments(@PathVariable("id") String templateId,
                                          HttpSession httpSession,
+                                         @ModelAttribute("EventDate")ActiveEventDateDTO activeEventDateDTO,
                                          @ModelAttribute("wizard") ActiveEventWizardDTO wizardDTO) {
         ModelAndView model = new ModelAndView("plan-appointments");
+        model.addObject("wizard",wizardDTO);
+        model.addObject("eventTemplate",eventTemplateService.getTemplateById(Long.valueOf(templateId)));
         model.addObject("dateTime", new ScheduleEventDTO());
 
         if(wizardDTO==null){
