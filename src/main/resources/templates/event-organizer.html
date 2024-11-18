@@ -1,41 +1,69 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event Blueprints</title>
-    <link rel="stylesheet" href="../static/css/stylesheet.css" th:href="@{/css/stylesheet.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/stylesheet.css}">
 </head>
-<body>
+<body class="bg-light">
+<!-- Header -->
 <div th:replace="fragments/header :: header"></div>
 
-<main class="container">
-    <h2 class="text-center">Event Blueprints</h2>
+<!-- Main Content -->
+<main class="container mt-5">
+    <!-- Title Section -->
+    <div class="text-center mb-5">
+        <h2 class="fw-bold">Event Blueprints</h2>
+    </div>
 
-    <!-- Create Blueprint Button -->
-    <div class="text-center my-4">
-        <a href="./create-eventTemplate.html" th:href="@{/event/manage}" class="btn btn-primary">Create New EventTemplate</a>
+    <!-- Create New Event Blueprint Button -->
+    <div class="text-center mb-5">
+        <a href="./create-eventTemplate.html" th:href="@{/event/manage}" class="btn btn-success btn-lg">
+            <i class="bi bi-plus-circle me-2"></i>Create New Event Template
+        </a>
     </div>
 
     <!-- List of Event Blueprints -->
-    <div class="card my-4">
-        <h3 class="card-title">Your Blueprints</h3>
-        <ul class="list-group">
-            <li class="list-group-item" th:each="eventTemplate: ${templates}">
-                <a th:text="${eventTemplate.name}" th:href="@{/event/manage/{id}(id=${eventTemplate.id})}"></a>
+    <div class="card shadow-sm mb-5">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Your Event Blueprints</h4>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between align-items-center" th:each="eventTemplate : ${templates}">
+                <span th:text="${eventTemplate.name}">Event Name</span>
+                <a th:href="@{/event/manage/{id}(id=${eventTemplate.id})}" class="btn btn-outline-primary">
+                    View Details
+                </a>
             </li>
         </ul>
     </div>
 
+
     <!-- List of Planned Events -->
-    <div class="card my-4">
-        <h3 class="card-title">Planned Events</h3>
-        <ul class="list-group">
-            <li class="list-group-item"><a href="/event/101">Conference 2024 - January 15, 2024</a></li>
-            <li class="list-group-item"><a href="/event/102">Product Launch - March 22, 2024</a></li>
-            <li class="list-group-item"><a href="/event/103">Training Session - April 5, 2024</a></li>
+    <div class="card shadow-sm">
+        <div class="card-header bg-secondary text-white">
+            <h4 class="mb-0">Planned Events</h4>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>Conference 2024 - January 15, 2024</span>
+                <a href="/event/101" class="btn btn-outline-secondary">View Details</a>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>Product Launch - March 22, 2024</span>
+                <a href="/event/102" class="btn btn-outline-secondary">View Details</a>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>Training Session - April 5, 2024</span>
+                <a href="/event/103" class="btn btn-outline-secondary">View Details</a>
+            </li>
         </ul>
     </div>
 </main>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

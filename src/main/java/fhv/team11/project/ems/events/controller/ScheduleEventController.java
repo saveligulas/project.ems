@@ -8,6 +8,7 @@ import fhv.team11.project.ems.events.transfer.ScheduleEventDTO;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -53,10 +54,15 @@ public class ScheduleEventController {
     }
 
     @PostMapping("/event/manage/{id}/plan/appointments")
-    public String appointmentPLand(@ModelAttribute("wizard") ActiveEventWizardDTO wizardDTO,
+    public String appointmentPlanned(@ModelAttribute("wizard") ActiveEventWizardDTO wizardDTO,
                                    @PathVariable("id") String templateId,
                                    @ModelAttribute("dateTime") ScheduleEventDTO scheduleEventDTO){
         wizardDTO.setScheduleEvent(scheduleEventDTO);
         return "redirect:/event/manage/{id}/plan/appointments";
+    }
+    @PostMapping("/event/manage/{id}/plan/appointments/create")
+    public String createEvent(Model model,@ModelAttribute("wizard") ActiveEventWizardDTO activeEventWizardDTO){
+        //service and persist wizard
+        return ("redirect:/event");
     }
 }
