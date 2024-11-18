@@ -10,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -40,4 +41,8 @@ public class EventTemplate {
 
     @UpdateTimestamp
     private Instant updatedAt;
+
+
+    @OneToMany(mappedBy = "eventTemplate", fetch = FetchType.EAGER)
+    private Set<ActiveEvent> activeEvents;
 }
