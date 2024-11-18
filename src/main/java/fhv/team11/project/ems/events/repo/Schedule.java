@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 
 @Entity
@@ -17,6 +18,7 @@ public class Schedule {
     private Long id;
 
     private LocalDate date;
+    private String name;
 
     @OneToOne(mappedBy = "schedule", cascade = CascadeType.ALL)
     private Appointment appointment;
