@@ -26,61 +26,53 @@ public class EventTemplateController {
         this.eventTemplateService = eventTemplateService;
     }
 
-    private ModelAndView getCreateTemplatePage() {
+    private ModelAndView getCreateTemplatePage(EventTemplateDTO eventTemplateDTO) {
         ModelAndView modelAndView = new ModelAndView("create-eventTemplate");
-        modelAndView.addObject("categories", Arrays.stream(EventCategory.values()).toList());
+        modelAndView.addObject("categories", Arrays.asList(EventCategory.values()));
+        modelAndView.addObject("eventTemplate", eventTemplateDTO);
         return modelAndView;
     }
 
-    @ModelAttribute("eventTemplate")
-    public EventTemplateDTO eventTemplate() {
-        return new EventTemplateDTO();
-    }
-
     @GetMapping("/event/manage")
-    public ModelAndView createBlueprintPage() {
-        return getCreateTemplatePage();
+    public ModelAndView createTemplatePage(@ModelAttribute("eventTemplate") EventTemplateDTO eventTemplateDTO) {
+        return getCreateTemplatePage(eventTemplateDTO);
     }
 
     @PostMapping("/event/create")
-    public String createBlueprint(@Valid @ModelAttribute("eventTemplate") EventTemplateDTO eventTemplateDTO,
-                                        BindingResult result, RedirectAttributes redirectAttributes) {
+    public String createTemplate(@Valid @ModelAttribute("eventTemplate") EventTemplateDTO eventTemplateDTO,
+                                 BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("eventTemplate", eventTemplateDTO);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.eventTemplate", result);
-
             return "redirect:/event/manage";
         }
         eventTemplateService.createNewTemplate(eventTemplateDTO);
         return "redirect:/event";
     }
 
-
-
     @GetMapping("/event")
     public ModelAndView viewEventOrganizer() {
-        List<EventTemplateListDTO> bps = eventTemplateService.getListOfTemplates(0, 25);
+        List<EventTemplateListDTO> templates = eventTemplateService.getListOfTemplates(0, 25);
         ModelAndView model = new ModelAndView("event-organizer");
-        model.addObject("templates", bps);
+        model.addObject("templates", templates);
         return model;
     }
 
     @GetMapping("/event/manage/{id}")
-    public ModelAndView viewEventTemplate(@PathVariable("id") String templateId,
-                                          RedirectAttributes redirectAttributes){
+    public ModelAndView viewEventTemplate(@PathVariable("id") Long templateId) {
         ModelAndView model = new ModelAndView("view-eventTemplate");
-        model.addObject("Template", eventTemplateService.getTemplateById(Long.valueOf(templateId)));
-        EventTemplateListDTO eventlist = eventTemplateService.getTemplateListByID(Long.valueOf(templateId));
-        model.addObject("listTemplate",eventlist);
+        model.addObject("Template", eventTemplateService.getTemplateById(templateId));
+        EventTemplateListDTO eventList = eventTemplateService.getTemplateListByID(templateId);
+        model.addObject("listTemplate", eventList);
         return model;
     }
 
     @GetMapping("/event/manage/{id}/redirect")
-    public String planEventRedirect(HttpSession httpSession,
-                                     @RequestParam("name") String name,
-                                     @PathVariable("id") String templateId) {
-        EventTemplateListDTO eventlist = new EventTemplateListDTO(Long.valueOf(templateId),name);
-        httpSession.setAttribute("listTemplate", eventlist);
-        return "redirect:/event/manage/{id}/plan";
+    public String planEventRedirect(HttpSession session,
+                                    @RequestParam("name") String name,
+                                    @PathVariable("id") Long templateId) {
+        EventTemplateListDTO eventList = new EventTemplateListDTO(templateId, name);
+        session.setAttribute("listTemplate", eventList);
+        return "redirect:/event/manage/" + templateId + "/plan";
     }
 }

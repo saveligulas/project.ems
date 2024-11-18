@@ -2,21 +2,17 @@ package fhv.team11.project.ems.events.controller;
 
 import fhv.team11.project.ems.events.service.ActiveEventWizardService;
 import fhv.team11.project.ems.events.service.EventTemplateService;
-import fhv.team11.project.ems.events.transfer.ActiveEventDateDTO;
 import fhv.team11.project.ems.events.transfer.ActiveEventWizardDTO;
+import fhv.team11.project.ems.events.transfer.EventTemplateListDTO;
 import fhv.team11.project.ems.events.transfer.ScheduleEventDTO;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.Set;
 
 @Controller
-@SessionAttributes({"wizard", "listTemplate"})
 public class ScheduleEventController {
     private final EventTemplateService eventTemplateService;
     private final ActiveEventWizardService activeEventWizardService;
@@ -27,42 +23,53 @@ public class ScheduleEventController {
         this.activeEventWizardService = activeEventWizardService;
     }
 
-    @GetMapping("event/manage/{id}/plan/appointments")
-    public ModelAndView planAppointments(@PathVariable("id") String templateId,
-                                         HttpSession httpSession,
-                                         @ModelAttribute("EventDate")ActiveEventDateDTO activeEventDateDTO,
-                                         @ModelAttribute("wizard") ActiveEventWizardDTO wizardDTO) {
-        ModelAndView model = new ModelAndView("plan-appointments");
-        ActiveEventWizardDTO activeEventWizard= (ActiveEventWizardDTO) httpSession.getAttribute("wizard");
-        model.addObject("wizard",activeEventWizard);
-        model.addObject("eventTemplate",eventTemplateService.getTemplateById(Long.valueOf(templateId)));
-        model.addObject("dateTime", new ScheduleEventDTO());
-
-        if(wizardDTO==null){
-            //activeEventWizardService.getwizardDTOById(templateId);
-            return new ModelAndView("redirect:/event/manage/plan");
+    @GetMapping("/event/manage/{id}/plan/appointments")
+    public String planAppointments(@PathVariable("id") Long templateId,
+                                   HttpSession session,
+                                   Model model) {
+        ActiveEventWizardDTO wizardDTO = (ActiveEventWizardDTO) session.getAttribute("wizard");
+        if (wizardDTO == null) {
+            return "redirect:/event/manage/" + templateId + "/plan";
         }
+        model.addAttribute("wizard", wizardDTO);
 
-        if(httpSession.isNew()){
-            model.addObject("listTemplate", eventTemplateService.getTemplateListByID(Long.valueOf(templateId)));
-        }else {
-            model.addObject("listTemplate",httpSession.getAttribute("listTemplate"));
+        model.addAttribute("eventTemplate", eventTemplateService.getTemplateById(templateId));
+
+        model.addAttribute("dateTime", new ScheduleEventDTO());
+
+        EventTemplateListDTO listTemplate = (EventTemplateListDTO) session.getAttribute("listTemplate");
+        if (listTemplate == null) {
+            listTemplate = eventTemplateService.getTemplateListByID(templateId);
+            session.setAttribute("listTemplate", listTemplate);
         }
+        model.addAttribute("listTemplate", listTemplate);
 
-
-        return model;
+        return "plan-appointments";
     }
 
     @PostMapping("/event/manage/{id}/plan/appointments")
-    public String appointmentPlanned(@ModelAttribute("wizard") ActiveEventWizardDTO wizardDTO,
-                                   @PathVariable("id") String templateId,
-                                   @ModelAttribute("dateTime") ScheduleEventDTO scheduleEventDTO){
+    public String appointmentPlanned(@PathVariable("id") Long templateId,
+                                     HttpSession session,
+                                     @Valid @ModelAttribute("dateTime") ScheduleEventDTO scheduleEventDTO) {
+        ActiveEventWizardDTO wizardDTO = (ActiveEventWizardDTO) session.getAttribute("wizard");
+        if (wizardDTO == null) {
+            wizardDTO = new ActiveEventWizardDTO();
+            session.setAttribute("wizard", wizardDTO);
+        }
         wizardDTO.setScheduleEvent(scheduleEventDTO);
-        return "redirect:/event/manage/{id}/plan/appointments";
+        return "redirect:/event/manage/" + templateId + "/plan/appointments";
     }
+
     @PostMapping("/event/manage/{id}/plan/appointments/create")
-    public String createEvent(Model model,@ModelAttribute("wizard") ActiveEventWizardDTO activeEventWizardDTO){
-        //service and persist wizard
-        return ("redirect:/event");
+    public String createEvent(HttpSession session) {
+        ActiveEventWizardDTO wizardDTO = (ActiveEventWizardDTO) session.getAttribute("wizard");
+        if (wizardDTO != null) {
+            // Persistieren Sie den Wizard mithilfe des Services
+            //activeEventWizardService.saveWizard(wizardDTO);
+            // Session bereinigen, falls erforderlich
+            session.removeAttribute("wizard");
+            session.removeAttribute("listTemplate");
+        }
+        return "redirect:/event";
     }
 }
