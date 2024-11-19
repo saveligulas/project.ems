@@ -61,12 +61,12 @@ public class ScheduleEventController {
     }
 
     @PostMapping("/event/manage/{id}/plan/appointments/create")
-    public String createEvent(HttpSession session) {
+    public String createEvent(HttpSession session,
+                              @PathVariable("id") Long templateId) {
         ActiveEventWizardDTO wizardDTO = (ActiveEventWizardDTO) session.getAttribute("wizard");
         if (wizardDTO != null) {
-            // Persistieren Sie den Wizard mithilfe des Services
-            //activeEventWizardService.saveWizard(wizardDTO);
-            // Session bereinigen, falls erforderlich
+            wizardDTO.setTemplateId(templateId);
+            activeEventWizardService.createActiveEvent(wizardDTO);
             session.removeAttribute("wizard");
             session.removeAttribute("listTemplate");
         }
