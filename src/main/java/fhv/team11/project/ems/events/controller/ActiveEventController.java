@@ -36,7 +36,7 @@ public class ActiveEventController {
             @ModelAttribute("eventDate") ActiveEventDateDTO eventDateDTO,
             ActiveEventWizardDTO activeEventWizardDTO,
             RedirectAttributes redirectAttributes) {
-
+        return null;
     }
 
 }

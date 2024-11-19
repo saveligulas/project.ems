@@ -39,7 +39,7 @@ public class AuthenticationService {
     public AuthenticationResponse register(RegisterRequest registerRequest) {
         BindingResult bindingResult = factory.getValidator(RegisterRequest.class).validate(registerRequest);
         if (bindingResult.hasErrors()) {
-            throw new RegisterRequestValidationException(bindingResult, "register");
+            throw new RegisterRequestValidationException(bindingResult);
         }
 
         String email = registerRequest.getEmail();

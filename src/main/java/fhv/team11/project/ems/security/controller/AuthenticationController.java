@@ -31,7 +31,7 @@ public class AuthenticationController {
         return new RegisterRequest();
     }
 
-    @ModelAttribute
+    @ModelAttribute("authenticationRequest")
     public AuthenticationRequest getAuthenticationRequest() {
         return new AuthenticationRequest();
     }

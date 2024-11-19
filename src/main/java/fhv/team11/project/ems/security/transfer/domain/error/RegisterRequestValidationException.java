@@ -4,7 +4,7 @@ import fhv.team11.project.ems.commons.validation.domain.error.BindingResultExcep
 import org.springframework.validation.BindingResult;
 
 public class RegisterRequestValidationException extends BindingResultException {
-    public RegisterRequestValidationException(BindingResult bindingResult, String redirectEndpoint) {
-        super(bindingResult, "registerRequest", redirectEndpoint);
+    public RegisterRequestValidationException(BindingResult bindingResult) {
+        super(bindingResult, "registerRequest", "register");
     }
 }
