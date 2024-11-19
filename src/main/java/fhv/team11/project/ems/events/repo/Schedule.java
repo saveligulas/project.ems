@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Set;
 
 
 @Entity
@@ -17,14 +18,14 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDate date;
-    private String name;
+    private LocalTime startTime;
+    private LocalTime endTime;
 
-    @OneToOne(mappedBy = "schedule", cascade = CascadeType.ALL)
-    private Appointment appointment;
-
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="active_event_id", nullable=false)
-    private ActiveEvent activeEvent;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name="active_event_schedule",
+            joinColumns = @JoinColumn(name = "schedule_id"),
+            inverseJoinColumns = @JoinColumn(name="active_event_id")
+    )
+    private Set<ActiveEvent> activeEvent;
 }
