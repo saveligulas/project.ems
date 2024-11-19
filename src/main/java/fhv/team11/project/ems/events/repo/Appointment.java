@@ -4,23 +4,21 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Set;
-
 
 @Entity
 @Getter
 @Setter
-public class Schedule {
+public class Appointment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL)
-    private Set<EventDate> eventDates;
+    private LocalTime startTime;
+    private LocalTime endTime;
 
-    @OneToMany(mappedBy = "schedule")
-    private Set<Appointment> appointments;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "schedule_id")
+    private Schedule schedule;
 }

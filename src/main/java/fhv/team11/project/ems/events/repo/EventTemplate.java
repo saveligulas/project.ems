@@ -43,6 +43,6 @@ public class EventTemplate {
     private Instant updatedAt;
 
 
-    @OneToMany(mappedBy = "eventTemplate", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "eventTemplate", fetch = FetchType.LAZY)
     private Set<ActiveEvent> activeEvents;
 }
