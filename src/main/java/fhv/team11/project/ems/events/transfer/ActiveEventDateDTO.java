@@ -3,12 +3,12 @@ package fhv.team11.project.ems.events.transfer;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Data
 public class ActiveEventDateDTO implements Comparable<ActiveEventDateDTO> {
-    private Date date;
+    private LocalDate date;
     private String name;
 
     @Override

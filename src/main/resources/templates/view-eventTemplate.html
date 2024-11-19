@@ -71,8 +71,9 @@
 
     <!-- Plan Event Button -->
     <div class="text-center mt-4">
-        <button class="btn btn-primary" onclick="window.location.href='./plan-event.html';">Plan Event</button>
+        <a  class="btn btn-primary" th:href="@{/event/manage/{id}/redirect(id=${listTemplate.id},name=${listTemplate.name})}">Plan Event</a>
     </div>
+
 </main>
 
 </body>

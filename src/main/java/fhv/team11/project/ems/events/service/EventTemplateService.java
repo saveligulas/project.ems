@@ -11,8 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -29,18 +29,22 @@ public class EventTemplateService {
         return eventTemplate.getUser().getId().equals(JwtSecurityContextHolder.getUser().getId());
     }
 
-    public void createNewBlueprint(EventTemplateDTO eventTemplateDTO) {
+    public void createNewTemplate(EventTemplateDTO eventTemplateDTO) {
         EventTemplate eventTemplate = EventTemplateDTOMapper.INSTANCE.getEntity(eventTemplateDTO);
         eventTemplateRepository.persist(eventTemplate);
     }
 
-    public List<EventTemplateListDTO> getListOfBlueprints(int pageNumber, int pageSize) {
+    public List<EventTemplateListDTO> getListOfTemplates(int pageNumber, int pageSize) {
         return eventTemplateRepository.getEventTemplatesForPageNumber(pageNumber, pageSize, JwtSecurityContextHolder.getUser().getId())
                 .stream()
                 .map(EventTemplateListDTOMapper.INSTANCE::getDTO)
                 .toList();
     }
-
+    public EventTemplateListDTO getTemplateListByID(long templateId) {
+        return eventTemplateRepository.findById(templateId)
+                .map(EventTemplateListDTOMapper.INSTANCE::getDTO)
+                .orElse(null);
+    }
     public EventTemplateDTO getTemplateByName(String name) {
         return EventTemplateDTOMapper.INSTANCE.getDTO(eventTemplateRepository.getEventTemplateByName(name));
     }

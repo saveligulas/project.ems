@@ -1,5 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{base}"
+      th:with="title='Login'">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,51 +12,51 @@
 </head>
 <body>
 
-<header th:fragment="header" class="main-header">
-    <div class="header-left">
-        <h1>Eventastic</h1>
-    </div>
-
-    <nav class="header-center">
-        <ul>
-            <li><a href="./index.html" th:href="@{/}">Home</a></li>
-            <li><a href="./events.html" th:href="@{/events}">Events</a></li>
-            <li><a href="./users.html" th:href="@{/users}">Users</a></li>
-        </ul>
-    </nav>
-
-    <div class="header-right">
-        <a href="./login.html" class="btn btn-outline header-btn">Login</a>
-        <a href="./register.html" class="btn btn-primary header-btn">Register</a>
-    </div>
-</header>
-
 <main class="container">
-    <h2 class="text-center">Plan Event from Blueprint</h2>
+    <div layout:fragment="content">
+        <h2 class="text-center" th:text="${listTemplate.name}"></h2>
 
-    <form action="/plan-event" method="post">
+    <form th:action="@{/event/manage/{id}/plan(id=${listTemplate.id})}" method="post" th:object="${eventDate}" novalidate>
 
         <div class="form-group">
-            <label for="eventDate"><strong>Date *</strong></label>
-            <input type="date" id="eventDate" name="eventDate" required>
+            <label for="name"><strong>Name *</strong></label>
+            <input type="text" id="name" name="name" required th:field="*{name}">
         </div>
 
         <div class="form-group">
-            <label for="eventTime"><strong>Time *</strong></label>
-            <input type="time" id="eventTime" name="eventTime" required>
+            <label for="date"><strong>Date *</strong></label>
+            <input type="date" id="date" name="date" required th:field="*{date}">
         </div>
 
-        <div class="form-group">
-            <label for="additionalInfo"><strong>Additional Information</strong></label>
-            <input type="text" id="additionalInfo" name="additionalInfo" placeholder="Enter any additional information">
-        </div>
+
 
         <!-- Plan Event Button -->
-        <div class="form-group text-center">
+        <div class="form-group text-center button-container">
             <button type="submit" class="btn btn-primary">Plan Event</button>
+            <a class="btn btn-primary" th:href="@{/event/manage/{id}/plan/redirect(id=${listTemplate.id},name=${listTemplate.name})}">Plan Appointment</a>
         </div>
 
     </form>
+
+        <div>
+
+            <div th:if="${#lists.isEmpty(wizard)}">
+                <p>No dates available.</p>
+            </div>
+
+
+            <ul class="list-group" th:if="${!wizard.activeEventDates.isEmpty()}">
+                <li class="list-group-item" th:each="wizardDate: ${#lists.sort(wizard.activeEventDates)}">
+                    <div>
+                        <p>Name: <a th:text="${wizardDate.name}" ></a></p>
+                        <p>Date: <a th:text="${wizardDate.date}" ></a></p>
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+    </div>
 </main>
 
 </body>

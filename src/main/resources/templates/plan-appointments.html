@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{base}"
+      th:with="title='Login'">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan Event</title>
+    <link rel="stylesheet" href="../static/css/stylesheet.css">
+</head>
+<body>
+
+<main class="container">
+    <div layout:fragment="content">
+
+        <form th:action="@{/event/manage/{id}/plan/appointments(id=${listTemplate.id})}" method="post" th:object="${dateTime}" th:if="${wizard.scheduleEvent==null}" novalidate>
+
+            <div class="form-group container">
+
+                <div class="time-field">
+                    <p>Start Date:</p>
+                    <input type="time" id="starttime" name="starttime" required th:field="*{startTime}">
+                </div>
+                <div class="time-field">
+                    <p>End Date:</p>
+                    <input type="time" id="endtime" name="endtime" required th:field="*{endTime}">
+                </div>
+
+            </div>
+
+            <!-- Plan Event Button -->
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-primary">Plan Appointment</button>
+            </div>
+
+        </form>
+
+        <div th:if="${!(wizard.scheduleEvent==null)}">
+            <p> <strong>Appointment: </strong> </p>
+            <div>
+                <p>StartDate: <a th:text="${wizard.scheduleEvent.startTime}" ></a></p>
+                <p>EndDate: <a th:text="${wizard.scheduleEvent.endTime}" ></a></p>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+</body>
+</html>
