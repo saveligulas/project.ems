@@ -1,6 +1,6 @@
 package fhv.team11.project.ems.commons.controller.base.attribute;
 
-import fhv.team11.project.ems.security.error.AuthenticationErrorException;
+import fhv.team11.project.ems.security.error.SecuredEndpointAccessException;
 import fhv.team11.project.ems.security.jwt.JwtSecurityContextHolder;
 import lombok.Data;
 
@@ -12,7 +12,7 @@ public class UserViewModel {
         String name;
         try {
             name = JwtSecurityContextHolder.getUserEntity().getUsername();
-        } catch (AuthenticationErrorException e) {
+        } catch (SecuredEndpointAccessException e) {
             name = null;
         }
         this.username = name;
