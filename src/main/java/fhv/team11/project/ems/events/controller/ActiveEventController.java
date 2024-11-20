@@ -25,47 +25,36 @@ public class ActiveEventController {
     }
 
     @GetMapping("/event/manage/{id}/plan")
-    public ModelAndView viewEventTemplate(@PathVariable("id") Long templateId,
-                                          HttpSession session) {
+    public ModelAndView viewEventTemplate(@PathVariable("id") Long templateId, HttpSession session) {
         ModelAndView modelAndView = new ModelAndView("plan-event");
+        EventTemplateListDTO eventTemplateListDTO = eventTemplateService.getTemplateListByID(templateId);
+        modelAndView.addObject("listTemplate", eventTemplateListDTO);
 
-        EventTemplateListDTO listTemplate = (EventTemplateListDTO) session.getAttribute("listTemplate");
-        if (listTemplate == null) {
-            listTemplate = eventTemplateService.getTemplateListByID(templateId);
-            session.setAttribute("listTemplate", listTemplate);
+        ActiveEventWizardDTO wizard = (ActiveEventWizardDTO) session.getAttribute("wizard");
+        if (wizard == null) {
+            wizard = new ActiveEventWizardDTO();
+            session.setAttribute("wizard", wizard);
         }
-        modelAndView.addObject("listTemplate", listTemplate);
-
-        ActiveEventWizardDTO wizardDTO = (ActiveEventWizardDTO) session.getAttribute("wizard");
-        if (wizardDTO == null) {
-            wizardDTO = new ActiveEventWizardDTO();
-            session.setAttribute("wizard", wizardDTO);
-        }
-        modelAndView.addObject("wizard", wizardDTO);
-
+        modelAndView.addObject("wizard", wizard);
         modelAndView.addObject("eventDate", new ActiveEventDateDTO());
         return modelAndView;
     }
 
     @PostMapping("/event/manage/{id}/plan")
-    public String addEventDate(@Valid @ModelAttribute("eventDate") ActiveEventDateDTO activeEventDateDTO,
+    public String addEventDate(@Valid ActiveEventDateDTO activeEventDateDTO,
                                HttpSession session,
                                @PathVariable("id") Long templateId) {
-        ActiveEventWizardDTO wizardDTO = (ActiveEventWizardDTO) session.getAttribute("wizard");
-        if (wizardDTO == null) {
-            wizardDTO = new ActiveEventWizardDTO();
-            session.setAttribute("wizard", wizardDTO);
+        ActiveEventWizardDTO wizard = (ActiveEventWizardDTO) session.getAttribute("wizard");
+        if (wizard == null) {
+            wizard = new ActiveEventWizardDTO();
         }
-        wizardDTO.addActiveEvent(activeEventDateDTO);
+        wizard.addActiveEvent(activeEventDateDTO);
+        session.setAttribute("wizard", wizard);
         return "redirect:/event/manage/" + templateId + "/plan";
     }
 
     @GetMapping("/event/manage/{id}/plan/redirect")
-    public String planAppointmentsRedirect(HttpSession session,
-                                           @PathVariable("id") Long templateId,
-                                           @RequestParam("name") String name) {
-        EventTemplateListDTO eventList = new EventTemplateListDTO(templateId, name);
-        session.setAttribute("listTemplate", eventList);
+    public String planAppointmentsRedirect(@PathVariable("id") Long templateId) {
         return "redirect:/event/manage/" + templateId + "/plan/appointments";
     }
 }
