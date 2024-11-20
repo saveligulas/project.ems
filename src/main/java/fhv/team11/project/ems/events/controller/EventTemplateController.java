@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,21 +27,18 @@ public class EventTemplateController {
         this.eventTemplateService = eventTemplateService;
     }
 
-    private ModelAndView getCreateTemplatePage(EventTemplateDTO eventTemplateDTO) {
+    @GetMapping("/event/manage")
+    public ModelAndView createTemplatePage() {
         ModelAndView modelAndView = new ModelAndView("create-eventTemplate");
         modelAndView.addObject("categories", Arrays.asList(EventCategory.values()));
-        modelAndView.addObject("eventTemplate", eventTemplateDTO);
+        modelAndView.addObject("eventTemplate", new EventTemplateDTO());
         return modelAndView;
-    }
-
-    @GetMapping("/event/manage")
-    public ModelAndView createTemplatePage(@ModelAttribute("eventTemplate") EventTemplateDTO eventTemplateDTO) {
-        return getCreateTemplatePage(eventTemplateDTO);
     }
 
     @PostMapping("/event/create")
     public String createTemplate(@Valid @ModelAttribute("eventTemplate") EventTemplateDTO eventTemplateDTO,
-                                 BindingResult result, RedirectAttributes redirectAttributes) {
+                                 BindingResult result,
+                                 RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("eventTemplate", eventTemplateDTO);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.eventTemplate", result);
@@ -68,11 +66,9 @@ public class EventTemplateController {
     }
 
     @GetMapping("/event/manage/{id}/redirect")
-    public String planEventRedirect(HttpSession session,
-                                    @RequestParam("name") String name,
-                                    @PathVariable("id") Long templateId) {
-        EventTemplateListDTO eventList = new EventTemplateListDTO(templateId, name);
-        session.setAttribute("listTemplate", eventList);
+    public String planEventRedirect(@PathVariable("id") Long templateId,@RequestParam("name") String name, Model model, HttpSession session) {
+        EventTemplateListDTO eventList = new EventTemplateListDTO(Long.valueOf(templateId),name);
+        session.setAttribute("listTemplate",eventList);
         return "redirect:/event/manage/" + templateId + "/plan";
     }
 }
