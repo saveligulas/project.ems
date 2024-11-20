@@ -8,7 +8,7 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
-@MaxMinParticipants(min = "minParticipants", max = "maxParticipants", message = "Die minimale Teilnehmeranzahl muss kleiner als die maximale sein")
+@MaxMinParticipants(min = "minParticipants", max = "maxParticipants", message = "Die minimale Teilnehmeranzahl muss kleiner a ls die maximale sein")
 public class EventTemplateDTO {
     @NotBlank(message = "Bitte geben sie einen Namen ein")
     private String name;
