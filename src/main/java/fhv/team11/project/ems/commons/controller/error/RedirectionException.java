@@ -8,15 +8,19 @@ public class RedirectionException extends RuntimeException {
     private final String redirectEndpoint;
 
     public RedirectionException() {
-        this("unspecified", "error");
+        this("Unexpected Error occurred");
     }
 
-    public RedirectionException(String redirectEndpoint) {
-        this("unspecified", redirectEndpoint);
+    public RedirectionException(String message) {
+        this(message, "error");
     }
 
-    public RedirectionException(String exceptionEndpoint, String redirectEndpoint) {
-        super();
+    public RedirectionException(String message, String redirectEndpoint) {
+        this(message, redirectEndpoint, "unspecified");
+    }
+
+    public RedirectionException(String message, String redirectEndpoint, String exceptionEndpoint) {
+        super(message);
         this.exceptionEndpoint = exceptionEndpoint;
         this.redirectEndpoint = redirectEndpoint;
     }
