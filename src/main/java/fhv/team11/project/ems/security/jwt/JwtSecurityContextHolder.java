@@ -1,6 +1,6 @@
 package fhv.team11.project.ems.security.jwt;
 
-import fhv.team11.project.ems.security.error.AuthenticationErrorException;
+import fhv.team11.project.ems.security.error.SecuredEndpointAccessException;
 import fhv.team11.project.ems.user.repo.entity.User;
 import fhv.team11.project.ems.user.repo.entity.UserJDBC;
 import org.springframework.security.core.Authentication;
@@ -16,7 +16,7 @@ public class JwtSecurityContextHolder {
                 return new User(((UserJDBC) principal).getId());
             }
         }
-        throw new AuthenticationErrorException();
+        throw new SecuredEndpointAccessException();
     }
 
     public static UserJDBC getUserEntity() {
@@ -27,6 +27,6 @@ public class JwtSecurityContextHolder {
                 return (UserJDBC) principal;
             }
         }
-        throw new AuthenticationErrorException();
+        throw new SecuredEndpointAccessException();
     }
 }
