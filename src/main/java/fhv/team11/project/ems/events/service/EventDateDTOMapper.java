@@ -1,7 +1,7 @@
 package fhv.team11.project.ems.events.service;
 
-import fhv.team11.project.ems.commons.database.IDTOEntityBidirectionalMapper;
-import fhv.team11.project.ems.commons.database.IDTOMapper;
+import fhv.team11.project.ems.commons.database.IDTOEntityBiMapper;
+
 import fhv.team11.project.ems.events.repo.Appointment;
 import fhv.team11.project.ems.events.repo.EventDate;
 import fhv.team11.project.ems.events.repo.Schedule;
@@ -11,7 +11,7 @@ import fhv.team11.project.ems.events.transfer.ActiveEventWizardDTO;
 import java.util.HashSet;
 import java.util.Set;
 
-public class EventDateDTOMapper implements IDTOMapper<EventDate, ActiveEventDateDTO> {
+public class EventDateDTOMapper implements IDTOEntityBiMapper<EventDate, ActiveEventDateDTO> {
 
     public static final EventDateDTOMapper INSTANCE = new EventDateDTOMapper();
 

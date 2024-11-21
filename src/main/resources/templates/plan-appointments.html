@@ -83,25 +83,25 @@
 
             <!-- Form to Plan Appointment -->
             <form th:action="@{/event/manage/{id}/plan/appointments(id=${listTemplate.id})}"
-                  method="post" th:object="${dateTime}" th:if="${wizard.scheduleEvent == null}" novalidate>
-
+                  th:object="${dateTime}"
+                  method="post">
                 <div class="form-group row mb-3">
                     <div class="col-md-6">
                         <label for="starttime" class="form-label"><strong>Start Time:</strong></label>
-                        <input type="time" id="starttime" name="starttime" required th:field="*{startTime}" class="form-control">
+                        <input type="time" id="starttime" name="startTime" required th:field="*{startTime}" class="form-control">
                     </div>
                     <div class="col-md-6">
                         <label for="endtime" class="form-label"><strong>End Time:</strong></label>
-                        <input type="time" id="endtime" name="endtime" required th:field="*{endTime}" class="form-control">
+                        <input type="time" id="endtime" name="endTime" required th:field="*{endTime}" class="form-control">
                     </div>
                 </div>
 
-                <!-- Plan Event Button -->
+                <!-- Submit Button -->
                 <div class="form-group text-center">
                     <button type="submit" class="btn btn-primary">Plan Appointment</button>
                 </div>
-
             </form>
+
 
             <!-- Display Appointment Details & Create Event Button if scheduleEvent is not null -->
             <div th:if="${wizard.scheduleEvent != null}" class="mt-4">
@@ -112,7 +112,7 @@
                 </div>
 
                 <!-- Button for Create Event -->
-                <form th:action="@{/event/manage/{id}/plan/appointments/create(id=${listTemplate.id})}" method="post">
+                <form th:action="@{/event/manage/{id}/plan/appointments/create(id=${listTemplate.id},name=${listTemplate.name})}" method="post">
                     <div class="text-center mt-3">
                         <button type="submit" class="btn btn-success">Event Overview</button>
                     </div>
@@ -121,6 +121,11 @@
 
         </div>
     </div>
+    <!-- Display Errors at the Bottom -->
+    <div class="alert alert-danger" th:if="${#fields.hasGlobalErrors()}">
+        <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+    </div>
+
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
