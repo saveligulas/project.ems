@@ -1,11 +1,12 @@
 package fhv.team11.project.ems.security.controller;
 
-import fhv.team11.project.ems.security.error.AuthenticationErrorException;
+import fhv.team11.project.ems.security.error.SecuredEndpointAccessException;
 import fhv.team11.project.ems.security.error.RegistrationError;
 import fhv.team11.project.ems.security.transfer.AuthenticationRequest;
 import fhv.team11.project.ems.security.transfer.AuthenticationResponse;
 import fhv.team11.project.ems.security.transfer.RegisterRequest;
 import fhv.team11.project.ems.security.jwt.AuthenticationService;
+import fhv.team11.project.ems.security.transfer.domain.error.AuthenticationRequestValidationException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -97,7 +98,7 @@ public class AuthenticationController {
             servlet.addCookie(new Cookie("authToken", response.getAuthToken()));
             session.setAttribute("authenticatedEmail", request.getEmail());
 
-        } catch (AuthenticationErrorException e) {
+        } catch (AuthenticationRequestValidationException e) {
             redirectAttributes.addFlashAttribute("hasError", "Authentication failed! Please check your credentials");
             return "redirect:/login";
         }

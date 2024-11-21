@@ -2,6 +2,7 @@ package fhv.team11.project.ems.security.jwt;
 
 import fhv.team11.project.ems.commons.validation.domain.DomainValidatorFactory;
 import fhv.team11.project.ems.security.error.UserNotFoundException;
+import fhv.team11.project.ems.security.transfer.domain.error.AuthenticationRequestValidationException;
 import fhv.team11.project.ems.security.transfer.domain.error.RegisterRequestValidationException;
 import fhv.team11.project.ems.security.transfer.RegisterRequest;
 import fhv.team11.project.ems.user.repo.Role;
@@ -80,11 +81,11 @@ public class AuthenticationService {
             return new AuthenticationResponse(authToken, "User login was successful");
 
         } catch (BadCredentialsException e) {
-            throw new AuthenticationErrorException("Invalid email or password");
+            throw new AuthenticationRequestValidationException("Invalid email or password");
         } catch (UsernameNotFoundException e) {
-            throw new AuthenticationErrorException(e.getMessage());
+            throw new AuthenticationRequestValidationException(e.getMessage());
         } catch (Exception e) {
-            throw new AuthenticationErrorException();
+            throw new AuthenticationRequestValidationException();
         }
     }
 
