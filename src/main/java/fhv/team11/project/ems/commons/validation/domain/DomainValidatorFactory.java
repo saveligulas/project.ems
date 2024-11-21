@@ -1,6 +1,6 @@
 package fhv.team11.project.ems.commons.validation.domain;
 
-import fhv.team11.project.ems.commons.validation.model.IModelAttributeName;
+import fhv.team11.project.ems.commons.validation.model.IModelAttribute;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +15,7 @@ public class DomainValidatorFactory {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends IModelAttributeName> IDomainValidator<T> getValidator(Class<T> dtoClass) {
+    public <T extends IModelAttribute> IDomainValidator<T> getValidator(Class<T> dtoClass) {
         Map<String, Object> validators = applicationContext.getBeansWithAnnotation(ValidatorFor.class);
 
         return validators.values().stream()

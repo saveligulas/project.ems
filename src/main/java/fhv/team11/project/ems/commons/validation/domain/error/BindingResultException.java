@@ -10,13 +10,15 @@ public class BindingResultException extends RedirectionException {
     private final String modelAttributeName;
 
     public BindingResultException(BindingResult bindingResult, String modelAttributeName, String redirectEndpoint) {
-        super(redirectEndpoint);
-        this.bindingResult = bindingResult;
-        this.modelAttributeName = modelAttributeName;
+        this(bindingResult, modelAttributeName, redirectEndpoint, "Binding Error Occurred");
     }
 
-    public BindingResultException(BindingResult bindingResult, String modelAttributeName, String redirectEndpoint, String exceptionEndpoint) {
-        super(exceptionEndpoint, redirectEndpoint);
+    public BindingResultException(BindingResult bindingResult, String modelAttributeName, String redirectEndpoint, String message) {
+        this(bindingResult, modelAttributeName, redirectEndpoint, message, "unspecified");
+    }
+
+    public BindingResultException(BindingResult bindingResult, String modelAttributeName, String redirectEndpoint, String message, String exceptionEndpoint) {
+        super(message, redirectEndpoint, exceptionEndpoint);
         this.bindingResult = bindingResult;
         this.modelAttributeName = modelAttributeName;
     }

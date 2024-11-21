@@ -1,5 +1,6 @@
 package fhv.team11.project.ems.security.transfer;
 
+import fhv.team11.project.ems.commons.validation.model.IModelAttribute;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthenticationRequest {
+public class AuthenticationRequest implements IModelAttribute {
 
     @NotBlank(message = "Please enter an email address")
     //@Email(message = "Please enter a valid email address") - Removed this for future domain validation if User is Admin and does not use an email
