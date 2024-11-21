@@ -3,6 +3,7 @@ package fhv.team11.project.ems.commons.address;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
+//TODO: Logic to service layer
 @Data
 public class AddressDTO {
     @NotBlank(message = "Bitte geben sie ein Land ein")

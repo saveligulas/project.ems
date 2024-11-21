@@ -1,5 +1,6 @@
 package fhv.team11.project.ems.security.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,7 +21,6 @@ public class UserController {
 
     @GetMapping("/event-organizer")
     public ModelAndView viewEventorganizer() {
-
         return new ModelAndView("event-organizer");
     }
 
