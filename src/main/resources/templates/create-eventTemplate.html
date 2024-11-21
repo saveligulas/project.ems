@@ -13,6 +13,7 @@
     <h2 class="text-center">Create Event Blueprint</h2>
     <form th:action="@{/event/create}" method="post" th:object="${eventTemplate}" novalidate>
 
+
         <div class="form-group">
             <label for="name"><strong>Name *</strong></label>
             <input type="text" id="name" name="name" th:field="*{name}"
@@ -94,11 +95,12 @@
         </div>
 
         <!-- Display All Form Errors Below the Button -->
-        <div th:if="${#fields.hasErrors()}" class="alert alert-danger">
+        <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">
             <ul>
-                <li class="error-message" th:each="err : ${#fields.errors()}" th:text="${err}"></li>
+                <li th:each="err : ${#fields.globalErrors()}" th:text="${err}"></li>
             </ul>
         </div>
+
 
     </form>
 </div>

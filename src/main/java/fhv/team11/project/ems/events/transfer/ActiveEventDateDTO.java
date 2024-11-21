@@ -1,5 +1,8 @@
 package fhv.team11.project.ems.events.transfer;
 
+import fhv.team11.project.ems.events.validation.MaxDate;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.FutureOrPresent;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
@@ -8,6 +11,8 @@ import java.util.Objects;
 
 @Data
 public class ActiveEventDateDTO implements Comparable<ActiveEventDateDTO> {
+    @FutureOrPresent(message = "Date cannot be in the past")
+    @MaxDate
     private LocalDate date;
     private String name;
 
