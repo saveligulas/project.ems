@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -67,14 +68,15 @@ public class ScheduleEventController {
     @PostMapping("/event/manage/{id}/plan/appointments/create")
     public String createEvent(@PathVariable("id") Long templateId,
                               HttpSession session,
-                              RedirectAttributes redirectAttributes) {
+                              RedirectAttributes redirectAttributes,
+                              SessionStatus sessionStatus) {
         ActiveEventWizardDTO wizardDTO = (ActiveEventWizardDTO) session.getAttribute("wizard");
         if (wizardDTO != null) {
-            // Wizard persisten
-            //activeEventWizardService.save(wizardDTO);
-            // Entferne wizard aus session
+            wizardDTO.setTemplateId(templateId);
+            activeEventWizardService.createActiveEvent(wizardDTO);
             session.removeAttribute("wizard");
             session.removeAttribute("listTemplate");
+            sessionStatus.setComplete();
         } else {
             redirectAttributes.addFlashAttribute("error", "Session expired. Please start over.");
             return "redirect:/event/manage/" + templateId + "/plan";

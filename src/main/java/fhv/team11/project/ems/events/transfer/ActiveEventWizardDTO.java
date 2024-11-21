@@ -15,8 +15,10 @@ public class ActiveEventWizardDTO {
     @DateDifference(message = "Die Termine dürfen nicht mehr als {days} Tage auseinander liegen.", days = 90)
     private TreeSet<ActiveEventDateDTO> activeEventDates = new TreeSet<>();
     private ScheduleEventDTO scheduleEvent;
+    private Long templateId;
 
     public void addActiveEvent(ActiveEventDateDTO activeEventDateDTO) {
         activeEventDates.add(activeEventDateDTO);
     }
+    public void setTemplate(Long templateId) {this.templateId = templateId;}
 }
