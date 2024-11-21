@@ -16,7 +16,7 @@
         <div class="form-group">
             <label for="name"><strong>Name *</strong></label>
             <input type="text" id="name" name="name" th:field="*{name}"
-                   th:classappend="${#fields.hasErrors('name') ? 'input-error' : ''}" placeholder="e.g., Max Mustermann">
+                   th:classappend="${#fields.hasErrors('name') ? 'input-error' : ''}" placeholder="e.g., Muster Event">
         </div>
 
         <div class="form-group">
@@ -82,9 +82,11 @@
 
         <div class="form-group">
             <label for="optionalLine"><strong>Optional Line</strong></label>
-            <input type="text" id="optionalLine" name="optionalLine" th:field="*{address.optionalText}" maxlength="150"
-                   th:classappend="${#fields.hasErrors('address.optionalText') ? 'input-error' : ''}" placeholder="max 150 characters">
+            <textarea id="optionalLine" name="optionalLine" th:field="*{address.optionalText}" maxlength="150"
+                      th:classappend="${#fields.hasErrors('address.optionalText') ? 'input-error' : ''}"
+                      placeholder="max 150 characters" rows="4"></textarea>
         </div>
+
 
         <!-- Submit Button -->
         <div class="form-group text-center">

@@ -11,15 +11,15 @@
 <body>
 <!--@thymesVar id="universal" type="fhv.team11.project.ems.commons.controller.base.attribute.UserAttributes"-->
 <!-- Header Section -->
-    <th:block th:if="${!#bools.isTrue(hideHeader)}">
-        <div layout:fragment="header" th:replace="fragments/header :: header"></div>
-    </th:block>
+<th:block th:if="${!#bools.isTrue(hideHeader)}">
+    <div layout:fragment="header" th:replace="fragments/header :: header"></div>
+</th:block>
 
 
-    <div layout:fragment="content">
-    </div>
+<div layout:fragment="content">
+</div>
 
-    <!--<div layout:footer th:replace="fragments/footer :: footer"></div>-->
+<!--<div layout:footer th:replace="fragments/footer :: footer"></div>-->
 
 </body>
 </html>

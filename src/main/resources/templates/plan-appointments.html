@@ -3,50 +3,126 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{base}"
-      th:with="title='Login'">
+      th:with="title='Plan Event'">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plan Event</title>
-    <link rel="stylesheet" href="../static/css/stylesheet.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/css/stylesheet.css" th:href="@{/css/stylesheet.css}">
 </head>
-<body>
+<body class="bg-light">
 
-<main class="container">
+<main class="container mt-5">
     <div layout:fragment="content">
+        <div class="card p-4 shadow-sm">
+            <h2 class="text-center mb-4" th:text="${eventTemplate.name}">Plan Your Event</h2>
 
-        <form th:action="@{/event/manage/{id}/plan/appointments(id=${listTemplate.id})}" method="post" th:object="${dateTime}" th:if="${wizard.scheduleEvent==null}" novalidate>
-
-            <div class="form-group container">
-
-                <div class="time-field">
-                    <p>Start Date:</p>
-                    <input type="time" id="starttime" name="starttime" required th:field="*{startTime}">
-                </div>
-                <div class="time-field">
-                    <p>End Date:</p>
-                    <input type="time" id="endtime" name="endtime" required th:field="*{endTime}">
+            <!-- EventTemplate Details -->
+            <div class="card-body">
+                <div class="info-group mb-3">
+                    <label for="category" class="form-label"><strong>Category:</strong></label>
+                    <p id="category" class="border rounded p-2" th:text="${eventTemplate.category}">Category</p>
                 </div>
 
+                <div class="info-group mb-3">
+                    <label for="price" class="form-label"><strong>Price:</strong></label>
+                    <p id="price" class="border rounded p-2" th:text="${eventTemplate.price}">Price</p>
+                </div>
+
+                <div class="info-group mb-3">
+                    <label for="maxParticipants" class="form-label"><strong>Max Participants:</strong></label>
+                    <p id="maxParticipants" class="border rounded p-2" th:text="${eventTemplate.maxParticipants}">Max Participants</p>
+                </div>
+
+                <div class="info-group mb-3">
+                    <label for="minParticipants" class="form-label"><strong>Min Participants:</strong></label>
+                    <p id="minParticipants" class="border rounded p-2" th:text="${eventTemplate.minParticipants}">Min Participants</p>
+                </div>
+
+                <div class="info-group mb-3">
+                    <label for="location" class="form-label"><strong>Location:</strong></label>
+                    <p id="location" class="border rounded p-2" th:text="${eventTemplate.address.region}">Region</p>
+                </div>
+
+                <div class="info-group mb-3">
+                    <label for="county" class="form-label"><strong>County:</strong></label>
+                    <p id="county" class="border rounded p-2" th:text="${eventTemplate.address.country}">Country</p>
+                </div>
+
+                <div class="info-group mb-3">
+                    <label for="zip" class="form-label"><strong>ZIP Code:</strong></label>
+                    <p id="zip" class="border rounded p-2" th:text="${eventTemplate.address.zip}">ZIP Code</p>
+                </div>
+
+                <div class="info-group mb-3">
+                    <label for="street" class="form-label"><strong>Street:</strong></label>
+                    <p id="street" class="border rounded p-2" th:text="${eventTemplate.address.street}">Street</p>
+                </div>
+
+                <div class="info-group mb-3">
+                    <label for="houseNumber" class="form-label"><strong>House Number:</strong></label>
+                    <p id="houseNumber" class="border rounded p-2" th:text="${eventTemplate.address.houseNumber}">House Number</p>
+                </div>
+
+                <div class="info-group mb-3">
+                    <label for="optionalLine" class="form-label"><strong>Optional Line:</strong></label>
+                    <p id="optionalLine" class="border rounded p-2" th:text="${eventTemplate.address.optionalText}">Optional Text</p>
+                </div>
             </div>
 
-            <!-- Plan Event Button -->
-            <div class="form-group text-center">
-                <button type="submit" class="btn btn-primary">Plan Appointment</button>
+            <!-- List of Event Dates -->
+            <ul class="list-group mb-4">
+                <li th:each="eventDate : ${wizard.activeEventDates}" class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>
+                        <strong th:text="${eventDate.name}"></strong>:
+                        <span th:text="${eventDate.date}"></span>
+                    </span>
+                </li>
+            </ul>
+
+            <!-- Form to Plan Appointment -->
+            <form th:action="@{/event/manage/{id}/plan/appointments(id=${listTemplate.id})}"
+                  method="post" th:object="${dateTime}" th:if="${wizard.scheduleEvent == null}" novalidate>
+
+                <div class="form-group row mb-3">
+                    <div class="col-md-6">
+                        <label for="starttime" class="form-label"><strong>Start Time:</strong></label>
+                        <input type="time" id="starttime" name="starttime" required th:field="*{startTime}" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="endtime" class="form-label"><strong>End Time:</strong></label>
+                        <input type="time" id="endtime" name="endtime" required th:field="*{endTime}" class="form-control">
+                    </div>
+                </div>
+
+                <!-- Plan Event Button -->
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-primary">Plan Appointment</button>
+                </div>
+
+            </form>
+
+            <!-- Display Appointment Details & Create Event Button if scheduleEvent is not null -->
+            <div th:if="${wizard.scheduleEvent != null}" class="mt-4">
+                <p class="text-center"><strong>Appointment Details:</strong></p>
+                <div class="alert alert-info">
+                    <p><strong>Start Time:</strong> <span th:text="${wizard.scheduleEvent.startTime}"></span></p>
+                    <p><strong>End Time:</strong> <span th:text="${wizard.scheduleEvent.endTime}"></span></p>
+                </div>
+
+                <!-- Button for Create Event -->
+                <form th:action="@{/event/manage/{id}/plan/appointments/create(id=${listTemplate.id})}" method="post">
+                    <div class="text-center mt-3">
+                        <button type="submit" class="btn btn-success">Event Overview</button>
+                    </div>
+                </form>
             </div>
 
-        </form>
-
-        <div th:if="${!(wizard.scheduleEvent==null)}">
-            <p> <strong>Appointment: </strong> </p>
-            <div>
-                <p>StartDate: <a th:text="${wizard.scheduleEvent.startTime}" ></a></p>
-                <p>EndDate: <a th:text="${wizard.scheduleEvent.endTime}" ></a></p>
-            </div>
         </div>
-
     </div>
 </main>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

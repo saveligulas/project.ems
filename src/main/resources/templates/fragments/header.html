@@ -9,13 +9,15 @@
 <!--@thymesVar id="user" type="fhv.team11.project.ems.commons.controller.base.attribute.UserAttributes"-->
 <header th:fragment="header" class="main-header">
     <div class="header-left">
-        <h1>Eventastic</h1>
+        <h1>
+            <a href="/" th:href="@{/index}" style="text-decoration: none; color: inherit;">Eventastic</a>
+        </h1>
     </div>
 
     <nav class="header-center">
         <ul>
-            <li><a href="/" th:href="@{/}">Home</a></li>
-            <li><a href="./event-organizer.html" th:href="@{/event}">Events</a></li>
+            <li><a href="./index.html" th:href="@{/index}">Home</a></li>
+            <li><a href="./event-organizer.html" th:href="@{/event}">My Events</a></li>
             <li><a href="/users" th:href="@{/users}">Users</a></li>
         </ul>
     </nav>
@@ -23,13 +25,13 @@
     <div class="header-right">
         <span th:if="${user?.isAuthenticated()}">
             <a href="./view-user.html" th:href="@{/view-user}" class="btn btn-outline header-btn" th:text="${user?.user?.username}"></a>
+            <a href="./event/manage" th:href="@{/event/manage}" class="btn btn-primary header-btn">Create Event</a>
         </span>
 
         <span th:unless="${user?.isAuthenticated()}">
             <a href="./login.html" th:href="@{/login}" class="btn btn-outline header-btn">Login</a>
             <a href="./register.html" th:href="@{/register}" class="btn btn-primary header-btn">Register</a>
         </span>
-
     </div>
 </header>
 </body>
