@@ -1,11 +1,12 @@
 package fhv.team11.project.ems.user.repo.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import fhv.team11.project.ems.booking.repo.Booking;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.Set;
 
 @Entity
 @Table(name = "user")
@@ -15,4 +16,10 @@ import lombok.NoArgsConstructor;
 public class User {
     @Id
     private Long id;
+
+    @OneToMany(mappedBy = "participant")
+    private Set<Booking> participantBookings;
+
+    @OneToMany(mappedBy = "reservationist")
+    private Set<Booking> reservationistBookings;
 }
