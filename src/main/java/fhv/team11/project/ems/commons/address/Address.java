@@ -1,5 +1,6 @@
 package fhv.team11.project.ems.commons.address;
 
+import fhv.team11.project.ems.booking.repo.Booking;
 import fhv.team11.project.ems.events.repo.EventTemplate;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -35,4 +36,7 @@ public class Address {
     @NotNull
     private String houseNumber;
     private String optionalText;
+
+    @OneToOne(mappedBy = "address")
+    private Booking booking;
 }

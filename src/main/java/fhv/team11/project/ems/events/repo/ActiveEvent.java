@@ -1,5 +1,6 @@
 package fhv.team11.project.ems.events.repo;
 
+import fhv.team11.project.ems.booking.repo.Booking;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,4 +23,6 @@ public class ActiveEvent {
     @JoinColumn(name = "template_id",nullable = false)
     private EventTemplate eventTemplate;
 
+    @OneToMany(mappedBy = "bookedEvent",fetch = FetchType.LAZY)
+    private Set<Booking> bookings;
 }
