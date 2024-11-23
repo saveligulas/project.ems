@@ -8,12 +8,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 public class JwtSecurityContextHolder {
 
+    //TODO: add method to get User Domain Model with different Profiles
     public static User getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             Object principal = authentication.getPrincipal();
             if (principal instanceof UserJDBC) {
-                return new User(((UserJDBC) principal).getId());
+                //TODO: change this to fetch user from repository to get customerProfile
+                return new User(((UserJDBC) principal).getId(), null);
             }
         }
         throw new SecuredEndpointAccessException();
