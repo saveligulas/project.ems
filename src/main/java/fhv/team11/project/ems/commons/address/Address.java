@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Entity
 @Setter
 @Getter
@@ -37,6 +39,6 @@ public class Address {
     private String houseNumber;
     private String optionalText;
 
-    @OneToOne(mappedBy = "address")
-    private Booking booking;
+    @OneToMany(mappedBy = "participantAddress")
+    private Set<Booking> booking;
 }
