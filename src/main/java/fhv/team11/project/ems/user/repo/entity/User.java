@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Set;
 
@@ -13,13 +14,18 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
 public class User {
     @Id
     private Long id;
 
-    @OneToMany(mappedBy = "participant")
+    @OneToMany(mappedBy = "participant", fetch = FetchType.LAZY)
     private Set<Booking> participantBookings;
 
-    @OneToMany(mappedBy = "reservationist")
+    @OneToMany(mappedBy = "reservationist", fetch = FetchType.LAZY)
     private Set<Booking> reservationistBookings;
+
+    public User(Long id) {
+        this.id = id;
+    }
 }

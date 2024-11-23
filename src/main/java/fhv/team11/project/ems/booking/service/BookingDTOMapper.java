@@ -10,6 +10,8 @@ public class BookingDTOMapper implements IDTOEntityBiMapper<Booking,BookingDTO> 
 
     @Override
     public Booking getEntity(BookingDTO dto) {
+        Booking booking = new Booking();
+        booking.setId(dto.getId());
         return null;
     }
 
