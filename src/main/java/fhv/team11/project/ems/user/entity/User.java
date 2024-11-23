@@ -1,4 +1,4 @@
-package fhv.team11.project.ems.user.repo.entity;
+package fhv.team11.project.ems.user.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -8,8 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Optional;
-
 @Entity
 @Table(name = "user")
 @NoArgsConstructor
@@ -18,7 +16,4 @@ import java.util.Optional;
 public class User {
     @Id
     private Long id;
-
-    @OneToOne(mappedBy = "user")
-    private Customer customerProfile;
 }
