@@ -8,6 +8,7 @@ import fhv.team11.project.ems.commons.address.AddressRepository;
 import fhv.team11.project.ems.events.repo.ActiveEventRepository;
 import fhv.team11.project.ems.user.repo.UserJDBCRepository;
 import fhv.team11.project.ems.user.repo.entity.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,12 +19,15 @@ public class BookingService {
     private final ActiveEventRepository activeEventRepository;
     private final AddressRepository addressRepository;
 
+    @Autowired
     public BookingService(BookingRepository bookingRepository, UserJDBCRepository userJDBCRepository, ActiveEventRepository activeEventRepository, AddressRepository addressRepository) {
         this.bookingRepository = bookingRepository;
         this.userJDBCRepository = userJDBCRepository;
         this.activeEventRepository = activeEventRepository;
         this.addressRepository = addressRepository;
     }
+
+
 
     public void createBooking(BookingDTO bookingDTO) {
 
