@@ -24,7 +24,7 @@
 
     <div class="header-right">
         <span th:if="${user?.isAuthenticated()}">
-            <a href="./view-user.html" th:href="@{/view-user}" class="btn btn-outline header-btn" th:text="${user?.user?.username}"></a>
+            <a href="./view-user.html" th:href="@{/view-user}" class="btn btn-outline header-btn" th:text="${#strings.substringBefore(user?.user?.username, '@')}"></a>
             <a href="./event/manage" th:href="@{/event/manage}" class="btn btn-primary header-btn">Create Event</a>
         </span>
 

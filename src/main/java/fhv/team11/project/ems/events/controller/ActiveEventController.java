@@ -5,12 +5,16 @@ import fhv.team11.project.ems.events.service.EventTemplateService;
 import fhv.team11.project.ems.events.transfer.ActiveEventDateDTO;
 import fhv.team11.project.ems.events.transfer.ActiveEventWizardDTO;
 import fhv.team11.project.ems.events.transfer.EventTemplateListDTO;
+import fhv.team11.project.ems.events.repo.ActiveEvent;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @Controller
 public class ActiveEventController {
@@ -50,11 +54,26 @@ public class ActiveEventController {
         }
         wizard.addActiveEvent(activeEventDateDTO);
         session.setAttribute("wizard", wizard);
+        activeEventWizardService.createActiveEvent(wizard);
         return "redirect:/event/manage/" + templateId + "/plan";
     }
 
     @GetMapping("/event/manage/{id}/plan/redirect")
     public String planAppointmentsRedirect(@PathVariable("id") Long templateId) {
         return "redirect:/event/manage/" + templateId + "/plan/appointments";
+    }
+
+    @GetMapping("/active-events")
+    public String showAllEvents(Model model) {
+        List<ActiveEvent> activeEvents = activeEventWizardService.getAllActiveEvents();
+        model.addAttribute("activeEvents", activeEvents);
+        return "all-events"; // Corresponding Thymeleaf template
+    }
+
+    @GetMapping("/active-events/{id}")
+    public String showEventDetails(@PathVariable Long id, Model model) {
+        ActiveEvent activeEvent = activeEventWizardService.getActiveEventById(id);
+        model.addAttribute("activeEvent", activeEvent);
+        return "event-details"; // Corresponding Thymeleaf template
     }
 }

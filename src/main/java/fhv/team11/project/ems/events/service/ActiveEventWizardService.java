@@ -8,8 +8,10 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service
 
+import java.util.List;
+
+@Service
 public class ActiveEventWizardService {
 
     private final ActiveEventRepository activeEventRepository;
@@ -33,14 +35,16 @@ public class ActiveEventWizardService {
 
     @Transactional
     public void createActiveEvent(ActiveEventWizardDTO activeEventWizardDTO) {
-
         ActiveEvent activeEvent = new ActiveEvent();
-        activeEvent.setEventTemplate(eventTemplateRepository.findById(activeEventWizardDTO.getTemplateId()).orElse(null));
+        activeEvent.setEventTemplate(
+                eventTemplateRepository.findById(activeEventWizardDTO.getTemplateId())
+                        .orElseThrow(() -> new IllegalArgumentException("Template not found with ID: " + activeEventWizardDTO.getTemplateId()))
+        );
         activeEventRepository.save(activeEvent);
         Schedule schedule = new Schedule();
         scheduleRepository.save(schedule);
 
-        for(ActiveEventDateDTO AED: activeEventWizardDTO.getActiveEventDates()){
+        for (ActiveEventDateDTO AED : activeEventWizardDTO.getActiveEventDates()) {
             EventDate eventDate = EventDateDTOMapper.INSTANCE.getEntity(AED);
             eventDate.setActiveEvent(activeEvent);
             eventDate.setSchedule(schedule);
@@ -49,6 +53,17 @@ public class ActiveEventWizardService {
         Appointment appointment = AppointmentDTOMapper.INSTANCE.getEntity(activeEventWizardDTO);
         appointment.setSchedule(schedule);
         appointmentRepository.save(appointment);
+    }
 
+
+    @Transactional
+    public List<ActiveEvent> getAllActiveEvents() {
+        return activeEventRepository.findAllWithTemplatesAndDates();
+    }
+
+    @Transactional
+    public ActiveEvent getActiveEventById(Long id) {
+        return activeEventRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("ActiveEvent not found with ID: " + id));
     }
 }
