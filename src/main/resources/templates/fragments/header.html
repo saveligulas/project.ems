@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Header Fragment</title>
     <link rel="stylesheet" href="../../static/css/stylesheet.css" th:href="@{/css/stylesheet.css}">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 <body>
 <!--@thymesVar id="user" type="fhv.team11.project.ems.commons.controller.base.attribute.UserAttributes"-->
@@ -16,15 +18,26 @@
 
     <nav class="header-center">
         <ul>
-            <li><a href="./index.html" th:href="@{/index}">Home</a></li>
-            <li><a href="./event-organizer.html" th:href="@{/event}">My Events</a></li>
+            <li><a href="./bookings-view.html" th:href="@{/bookings}">Bookings</a></li>
+            <li><a href="./event-organizer.html" th:href="@{/event}">Events</a></li>
             <li><a href="/users" th:href="@{/users}">Users</a></li>
         </ul>
     </nav>
 
     <div class="header-right">
         <span th:if="${user?.isAuthenticated()}">
-            <a href="./view-user.html" th:href="@{/view-user}" class="btn btn-outline header-btn" th:text="${#strings.substringBefore(user?.user?.username, '@')}"></a>
+            <!-- Dropdown für den Benutzer -->
+            <div class="dropdown d-inline">
+                <a href="#" id="userDropdown" class="btn btn-outline header-btn dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${user?.user?.username}">
+                    simge@gmail.com
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                    <li><a class="dropdown-item" href="/account" th:href="@{/account}">Account</a></li>
+                    <li><a class="dropdown-item" href="/settings" th:href="@{/settings}">Settings</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="/logout" th:href="@{/logout}">Logout</a></li>
+                </ul>
+            </div>
             <a href="./event/manage" th:href="@{/event/manage}" class="btn btn-primary header-btn">Create Event</a>
         </span>
 
@@ -34,5 +47,8 @@
         </span>
     </div>
 </header>
+
+<!-- Bootstrap JS (für Dropdown-Funktionalität) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

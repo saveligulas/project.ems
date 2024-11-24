@@ -4,7 +4,76 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Event Blueprint</title>
-    <link rel="stylesheet" href="../static/css/stylesheet.css" th:href="@{/css/stylesheet.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/stylesheet.css}">
+    <style>
+        body {
+            background: linear-gradient(to bottom right, #6a93b0, #a0c4db);
+            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+            color: #333;
+        }
+
+        .form-container {
+            max-width: 700px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h2.text-center {
+            color: #1e4d66;
+            margin-bottom: 2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            color: #1e4d66;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            border-radius: 10px;
+            border: 1px solid #ced4da;
+            padding: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: #1e4d66;
+            box-shadow: 0 0 5px rgba(30, 77, 102, 0.5);
+        }
+
+        .form-group textarea {
+            resize: none;
+        }
+
+        .btn-primary {
+            background: #1e4d66;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #163d4d;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(30, 77, 102, 0.3);
+        }
+
+        .alert {
+            margin-top: 1.5rem;
+        }
+
+        .error-message {
+            color: #b33a3a;
+        }
+    </style>
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
@@ -13,81 +82,79 @@
     <h2 class="text-center">Create Event Blueprint</h2>
     <form th:action="@{/event/create}" method="post" th:object="${eventTemplate}" novalidate>
 
-
-        <div class="form-group">
+        <div class="form-group mb-4">
             <label for="name"><strong>Name *</strong></label>
             <input type="text" id="name" name="name" th:field="*{name}"
-                   th:classappend="${#fields.hasErrors('name') ? 'input-error' : ''}" placeholder="e.g., Muster Event">
+                   th:classappend="${#fields.hasErrors('name') ? 'input-error' : ''}" placeholder="e.g., Muster Event" class="form-control">
         </div>
 
-        <div class="form-group">
+        <div class="form-group mb-4">
             <label for="category"><strong>Category *</strong></label>
-            <select id="category" th:field="*{category}" th:classappend="${#fields.hasErrors('category') ? 'input-error' : ''}">
+            <select id="category" th:field="*{category}" th:classappend="${#fields.hasErrors('category') ? 'input-error' : ''}" class="form-control">
                 <option th:each="categoryOption : ${categories}" th:text="${categoryOption.getName()}" th:value="${categoryOption}"></option>
             </select>
         </div>
 
-        <div class="form-group">
+        <div class="form-group mb-4">
             <label for="price"><strong>Price *</strong></label>
             <input type="number" id="price" name="price" step="0.01" th:field="*{price}"
-                   th:classappend="${#fields.hasErrors('price') ? 'input-error' : ''}" placeholder="e.g., 11.11">
+                   th:classappend="${#fields.hasErrors('price') ? 'input-error' : ''}" placeholder="e.g., 11.11" class="form-control">
         </div>
 
-        <div class="form-group">
+        <div class="form-group mb-4">
             <label for="maxParticipants"><strong>Max Participants *</strong></label>
             <input type="number" id="maxParticipants" name="maxParticipants" th:field="*{maxParticipants}"
-                   th:classappend="${#fields.hasErrors('maxParticipants') ? 'input-error' : ''}" placeholder="e.g., 11">
+                   th:classappend="${#fields.hasErrors('maxParticipants') ? 'input-error' : ''}" placeholder="e.g., 11" class="form-control">
         </div>
 
-        <div class="form-group">
+        <div class="form-group mb-4">
             <label for="minParticipants"><strong>Min Participants *</strong></label>
             <input type="number" id="minParticipants" name="minParticipants" th:field="*{minParticipants}"
-                   th:classappend="${#fields.hasErrors('minParticipants') ? 'input-error' : ''}" placeholder="e.g., 5">
+                   th:classappend="${#fields.hasErrors('minParticipants') ? 'input-error' : ''}" placeholder="e.g., 5" class="form-control">
         </div>
 
-        <div class="form-group">
+        <div class="form-group mb-4">
             <label for="country"><strong>Country *</strong></label>
             <input type="text" id="country" name="location" th:field="*{address.country}"
-                   th:classappend="${#fields.hasErrors('address.country') ? 'input-error' : ''}" placeholder="e.g., Austria">
+                   th:classappend="${#fields.hasErrors('address.country') ? 'input-error' : ''}" placeholder="e.g., Austria" class="form-control">
         </div>
 
-        <div class="form-group">
+        <div class="form-group mb-4">
             <label for="county"><strong>Region</strong></label>
             <input type="text" id="county" name="county" th:field="*{address.region}"
-                   th:classappend="${#fields.hasErrors('address.region') ? 'input-error' : ''}" placeholder="e.g., Vorarlberg">
+                   th:classappend="${#fields.hasErrors('address.region') ? 'input-error' : ''}" placeholder="e.g., Vorarlberg" class="form-control">
         </div>
 
-        <div class="form-group">
+        <div class="form-group mb-4">
             <label for="city"><strong>City</strong></label>
             <input type="text" id="city" name="zip" th:field="*{address.city}"
-                   th:classappend="${#fields.hasErrors('address.city') ? 'input-error' : ''}" placeholder="e.g., Musterstadt">
+                   th:classappend="${#fields.hasErrors('address.city') ? 'input-error' : ''}" placeholder="e.g., Musterstadt" class="form-control">
         </div>
 
-        <div class="form-group">
+        <div class="form-group mb-4">
             <label for="zip"><strong>ZIP</strong></label>
             <input type="number" id="zip" name="zip" th:field="*{address.zip}"
-                   th:classappend="${#fields.hasErrors('address.zip') ? 'input-error' : ''}" placeholder="e.g., 11111">
+                   th:classappend="${#fields.hasErrors('address.zip') ? 'input-error' : ''}" placeholder="e.g., 11111" class="form-control">
         </div>
 
-        <div class="form-group">
+        <div class="form-group mb-4">
             <label for="street"><strong>Street</strong></label>
             <input type="text" id="street" name="street" th:field="*{address.street}"
-                   th:classappend="${#fields.hasErrors('address.street') ? 'input-error' : ''}" placeholder="e.g., Musterstrasse">
+                   th:classappend="${#fields.hasErrors('address.street') ? 'input-error' : ''}" placeholder="e.g., Musterstrasse" class="form-control">
         </div>
 
-        <div class="form-group">
+        <div class="form-group mb-4">
             <label for="house-number"><strong>House Number</strong></label>
             <input type="text" id="house-number" name="house-number" th:field="*{address.houseNumber}"
-                   th:classappend="${#fields.hasErrors('address.houseNumber') ? 'input-error' : ''}" placeholder="e.g., 11">
+                   th:classappend="${#fields.hasErrors('address.houseNumber') ? 'input-error' : ''}" placeholder="e.g., 11" class="form-control">
         </div>
 
-        <div class="form-group">
+        <div class="form-group mb-4">
             <label for="optionalLine"><strong>Optional Line</strong></label>
             <textarea id="optionalLine" name="optionalLine" th:field="*{address.optionalText}" maxlength="150"
                       th:classappend="${#fields.hasErrors('address.optionalText') ? 'input-error' : ''}"
-                      placeholder="max 150 characters" rows="4"></textarea>
+                      placeholder="max 150 characters" rows="4" class="form-control"></textarea>
         </div>
-
 
         <!-- Submit Button -->
         <div class="form-group text-center">
@@ -95,17 +162,16 @@
         </div>
 
         <!-- Display All Form Errors Below the Button -->
-        <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">
+        <div th:if="${#fields.hasErrors()}" class="alert alert-danger">
             <ul>
-                <li th:each="err : ${#fields.globalErrors()}" th:text="${err}"></li>
+                <li class="error-message" th:each="err : ${#fields.errors()}" th:text="${err}"></li>
             </ul>
         </div>
-
 
     </form>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-
 
