@@ -1,7 +1,7 @@
 package fhv.team11.project.ems.user.repo;
 
 import fhv.team11.project.ems.commons.database.IRepository;
-import fhv.team11.project.ems.user.repo.entity.UserJDBC;
+import fhv.team11.project.ems.user.entity.UserJDBC;
 import jakarta.persistence.PersistenceException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -105,5 +105,15 @@ public class UserRepositoryQuery implements IRepository<UserJDBC, Long> {
         SqlParameterSource params = new MapSqlParameterSource("id", id);
 
         namedParameterJdbcTemplate.update(sql, params);
+    }
+
+    public List<UserJDBC> findUsersWithPagination(int offset, int pageSize) {
+        String sql = "SELECT * FROM public.user ORDER BY id LIMIT :limit OFFSET :offset";
+
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("limit", pageSize);
+        params.addValue("offset", offset);
+
+        return namedParameterJdbcTemplate.query(sql, params, new UserRowMapper());
     }
 }
