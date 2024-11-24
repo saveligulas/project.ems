@@ -1,4 +1,4 @@
-package fhv.team11.project.ems.user.repo.entity;
+package fhv.team11.project.ems.user.entity;
 
 import fhv.team11.project.ems.user.repo.Role;
 import jakarta.validation.constraints.Min;
