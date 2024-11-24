@@ -31,24 +31,14 @@ public class BookingService {
 
     public void createBooking(BookingDTO bookingDTO) {
 
-        /*Booking booking = new Booking();
-        booking.setBookedEvent();
-        if (bookingDTO.getParticipant().equals(bookingDTO.getReservationist())){
-            User user = new User();
-            user = userJDBCRepository.findById(bookingDTO.getParticipant());
-            booking.setParticipant(user);
-            booking.setReservationist(user);
-        }else {
-            User participant = new User();
-            User reservationist = new User();
-            participant = userJDBCRepository.findById(bookingDTO.getParticipant());
-            reservationist = userJDBCRepository.findById(bookingDTO.getReservationist());
-            booking.setParticipant(participant);
-            booking.setReservationist(reservationist);
-        }
-        Address address = new Address();
-        booking.setParticipantAddress(addressRepository.findById(bookingDTO.getParticipantAddress()));
+        Booking booking = BookingDTOMapper.INSTANCE.getEntity(bookingDTO);
+        booking.setBookedEvent(activeEventRepository.findById(booking.getBookedEvent().getId()).orElse(null));
 
-        bookingRepository.persist(booking);*/
+        if(addressRepository.findById(booking.getParticipantAddress().getId()).orElse(null)!=null){
+            booking.setParticipantAddress(addressRepository.findById(booking.getParticipantAddress().getId()).orElse(null));
+        }
+
+
+        bookingRepository.persist(booking);
     }
 }
