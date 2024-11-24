@@ -6,8 +6,107 @@
     <title>Event Blueprints</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" th:href="@{/css/stylesheet.css}">
+    <style>
+        body {
+            background: linear-gradient(to bottom right, #6a93b0, #a0c4db);
+            min-height: 100vh;
+            padding-top: 3rem;
+            font-family: 'Arial', sans-serif;
+            color: #ffffff;
+        }
+
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            background: #ffffff;
+        }
+
+        .card-header {
+            background: #1e4d66;
+            color: #ffffff;
+            font-size: 1.4rem;
+            font-weight: bold;
+            padding: 1.2rem;
+        }
+
+        .btn-success {
+            border-radius: 30px;
+            background: #1e4d66;
+            border: none;
+            transition: all 0.3s ease;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 1rem 2rem;
+        }
+
+        .btn-success:hover {
+            background-color: #163d4d;
+            box-shadow: 0 10px 20px rgba(30, 77, 102, 0.5);
+            transform: translateY(-3px);
+        }
+
+        .list-group-item {
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border: none;
+            color: #1e4d66;
+            transition: background 0.3s ease;
+        }
+
+        .list-group-item:hover {
+            background: #e9ecef;
+        }
+
+        .btn-outline-primary, .btn-outline-secondary {
+            border-radius: 30px;
+            border: 2px solid;
+            transition: all 0.3s ease;
+            padding: 0.6rem 1.5rem;
+            font-weight: bold;
+        }
+
+        .btn-outline-primary {
+            border-color: #1e4d66;
+            color: #1e4d66;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: #1e4d66;
+            color: #ffffff;
+            box-shadow: 0 6px 15px rgba(30, 77, 102, 0.4);
+        }
+
+        .btn-outline-secondary {
+            border-color: #1e4d66;
+            color: #1e4d66;
+        }
+
+        .btn-outline-secondary:hover {
+            background-color: #1e4d66;
+            color: #ffffff;
+            box-shadow: 0 6px 15px rgba(30, 77, 102, 0.4);
+        }
+
+        .container {
+            max-width: 800px;
+            background: #ffffff;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #1e4d66;
+            margin-bottom: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: bold;
+        }
+    </style>
 </head>
-<body class="bg-light">
+<body>
 <!-- Header -->
 <div th:replace="fragments/header :: header"></div>
 
@@ -15,20 +114,20 @@
 <main class="container mt-5">
     <!-- Title Section -->
     <div class="text-center mb-5">
-        <h2 class="fw-bold">Event Blueprints</h2>
+        <h2>Event Blueprints</h2>
     </div>
 
     <!-- Create New Event Blueprint Button -->
     <div class="text-center mb-5">
-        <a href="./create-eventTemplate.html" th:href="@{/event/manage}" class="btn btn-success btn-lg">
+        <a href="./create-eventTemplate.html" th:href="@{/event/manage}" class="btn btn-success">
             <i class="bi bi-plus-circle me-2"></i>Create New Event Template
         </a>
     </div>
 
     <!-- List of Event Blueprints -->
-    <div class="card shadow-sm mb-5">
-        <div class="card-header bg-primary text-white">
-            <h4 class="mb-0">Your Event Blueprints</h4>
+    <div class="card">
+        <div class="card-header">
+            Your Event Blueprints
         </div>
         <ul class="list-group list-group-flush">
             <li class="list-group-item d-flex justify-content-between align-items-center" th:each="eventTemplate : ${templates}">
@@ -40,11 +139,10 @@
         </ul>
     </div>
 
-
     <!-- List of Planned Events -->
-    <div class="card shadow-sm">
-        <div class="card-header bg-secondary text-white">
-            <h4 class="mb-0">Planned Events</h4>
+    <div class="card">
+        <div class="card-header">
+            Planned Events
         </div>
         <ul class="list-group list-group-flush">
             <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -63,7 +161,7 @@
     </div>
 </main>
 
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
