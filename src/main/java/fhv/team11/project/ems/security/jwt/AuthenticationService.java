@@ -10,7 +10,7 @@ import fhv.team11.project.ems.user.repo.UserJDBCRepository;
 import fhv.team11.project.ems.security.error.*;
 import fhv.team11.project.ems.security.transfer.AuthenticationRequest;
 import fhv.team11.project.ems.security.transfer.AuthenticationResponse;
-import fhv.team11.project.ems.user.repo.entity.UserJDBC;
+import fhv.team11.project.ems.user.entity.UserJDBC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
