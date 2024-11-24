@@ -20,6 +20,7 @@ public class BookingDTOMapper implements IDTOEntityBiMapper<Booking,BookingDTO> 
 
         booking.setParticipantAddress(AddressDTOMapper.INSTANCE.toEntity(dto.getParticipantAddress()));
 
+        //TODO: Change to User from input
         booking.setReservationist(JwtSecurityContextHolder.getUser());
         booking.setParticipant(JwtSecurityContextHolder.getUser());
 
@@ -32,7 +33,7 @@ public class BookingDTOMapper implements IDTOEntityBiMapper<Booking,BookingDTO> 
 
 
 
-        return null;
+        return booking;
     }
 
     @Override
