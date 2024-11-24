@@ -4,6 +4,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
+import java.util.List;
+
 public class ScheduleRepositoryQueryImpl implements ScheduleRepositoryQuery {
 
     @PersistenceContext
@@ -16,8 +18,18 @@ public class ScheduleRepositoryQueryImpl implements ScheduleRepositoryQuery {
         return entity;
     }
 
+    @Transactional
     @Override
     public Schedule update(Schedule entity) {
-        return null;
+        return entityManager.merge(entity);
+    }
+
+    public Schedule findById(Long id) {
+        return entityManager.find(Schedule.class, id);
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Schedule> findAll() {
+        return entityManager.createQuery("SELECT s FROM Schedule s", Schedule.class).getResultList();
     }
 }

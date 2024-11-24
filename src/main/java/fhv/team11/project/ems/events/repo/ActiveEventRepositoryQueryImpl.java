@@ -5,6 +5,8 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class ActiveEventRepositoryQueryImpl implements ActiveEventRepositoryQuery {
 
@@ -23,8 +25,24 @@ public class ActiveEventRepositoryQueryImpl implements ActiveEventRepositoryQuer
         return entity;
     }
 
+    @Transactional
     @Override
     public ActiveEvent update(ActiveEvent entity) {
-        return null;
+        return entityManager.merge(entity);
+    }
+
+    public ActiveEvent findById(Long id) {
+        return entityManager.find(ActiveEvent.class, id);
+    }
+    @SuppressWarnings("unchecked")
+    public List<ActiveEvent> findAll() {
+        return entityManager.createQuery("SELECT a FROM ActiveEvent a").getResultList();
+    }
+    public List<ActiveEvent> findAllWithTemplatesAndDates() {
+        return entityManager.createQuery(
+                "SELECT a FROM ActiveEvent a " +
+                        "JOIN FETCH a.eventTemplate t " +
+                        "JOIN FETCH a.eventDate d", ActiveEvent.class
+        ).getResultList();
     }
 }
