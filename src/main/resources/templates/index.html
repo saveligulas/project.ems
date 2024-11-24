@@ -221,10 +221,10 @@
     <div class="container-fluid">
         <h2>These are some events for you...</h2>
         <div class="event-card-container">
-            <a th:each="event : ${activeEvents}" th:href="@{/active-events/{id}(id=${event.id})}" class="event-card">
-                <h3 th:text="${event.eventTemplate.name}">Event Name</h3>
-                <p th:each="date : ${event.eventDate}" th:text="'Date: ' + ${date.date}">Date</p>
-                <p th:text="'Location: ' + ${event.eventTemplate.address.city}">Location</p>
+            <a th:each="event : ${activeEvents}" th:href="@{/active-events/{id}(id=${event.activeEventListDTO.id})}" class="event-card">
+                <h3 th:text="${event.eventTemplateDTO.name}">Event Name</h3>
+                <p th:each="date : ${event.activeEventDates}" th:text="'Date: ' + ${date.date}">Date</p>
+                <p th:text="'Location: ' + ${event.eventTemplateDTO.address.city}">Location</p>
             </a>
         </div>
     </div>

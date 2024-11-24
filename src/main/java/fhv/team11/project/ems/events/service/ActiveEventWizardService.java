@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ActiveEventWizardService {
@@ -57,8 +59,14 @@ public class ActiveEventWizardService {
 
 
     @Transactional
-    public List<ActiveEvent> getAllActiveEvents() {
-        return activeEventRepository.findAllWithTemplatesAndDates();
+    public List<ActiveEventWizardDTO> getAllActiveEvents() {
+        List<ActiveEventWizardDTO> activeEventWizardDTOS = new ArrayList<>();
+
+        List<ActiveEvent> activeEventsList = activeEventRepository.findAllWithTemplatesAndDates();
+        for(ActiveEvent activeEvent : activeEventsList) {
+            activeEventWizardDTOS.add(ActiveEventWizardDTOMapper.INSTANCE.getDTO(activeEvent, activeEvent.getEventDate(),activeEvent.getEventDate().iterator().next().getSchedule().getAppointments().iterator().next()));
+        }
+        return activeEventWizardDTOS;
     }
 
     @Transactional

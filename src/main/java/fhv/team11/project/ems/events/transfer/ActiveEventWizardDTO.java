@@ -16,6 +16,9 @@ public class ActiveEventWizardDTO {
     private TreeSet<ActiveEventDateDTO> activeEventDates = new TreeSet<>();
     private ScheduleEventDTO scheduleEvent;
     private Long templateId;
+    private EventTemplateListDTO eventTemplateListDTO;
+    private EventTemplateDTO eventTemplateDTO;
+    private ActiveEventListDTO activeEventListDTO;
 
     public void addActiveEvent(ActiveEventDateDTO activeEventDateDTO) {
         activeEventDates.add(activeEventDateDTO);

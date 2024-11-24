@@ -65,7 +65,7 @@ public class ActiveEventController {
 
     @GetMapping("/active-events")
     public String showAllEvents(Model model) {
-        List<ActiveEvent> activeEvents = activeEventWizardService.getAllActiveEvents();
+        List<ActiveEventWizardDTO> activeEvents = activeEventWizardService.getAllActiveEvents();
         model.addAttribute("activeEvents", activeEvents);
         return "all-events"; // Corresponding Thymeleaf template
     }

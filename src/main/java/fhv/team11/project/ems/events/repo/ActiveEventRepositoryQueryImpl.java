@@ -39,10 +39,19 @@ public class ActiveEventRepositoryQueryImpl implements ActiveEventRepositoryQuer
         return entityManager.createQuery("SELECT a FROM ActiveEvent a").getResultList();
     }
     public List<ActiveEvent> findAllWithTemplatesAndDates() {
-        return entityManager.createQuery(
+        /*return entityManager.createQuery(
                 "SELECT a FROM ActiveEvent a " +
                         "JOIN FETCH a.eventTemplate t " +
                         "JOIN FETCH a.eventDate d", ActiveEvent.class
-        ).getResultList();
+        ).getResultList();*/
+
+        return entityManager.createQuery(
+                        "SELECT DISTINCT ae FROM ActiveEvent ae " +
+                                "JOIN FETCH ae.eventDate ed " +
+                                "JOIN FETCH ae.eventTemplate et " +
+                                "JOIN FETCH ed.schedule s " +
+                                "JOIN FETCH s.appointments a " +
+                                "LEFT JOIN FETCH ae.bookings b", ActiveEvent.class)
+                .getResultList();
     }
 }
