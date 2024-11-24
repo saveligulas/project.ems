@@ -1,12 +1,11 @@
 package fhv.team11.project.ems.events.repo;
 
-import fhv.team11.project.ems.user.repo.entity.User;
+import fhv.team11.project.ems.user.entity.UserEntity;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class EventTemplateRepositoryQueryImpl implements EventTemplateRepositoryQuery {
@@ -17,12 +16,12 @@ public class EventTemplateRepositoryQueryImpl implements EventTemplateRepository
     @Transactional
     @Override
     public EventTemplate persist(EventTemplate eventTemplate) {
-        User user = eventTemplate.getUser();
+        UserEntity userEntity = eventTemplate.getUserEntity();
 
-        if (user.getId() == null) {
+        if (userEntity.getId() == null) {
             throw new PersistenceException("User");
         }
-        entityManager.merge(user);
+        entityManager.merge(userEntity);
         entityManager.persist(eventTemplate.getAddress());
         entityManager.persist(eventTemplate);
 

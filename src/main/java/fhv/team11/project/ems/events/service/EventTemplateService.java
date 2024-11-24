@@ -31,7 +31,7 @@ public class EventTemplateService {
     }
 
     private boolean hasAccess(EventTemplate eventTemplate) {
-        return eventTemplate.getUser().getId().equals(JwtSecurityContextHolder.getUser().getId());
+        return eventTemplate.getUserEntity().getId().equals(JwtSecurityContextHolder.getUser().getId());
     }
 
     public void createNewTemplate(EventTemplateDTO eventTemplateDTO) {

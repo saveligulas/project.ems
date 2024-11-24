@@ -24,7 +24,7 @@ public class EventTemplateDTOMapper implements IDTOEntityBiMapper<EventTemplate,
         eventTemplate.setMaxParticipants(dto.getMaxParticipants());
         eventTemplate.setOverbookingPlaces(2);
         eventTemplate.setAddress(AddressDTOMapper.INSTANCE.toEntity(dto.getAddress()));
-        eventTemplate.setUser(JwtSecurityContextHolder.getUser());
+        eventTemplate.setUserEntity(JwtSecurityContextHolder.getUser());
         return eventTemplate;
     }
 

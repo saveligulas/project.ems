@@ -1,7 +1,7 @@
 package fhv.team11.project.ems.events.repo;
 
 import fhv.team11.project.ems.commons.address.Address;
-import fhv.team11.project.ems.user.repo.entity.User;
+import fhv.team11.project.ems.user.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,7 +34,7 @@ public class EventTemplate {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
-    private User user;
+    private UserEntity userEntity;
 
     @CreationTimestamp
     private Instant createdAt;
