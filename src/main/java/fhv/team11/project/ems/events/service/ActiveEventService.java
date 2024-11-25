@@ -1,9 +1,9 @@
 package fhv.team11.project.ems.events.service;
 
 import fhv.team11.project.ems.events.repo.*;
+import fhv.team11.project.ems.events.transfer.ActiveEventView;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import fhv.team11.project.ems.events.transfer.ActiveEventViewDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,8 +37,8 @@ public class ActiveEventService {
 
 
     @Transactional
-    public List<ActiveEventViewDTO> getAllActiveEvents() {
-        List<ActiveEventViewDTO> activeEventViews = new ArrayList<>();
+    public List<ActiveEventView> getAllActiveEvents() {
+        List<ActiveEventView> activeEventViews = new ArrayList<>();
 
         List<ActiveEvent> activeEventsList = activeEventRepository.findAllWithTemplatesAndDates();
         for(ActiveEvent activeEvent : activeEventsList) {
@@ -49,15 +49,7 @@ public class ActiveEventService {
         return activeEventViews;
     }
     @Transactional
-    public List<ActiveEventViewDTO> getAllActiveEvents1() {
-
-        /*List<ActiveEvent> activeEvents = activeEventRepository.findAllWithTemplatesAndDates();
-        List<ActiveEventViewDTO> activeEventViews = new ArrayList<>();
-        for(ActiveEvent activeEvent : activeEvents) {
-            activeEventViews.add(ActiveEventViewMapper.INSTANCE.getDTO(activeEvent,
-                    activeEvent.getEventDate(),
-                    activeEvent.getEventDate().iterator().next().getSchedule().getAppointments().iterator().next()));
-        }*/
+    public List<ActiveEventView> getAllActiveEvents1() {
 
         return activeEventRepository.findAllWithTemplatesAndDates().stream()
                 .map(activeEvent -> ActiveEventViewMapper.INSTANCE.getDTO(
@@ -68,7 +60,7 @@ public class ActiveEventService {
     }
 
     @Transactional
-    public ActiveEventViewDTO getActiveEventById(Long id) {
+    public ActiveEventView getActiveEventById(Long id) {
         return activeEventRepository.findByIdWithTemplateAndDate(id).map(activeEvent -> ActiveEventViewMapper.INSTANCE.getDTO(
                         activeEvent,
                         activeEvent.getEventDate(),

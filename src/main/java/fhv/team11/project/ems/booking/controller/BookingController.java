@@ -2,11 +2,10 @@ package fhv.team11.project.ems.booking.controller;
 
 import fhv.team11.project.ems.booking.service.BookingService;
 import fhv.team11.project.ems.booking.transfer.BookingDTO;
-import fhv.team11.project.ems.events.repo.ActiveEvent;
 import fhv.team11.project.ems.events.service.ActiveEventService;
 import fhv.team11.project.ems.events.service.ActiveEventWizardService;
 import fhv.team11.project.ems.events.transfer.ActiveEventListDTO;
-import fhv.team11.project.ems.events.transfer.ActiveEventViewDTO;
+import fhv.team11.project.ems.events.transfer.ActiveEventView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +30,7 @@ public class BookingController {
 
     @GetMapping("/active-events/{id}/booking")
     public ModelAndView getBookingForm(@PathVariable("id") Long id) {
-        ActiveEventViewDTO activeEvent = activeEventService.getActiveEventById(id);
+        ActiveEventView activeEvent = activeEventService.getActiveEventById(id);
         ModelAndView modelAndView = new ModelAndView("booking-form");
 
         BookingDTO bookingDTO = new BookingDTO();

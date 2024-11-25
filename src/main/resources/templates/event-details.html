@@ -47,14 +47,14 @@
 <body>
 <div layout:fragment="content" class="container-fluid mt-5">
     <div class="event-details">
-        <h1 th:text="${activeEvent.getEventTemplate().getName()}">Event Name</h1>
-        <p><strong>Category:</strong> <span th:text="${activeEvent.getEventTemplate().getCategory()}">Category</span></p>
-        <p><strong>Price:</strong> $<span th:text="${activeEvent.getEventTemplate().getPrice()}">Price</span></p>
-        <p><strong>Location:</strong> <span th:text="${activeEvent.getEventTemplate().getAddress().getCountry()}">Country</span></p>
-        <p><strong>Location:</strong> <span th:text="${activeEvent.getEventTemplate().getAddress().getRegion()}">Region</span></p>
-        <p><strong>Location:</strong> <span th:text="${activeEvent.getEventTemplate().getAddress().getCity()}">City</span></p>
-        <p><strong>Location:</strong> <span th:text="${activeEvent.getEventTemplate().getAddress().getStreet()}">Street</span></p>
-        <p><strong>Location:</strong> <span th:text="${activeEvent.getEventTemplate().getAddress().getHouseNumber()}">House Number</span></p>
+        <h1 th:text="${activeEvent.getEventTemplateDTO().name}">Event Name</h1>
+        <p><strong>Category:</strong> <span th:text="${activeEvent.getEventTemplateDTO().getCategory()}">Category</span></p>
+        <p><strong>Price:</strong> $<span th:text="${activeEvent.getEventTemplateDTO().getPrice()}">Price</span></p>
+        <p><strong>Location:</strong> <span th:text="${activeEvent.getEventTemplateDTO().getAddress().getCountry()}">Country</span></p>
+        <p><strong>Location:</strong> <span th:text="${activeEvent.getEventTemplateDTO().getAddress().getRegion()}">Region</span></p>
+        <p><strong>Location:</strong> <span th:text="${activeEvent.getEventTemplateDTO().getAddress().getCity()}">City</span></p>
+        <p><strong>Location:</strong> <span th:text="${activeEvent.getEventTemplateDTO().getAddress().getStreet()}">Street</span></p>
+        <p><strong>Location:</strong> <span th:text="${activeEvent.getEventTemplateDTO().getAddress().getHouseNumber()}">House Number</span></p>
 
 
 
@@ -63,7 +63,7 @@
             <label class="form-label"><strong>Event Dates:</strong></label>
             <ul>
                 <!-- Iterate through the list of dates and display them -->
-                <li th:each="date : ${activeEvent.getEventDate()}"
+                <li th:each="date : ${activeEvent.getActiveEventDates()}"
                     th:text="${date.date}">
                     Event Date
                 </li>
@@ -76,7 +76,7 @@
         <div class="d-flex justify-content-between mt-4">
             <a th:href="@{/active-events}" class="btn btn-primary btn-book">Back to All Events</a>
 
-            <a th:href="@{/active-events/{id}/booking(id=${activeEvent.getId()})}" class="btn btn-primary btn-book">Book Event</a>
+            <a th:href="@{/active-events/{id}/booking(id=${activeEvent.getActiveEventListDTO().getId()})}" class="btn btn-primary btn-book">Book Event</a>
         </div>
 
     </div>

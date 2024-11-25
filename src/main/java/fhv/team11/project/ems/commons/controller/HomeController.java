@@ -1,11 +1,9 @@
 package fhv.team11.project.ems.commons.controller;
 
-import fhv.team11.project.ems.events.repo.ActiveEvent;
 import fhv.team11.project.ems.events.repo.EventCategory;
 import fhv.team11.project.ems.events.service.ActiveEventService;
 import fhv.team11.project.ems.events.service.ActiveEventWizardService;
-import fhv.team11.project.ems.events.transfer.ActiveEventViewDTO;
-import fhv.team11.project.ems.events.transfer.ActiveEventWizardDTO;
+import fhv.team11.project.ems.events.transfer.ActiveEventView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +31,7 @@ public class HomeController {
         EventCategory[] categories = EventCategory.values();
         modelAndView.addObject("categories", categories);
 
-        List<ActiveEventViewDTO> activeEvents = activeEventService.getAllActiveEvents();
+        List<ActiveEventView> activeEvents = activeEventService.getAllActiveEvents();
         modelAndView.addObject("activeEvents", activeEvents);
 
         return modelAndView;

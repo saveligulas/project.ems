@@ -12,8 +12,8 @@ public class ActiveEventViewMapper {
 
     public static final ActiveEventViewMapper INSTANCE = new ActiveEventViewMapper();
 
-    public ActiveEventViewDTO getDTO(ActiveEvent activeEvent, Set<EventDate> eventDate, Appointment appointment) {
-        ActiveEventViewDTO dto = new ActiveEventViewDTO();
+    public ActiveEventView getDTO(ActiveEvent activeEvent, Set<EventDate> eventDate, Appointment appointment) {
+        ActiveEventView dto = new ActiveEventView();
         ScheduleEventDTO scheduleEventDTO = new ScheduleEventDTO();
         scheduleEventDTO.setEndTime(appointment.getEndTime());
         scheduleEventDTO.setStartTime(appointment.getStartTime());
