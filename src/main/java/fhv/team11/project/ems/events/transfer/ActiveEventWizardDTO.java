@@ -19,7 +19,10 @@ public class ActiveEventWizardDTO {
     private EventTemplateListDTO eventTemplateListDTO;
     private EventTemplateDTO eventTemplateDTO;
     private ActiveEventListDTO activeEventListDTO;
-
+    //TODO cleanup
+    public EventTemplateListDTO getEventTemplateListDTO(){
+        return this.eventTemplateListDTO;
+    }
     public void addActiveEvent(ActiveEventDateDTO activeEventDateDTO) {
         activeEventDates.add(activeEventDateDTO);
     }

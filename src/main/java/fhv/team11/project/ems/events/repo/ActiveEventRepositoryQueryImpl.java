@@ -54,4 +54,17 @@ public class ActiveEventRepositoryQueryImpl implements ActiveEventRepositoryQuer
                                 "LEFT JOIN FETCH ae.bookings b", ActiveEvent.class)
                 .getResultList();
     }
+    public ActiveEvent findByIdWithTemplatesAndDates(Long id) {
+        return entityManager.createQuery(
+                        "SELECT DISTINCT ae FROM ActiveEvent ae " +
+                                "JOIN FETCH ae.eventDate ed " +
+                                "JOIN FETCH ae.eventTemplate et " +
+                                "JOIN FETCH ed.schedule s " +
+                                "JOIN FETCH s.appointments a " +
+                                "LEFT JOIN FETCH ae.bookings b " +
+                                "WHERE ae.id = :id", ActiveEvent.class)
+                .setParameter("id", id)
+                .getSingleResult();
+    }
+
 }

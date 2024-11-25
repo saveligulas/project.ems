@@ -54,7 +54,6 @@ public class ActiveEventController {
         }
         wizard.addActiveEvent(activeEventDateDTO);
         session.setAttribute("wizard", wizard);
-        activeEventWizardService.createActiveEvent(wizard);
         return "redirect:/event/manage/" + templateId + "/plan";
     }
 
@@ -67,13 +66,15 @@ public class ActiveEventController {
     public String showAllEvents(Model model) {
         List<ActiveEventWizardDTO> activeEvents = activeEventWizardService.getAllActiveEvents();
         model.addAttribute("activeEvents", activeEvents);
-        return "all-events"; // Corresponding Thymeleaf template
+        return "all-events";
     }
 
     @GetMapping("/active-events/{id}")
-    public String showEventDetails(@PathVariable Long id, Model model) {
+    public String showEventDetails(@PathVariable("id") Long id, Model model) {
         ActiveEvent activeEvent = activeEventWizardService.getActiveEventById(id);
         model.addAttribute("activeEvent", activeEvent);
-        return "event-details"; // Corresponding Thymeleaf template
+        return "event-details";
     }
+
+
 }

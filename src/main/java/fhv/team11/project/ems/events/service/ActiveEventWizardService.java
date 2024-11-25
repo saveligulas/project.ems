@@ -1,9 +1,11 @@
 package fhv.team11.project.ems.events.service;
 
+
 import fhv.team11.project.ems.events.repo.*;
 import fhv.team11.project.ems.events.transfer.ActiveEventDateDTO;
 import fhv.team11.project.ems.events.transfer.ActiveEventWizardDTO;
 import fhv.team11.project.ems.events.transfer.EventTemplateDTO;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -68,10 +71,17 @@ public class ActiveEventWizardService {
         }
         return activeEventWizardDTOS;
     }
+    @Transactional
+    public List<ActiveEvent> getAllActiveEvents1() {
+        List<ActiveEvent> activeEventWizardDTOS = activeEventRepository.findAllWithTemplatesAndDates();
+        return activeEventWizardDTOS;
+    }
 
     @Transactional
     public ActiveEvent getActiveEventById(Long id) {
-        return activeEventRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("ActiveEvent not found with ID: " + id));
+        return activeEventRepository.findByIdWithTemplateAndDate(id)
+                .orElseThrow(() -> new EntityNotFoundException("ActiveEvent not found with id: " + id));
     }
+
+
 }

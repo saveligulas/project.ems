@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -23,11 +24,11 @@ public class Booking {
     private Address participantAddress;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="participant_id")
+    @JoinColumn(name="participant_id",nullable = true)
     private User participant;
-
+    //TODO participant to String
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reservationist_id")
+    @JoinColumn(name = "reservationist_id",nullable = true)
     private User reservationist;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -43,6 +44,6 @@ public class Booking {
 
     private LocalDate optionDate;
 
-    private int price;
+    private BigDecimal price;
 
 }

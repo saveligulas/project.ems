@@ -6,6 +6,8 @@ import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import jakarta.transaction.Transactional;
 
+import java.util.List;
+
 @Repository
 public class BookingRepositoryQueryImpl implements BookingRepositoryQuery {
 
@@ -23,5 +25,10 @@ public class BookingRepositoryQueryImpl implements BookingRepositoryQuery {
     @Override
     public Booking update(Booking entity) {
         return null;
+    }
+
+
+    public List<Booking> findAll() {
+        return entityManager.createQuery("SELECT b FROM Booking b", Booking.class).getResultList();
     }
 }

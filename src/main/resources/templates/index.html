@@ -221,11 +221,20 @@
     <div class="container-fluid">
         <h2>These are some events for you...</h2>
         <div class="event-card-container">
-            <a th:each="event : ${activeEvents}" th:href="@{/active-events/{id}(id=${event.activeEventListDTO.id})}" class="event-card">
-                <h3 th:text="${event.eventTemplateDTO.name}">Event Name</h3>
-                <p th:each="date : ${event.activeEventDates}" th:text="'Date: ' + ${date.date}">Date</p>
-                <p th:text="'Location: ' + ${event.eventTemplateDTO.address.city}">Location</p>
+            <a th:each="event, iterStat : ${activeEvents}"
+               th:if="${iterStat.index < 4}"
+               th:href="@{/active-events/{id}(id=${event.getTemplateId()})}"
+               class="event-card"
+               th:style="${iterStat.index % 2 == 0} ? 'background: #f1f8e9;' : ''">
+                <h3 th:text="${event.getEventTemplateDTO().getName()}">Event Name</h3>
+                <p th:text="'Category: ' + ${event.getEventTemplateDTO().getCategory()}">Category</p>
+                <p th:each="date : ${event.getActiveEventDates()}" th:text="'Date: ' + ${date.date}">Date</p>
+                <p th:text="'Price: $' + ${event.getEventTemplateDTO().getPrice()}">Price</p>
+                <p th:text="'Location: ' + ${event.getEventTemplateDTO().getAddress().getCity()}">Location</p>
+                <p th:text="'Location: ' + ${event.getEventTemplateDTO().getAddress().getRegion()}">Region</p>
+                <p th:text="'Location: ' + ${event.getEventTemplateDTO().getAddress().getStreet()}">Street</p>
             </a>
+
         </div>
     </div>
     <div class="show-all-button">
