@@ -14,5 +14,4 @@ public class UserProfile {
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private UserEntity userEntity;
-
 }

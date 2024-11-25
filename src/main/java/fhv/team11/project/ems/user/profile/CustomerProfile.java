@@ -10,7 +10,7 @@ public class CustomerProfile extends UserProfile{
     private String lastName;
 
     //TODO: ManyToMany
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "address_id")
     private Address address;
 

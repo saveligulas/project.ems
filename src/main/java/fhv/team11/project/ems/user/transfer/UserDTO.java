@@ -8,6 +8,7 @@ import java.util.Optional;
 
 @Data
 public class UserDTO {
+
     private String username;
     private Optional<CustomerProfileDTO> customerProfileDTO;
     private Optional<EventOrganizerProfileDTO> eventOrganizerProfile;
