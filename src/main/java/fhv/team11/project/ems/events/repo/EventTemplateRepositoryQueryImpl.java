@@ -29,9 +29,10 @@ public class EventTemplateRepositoryQueryImpl implements EventTemplateRepository
         return eventTemplate;
     }
 
+    @Transactional
     @Override
     public EventTemplate update(EventTemplate entity) {
-        return null;
+        return entityManager.merge(entity);
     }
 
     @Override

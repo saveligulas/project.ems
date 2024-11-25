@@ -16,8 +16,9 @@ public class AppointmentRepositoryQueryImpl implements AppointmentRepositoryQuer
         return entity;
     }
 
+    @Transactional
     @Override
     public Appointment update(Appointment entity) {
-        return null;
+        return entityManager.merge(entity);
     }
 }
