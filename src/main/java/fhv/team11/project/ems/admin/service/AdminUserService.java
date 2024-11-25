@@ -1,6 +1,11 @@
 package fhv.team11.project.ems.admin.service;
 
+import fhv.team11.project.ems.security.error.RegistrationEmailAlreadyRegisteredException;
+import fhv.team11.project.ems.security.jwt.AuthenticationService;
+import fhv.team11.project.ems.security.transfer.RegisterRequest;
+import fhv.team11.project.ems.user.entity.UserJDBC;
 import fhv.team11.project.ems.user.profile.repo.UserProfilesRepository;
+import fhv.team11.project.ems.user.repo.Role;
 import fhv.team11.project.ems.user.repo.UserJDBCRepository;
 import fhv.team11.project.ems.user.transfer.UserDTO;
 import fhv.team11.project.ems.user.transfer.UserListDTO;
@@ -9,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class AdminUserService {
@@ -31,5 +37,22 @@ public class AdminUserService {
 
     public UserDTO getUserDetails(Long id) {
         return new UserDTO();
+    }
+
+    public void createUserWithSetPassword(String email) {
+        String setPassword = UUID.fromString(email).toString();
+
+        //TODO: Messaging Bus with email that sends out the set password
+
+        if (userJDBCRepository.findByEmail(email).isPresent()) {
+            throw new RegistrationEmailAlreadyRegisteredException();
+        }
+
+        UserJDBC user = new UserJDBC();
+        user.setEmail(email);
+        user.setPassword(setPassword);
+        user.setRoles(List.of(Role.CUSTOMER));
+
+        userJDBCRepository.save(user);
     }
 }
