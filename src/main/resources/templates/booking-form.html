@@ -61,7 +61,7 @@
 <div layout:fragment="content" class="container-fluid mt-5">
     <div class="event-details">
         <h1 class="text-center mb-4"
-            th:text="'Booking for ' + (${activeEvent?.eventTemplate?.name} ?: 'Unnamed Event')">
+            th:text="'Booking for ' + (${activeEvent?.eventTemplateDTO?.name} ?: 'Unnamed Event')">
             Booking for Event Name
         </h1>
 
@@ -71,8 +71,11 @@
         <!-- Error Message -->
         <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
 
-        <form th:action="@{/active-events/{id}/booking(id=${activeEvent.id})}" th:object="${booking}" method="post"
+        <form th:action="@{/active-events/{id}/booking(id=${activeEvent.activeEventListDTO.getId()})}" th:object="${booking}" method="post"
               class="p-4 bg-white shadow rounded" novalidate>
+
+            <input type="hidden" name="EventPrice" th:value="${activeEvent.getEventTemplateDTO().getPrice()}"/>
+
             <!-- Hidden Field for Booked Event ID -->
             <input type="hidden" th:field="*{bookedEvent.id}" />
 
