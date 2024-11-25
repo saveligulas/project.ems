@@ -1,0 +1,57 @@
+package fhv.team11.project.ems.booking.controller;
+
+import fhv.team11.project.ems.booking.service.BookingService;
+import fhv.team11.project.ems.booking.transfer.BookingDTO;
+import fhv.team11.project.ems.events.repo.ActiveEvent;
+import fhv.team11.project.ems.events.service.ActiveEventWizardService;
+import fhv.team11.project.ems.events.transfer.ActiveEventListDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+@Controller
+public class BookingController {
+    private final BookingService bookingService;
+    private final ActiveEventWizardService activeEventWizardService;
+
+    @Autowired
+    public BookingController(BookingService bookingService,ActiveEventWizardService activeEventWizardService) {
+        this.bookingService = bookingService;
+        this.activeEventWizardService = activeEventWizardService;
+    }
+
+
+    @GetMapping("/active-events/{id}/booking")
+    public ModelAndView getBookingForm(@PathVariable("id") Long id) {
+        ActiveEvent activeEvent = activeEventWizardService.getActiveEventById(id);
+        ModelAndView modelAndView = new ModelAndView("booking-form");
+
+        BookingDTO bookingDTO = new BookingDTO();
+        ActiveEventListDTO bookedEvent = new ActiveEventListDTO();
+        bookedEvent.setId(activeEvent.getId());
+        bookingDTO.setBookedEvent(bookedEvent);
+
+        modelAndView.addObject("activeEvent", activeEvent);
+        modelAndView.addObject("booking", bookingDTO);
+        return modelAndView;
+    }
+
+
+
+    @PostMapping("/active-events/{id}/booking")
+    public String sendBookingForm(@ModelAttribute("booking") BookingDTO bookingDTO) {
+        bookingService.createBooking(bookingDTO);
+        return "redirect:/bookings";
+    }
+
+    @GetMapping("/bookings")
+    public ModelAndView getAllBooking(){
+        ModelAndView modelAndView = new ModelAndView("all-bookings");
+        modelAndView.addObject("bookings",bookingService.getAllBooking());
+        return modelAndView;
+    }
+}

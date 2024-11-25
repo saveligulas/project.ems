@@ -4,6 +4,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
+import java.util.List;
+
 public class EventDateRepositoryQueryImpl implements EventDateRepositoryQuery {
 
     @PersistenceContext
@@ -24,8 +26,18 @@ public class EventDateRepositoryQueryImpl implements EventDateRepositoryQuery {
         return entity;
     }
 
+    @Transactional
     @Override
     public EventDate update(EventDate entity) {
-        return null;
+        return entityManager.merge(entity);
+    }
+
+    public EventDate findById(Long id) {
+        return entityManager.find(EventDate.class, id);
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<EventDate> findAll() {
+        return entityManager.createQuery("SELECT e FROM EventDate e", EventDate.class).getResultList();
     }
 }

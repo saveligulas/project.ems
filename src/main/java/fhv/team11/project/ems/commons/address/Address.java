@@ -1,10 +1,13 @@
 package fhv.team11.project.ems.commons.address;
 
+import fhv.team11.project.ems.booking.repo.Booking;
 import fhv.team11.project.ems.events.repo.EventTemplate;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Set;
 
 @Entity
 @Setter
@@ -35,4 +38,7 @@ public class Address {
     @NotNull
     private String houseNumber;
     private String optionalText;
+
+    @OneToMany(mappedBy = "participantAddress", fetch = FetchType.LAZY)
+    private Set<Booking> booking;
 }
