@@ -4,7 +4,10 @@ import fhv.team11.project.ems.admin.service.AdminUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -35,5 +38,11 @@ public class AdminUserController {
         ModelAndView modelAndView = new ModelAndView("user-details");
         modelAndView.addObject("user", adminUserService.getUserDetails(userId));
         return modelAndView;
+    }
+
+    @PostMapping("/users")
+    private String createUser(@RequestParam("email") String email) {
+        adminUserService.createUserWithSetPassword(email);
+        return "redirect:/users";
     }
 }
