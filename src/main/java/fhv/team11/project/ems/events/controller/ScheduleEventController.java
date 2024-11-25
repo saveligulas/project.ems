@@ -72,8 +72,7 @@ public class ScheduleEventController {
                               SessionStatus sessionStatus) {
         ActiveEventWizardDTO wizardDTO = (ActiveEventWizardDTO) session.getAttribute("wizard");
         if (wizardDTO != null) {
-            wizardDTO.setTemplateId(templateId);
-            activeEventWizardService.createActiveEvent(wizardDTO);
+            activeEventWizardService.createActiveEvent(wizardDTO, templateId);
             session.removeAttribute("wizard");
             session.removeAttribute("listTemplate");
             sessionStatus.setComplete();

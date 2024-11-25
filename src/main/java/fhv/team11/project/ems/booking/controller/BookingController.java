@@ -3,8 +3,10 @@ package fhv.team11.project.ems.booking.controller;
 import fhv.team11.project.ems.booking.service.BookingService;
 import fhv.team11.project.ems.booking.transfer.BookingDTO;
 import fhv.team11.project.ems.events.repo.ActiveEvent;
+import fhv.team11.project.ems.events.service.ActiveEventService;
 import fhv.team11.project.ems.events.service.ActiveEventWizardService;
 import fhv.team11.project.ems.events.transfer.ActiveEventListDTO;
+import fhv.team11.project.ems.events.transfer.ActiveEventViewDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,22 +19,24 @@ import org.springframework.web.servlet.ModelAndView;
 public class BookingController {
     private final BookingService bookingService;
     private final ActiveEventWizardService activeEventWizardService;
+    private final ActiveEventService activeEventService;
 
     @Autowired
-    public BookingController(BookingService bookingService,ActiveEventWizardService activeEventWizardService) {
+    public BookingController(BookingService bookingService, ActiveEventWizardService activeEventWizardService, ActiveEventService activeEventService) {
         this.bookingService = bookingService;
         this.activeEventWizardService = activeEventWizardService;
+        this.activeEventService = activeEventService;
     }
 
 
     @GetMapping("/active-events/{id}/booking")
     public ModelAndView getBookingForm(@PathVariable("id") Long id) {
-        ActiveEvent activeEvent = activeEventWizardService.getActiveEventById(id);
+        ActiveEventViewDTO activeEvent = activeEventService.getActiveEventById(id);
         ModelAndView modelAndView = new ModelAndView("booking-form");
 
         BookingDTO bookingDTO = new BookingDTO();
         ActiveEventListDTO bookedEvent = new ActiveEventListDTO();
-        bookedEvent.setId(activeEvent.getId());
+        bookedEvent.setId(activeEvent.getActiveEventListDTO().getId());
         bookingDTO.setBookedEvent(bookedEvent);
 
         modelAndView.addObject("activeEvent", activeEvent);
