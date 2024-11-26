@@ -5,7 +5,7 @@ import fhv.team11.project.ems.security.error.UserNotFoundException;
 import fhv.team11.project.ems.security.transfer.domain.error.AuthenticationRequestValidationException;
 import fhv.team11.project.ems.security.transfer.domain.error.RegisterRequestValidationException;
 import fhv.team11.project.ems.security.transfer.RegisterRequest;
-import fhv.team11.project.ems.user.repo.Role;
+import fhv.team11.project.ems.security.permission.role.Role;
 import fhv.team11.project.ems.user.repo.UserJDBCRepository;
 import fhv.team11.project.ems.security.error.*;
 import fhv.team11.project.ems.security.transfer.AuthenticationRequest;
