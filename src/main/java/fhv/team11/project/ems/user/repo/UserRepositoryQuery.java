@@ -1,6 +1,7 @@
 package fhv.team11.project.ems.user.repo;
 
 import fhv.team11.project.ems.commons.database.IRepository;
+import fhv.team11.project.ems.security.permission.role.Role;
 import fhv.team11.project.ems.user.entity.UserJDBC;
 import jakarta.persistence.PersistenceException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
