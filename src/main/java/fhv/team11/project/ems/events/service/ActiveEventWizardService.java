@@ -4,7 +4,6 @@ package fhv.team11.project.ems.events.service;
 import fhv.team11.project.ems.events.repo.*;
 import fhv.team11.project.ems.events.transfer.ActiveEventDateDTO;
 import fhv.team11.project.ems.events.transfer.ActiveEventWizardDTO;
-import fhv.team11.project.ems.events.transfer.EventTemplateDTO;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+
 
 @Service
 public class ActiveEventWizardService {
@@ -39,11 +37,11 @@ public class ActiveEventWizardService {
     }
 
     @Transactional
-    public void createActiveEvent(ActiveEventWizardDTO activeEventWizardDTO) {
+    public void createActiveEvent(ActiveEventWizardDTO activeEventWizardDTO, Long templateId) {
         ActiveEvent activeEvent = new ActiveEvent();
         activeEvent.setEventTemplate(
-                eventTemplateRepository.findById(activeEventWizardDTO.getTemplateId())
-                        .orElseThrow(() -> new IllegalArgumentException("Template not found with ID: " + activeEventWizardDTO.getTemplateId()))
+                eventTemplateRepository.findById(templateId)
+                        .orElseThrow(() -> new IllegalArgumentException("Template not found with ID: " + templateId))
         );
         activeEventRepository.save(activeEvent);
         Schedule schedule = new Schedule();
@@ -61,27 +59,6 @@ public class ActiveEventWizardService {
     }
 
 
-    @Transactional
-    public List<ActiveEventWizardDTO> getAllActiveEvents() {
-        List<ActiveEventWizardDTO> activeEventWizardDTOS = new ArrayList<>();
-
-        List<ActiveEvent> activeEventsList = activeEventRepository.findAllWithTemplatesAndDates();
-        for(ActiveEvent activeEvent : activeEventsList) {
-            activeEventWizardDTOS.add(ActiveEventWizardDTOMapper.INSTANCE.getDTO(activeEvent, activeEvent.getEventDate(),activeEvent.getEventDate().iterator().next().getSchedule().getAppointments().iterator().next()));
-        }
-        return activeEventWizardDTOS;
-    }
-    @Transactional
-    public List<ActiveEvent> getAllActiveEvents1() {
-        List<ActiveEvent> activeEventWizardDTOS = activeEventRepository.findAllWithTemplatesAndDates();
-        return activeEventWizardDTOS;
-    }
-
-    @Transactional
-    public ActiveEvent getActiveEventById(Long id) {
-        return activeEventRepository.findByIdWithTemplateAndDate(id)
-                .orElseThrow(() -> new EntityNotFoundException("ActiveEvent not found with id: " + id));
-    }
 
 
 }

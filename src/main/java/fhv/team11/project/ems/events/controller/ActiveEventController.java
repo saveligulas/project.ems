@@ -1,11 +1,12 @@
 package fhv.team11.project.ems.events.controller;
 
+import fhv.team11.project.ems.events.service.ActiveEventService;
 import fhv.team11.project.ems.events.service.ActiveEventWizardService;
 import fhv.team11.project.ems.events.service.EventTemplateService;
 import fhv.team11.project.ems.events.transfer.ActiveEventDateDTO;
+import fhv.team11.project.ems.events.transfer.ActiveEventView;
 import fhv.team11.project.ems.events.transfer.ActiveEventWizardDTO;
 import fhv.team11.project.ems.events.transfer.EventTemplateListDTO;
-import fhv.team11.project.ems.events.repo.ActiveEvent;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +22,13 @@ public class ActiveEventController {
 
     private final EventTemplateService eventTemplateService;
     private final ActiveEventWizardService activeEventWizardService;
+    private final ActiveEventService activeEventService;
 
     @Autowired
-    public ActiveEventController(ActiveEventWizardService activeEventWizardService, EventTemplateService eventTemplateService) {
+    public ActiveEventController(ActiveEventWizardService activeEventWizardService, EventTemplateService eventTemplateService, ActiveEventService activeEventService) {
         this.activeEventWizardService = activeEventWizardService;
         this.eventTemplateService = eventTemplateService;
+        this.activeEventService = activeEventService;
     }
 
     @GetMapping("/event/manage/{id}/plan")
@@ -64,14 +67,14 @@ public class ActiveEventController {
 
     @GetMapping("/active-events")
     public String showAllEvents(Model model) {
-        List<ActiveEventWizardDTO> activeEvents = activeEventWizardService.getAllActiveEvents();
+        List<ActiveEventView> activeEvents = activeEventService.getAllActiveEvents();
         model.addAttribute("activeEvents", activeEvents);
         return "all-events";
     }
 
     @GetMapping("/active-events/{id}")
     public String showEventDetails(@PathVariable("id") Long id, Model model) {
-        ActiveEvent activeEvent = activeEventWizardService.getActiveEventById(id);
+        ActiveEventView activeEvent = activeEventService.getActiveEventById(id);
         model.addAttribute("activeEvent", activeEvent);
         return "event-details";
     }
