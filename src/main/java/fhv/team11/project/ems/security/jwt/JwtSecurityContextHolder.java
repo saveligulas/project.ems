@@ -1,19 +1,32 @@
 package fhv.team11.project.ems.security.jwt;
 
 import fhv.team11.project.ems.security.error.SecuredEndpointAccessException;
-import fhv.team11.project.ems.user.repo.entity.User;
-import fhv.team11.project.ems.user.repo.entity.UserJDBC;
+import fhv.team11.project.ems.user.entity.UserEntity;
+import fhv.team11.project.ems.user.entity.UserEntityRepository;
+import fhv.team11.project.ems.user.entity.UserJDBC;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 
+@Component
 public class JwtSecurityContextHolder {
 
-    public static User getUser() {
+    private static UserEntityRepository userEntityRepository;
+
+    @Autowired
+    public JwtSecurityContextHolder(UserEntityRepository userEntityRepository) {
+        JwtSecurityContextHolder.userEntityRepository = userEntityRepository;
+    }
+
+    //TODO: add method to get User Domain Model with different Profiles
+    public static UserEntity getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             Object principal = authentication.getPrincipal();
             if (principal instanceof UserJDBC) {
-                return new User(((UserJDBC) principal).getId());
+                Long id = ((UserJDBC) principal).getId();
+                return userEntityRepository.findById(id).orElseThrow(SecuredEndpointAccessException::new);
             }
         }
         throw new SecuredEndpointAccessException();

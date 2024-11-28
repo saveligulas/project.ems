@@ -3,7 +3,7 @@ package fhv.team11.project.ems.security.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
-import fhv.team11.project.ems.user.repo.entity.UserJDBC;
+import fhv.team11.project.ems.user.entity.UserJDBC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

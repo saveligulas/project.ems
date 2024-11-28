@@ -8,7 +8,6 @@ import fhv.team11.project.ems.commons.address.AddressDTOMapper;
 import fhv.team11.project.ems.commons.address.AddressRepository;
 import fhv.team11.project.ems.events.repo.ActiveEventRepository;
 import fhv.team11.project.ems.user.repo.UserJDBCRepository;
-import fhv.team11.project.ems.user.repo.entity.User;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,12 +61,12 @@ public class BookingService {
         bookingRepository.persist(booking);
     }
 
-    public List<BookingDTO> getAllBooking(){
+    public List<BookingDTO> getAllBooking() {
         List<Booking> bookings = bookingRepository.findAll();
 
         return bookings.stream()
                 .map(BookingDTOMapper.INSTANCE::getDTO)
                 .collect(Collectors.toList());
     }
-    }
+}
 

@@ -1,0 +1,25 @@
+package fhv.team11.project.ems.customer.transfer;
+
+import fhv.team11.project.ems.commons.address.AddressDTO;
+import fhv.team11.project.ems.commons.validation.model.IModelAttribute;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
+import org.thymeleaf.model.IModel;
+
+@Data
+public class CustomerProfileDTO implements IModelAttribute {
+
+    @NotBlank
+    private String firstName;
+
+    @NotBlank
+    private String lastName;
+
+    @Valid
+    private AddressDTO addressDTO;
+
+    @NotBlank
+    private String phoneNumber;
+
+}

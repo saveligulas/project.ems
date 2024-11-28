@@ -27,8 +27,8 @@ public class BookingDTOMapper implements IDTOEntityBiMapper<Booking,BookingDTO> 
         booking.setBookedEvent(activeEvent);
 
         booking.setParticipantAddress(AddressDTOMapper.INSTANCE.toEntity(dto.getParticipantAddress()));
-        booking.setReservationist(JwtSecurityContextHolder.getUser());
-        booking.setParticipant(JwtSecurityContextHolder.getUser());
+        booking.setFinancer(JwtSecurityContextHolder.getUser());
+        booking.setParticipant("TestINMAer");
         //TODO: Set Participant(String name)
         booking.setBookedPlaces(dto.getBookedPlaces());
         booking.setPrice(dto.getPrice());
@@ -55,7 +55,7 @@ public class BookingDTOMapper implements IDTOEntityBiMapper<Booking,BookingDTO> 
             dto.setParticipant(null);
         }//TODO user
 
-        if (entity.getReservationist() != null) {
+        if (entity.getFinancer() != null) {
             dto.setReservationist(null);
         }//TODO implement the reservationist from user
 

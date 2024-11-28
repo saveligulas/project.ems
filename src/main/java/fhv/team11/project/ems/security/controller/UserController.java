@@ -15,7 +15,6 @@ public class UserController {
 
     @GetMapping("/events")
     public ModelAndView viewEvents() {
-
         return new ModelAndView("events");
     }
 
