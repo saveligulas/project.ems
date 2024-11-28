@@ -61,7 +61,6 @@ public class AdminUserService {
         userJDBCRepository.save(user);
     }
 
-    @RequiresPermission(value = "uss")
     public void authenticateAsUser(String email) {
         UserJDBC userJDBC = userJDBCRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(email));
