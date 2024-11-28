@@ -1,6 +1,6 @@
 package fhv.team11.project.ems.user.profile.repo;
 
-import fhv.team11.project.ems.user.transfer.CustomerProfileDTO;
+import fhv.team11.project.ems.customer.CustomerProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
