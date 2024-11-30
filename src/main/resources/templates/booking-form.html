@@ -85,7 +85,7 @@
                     <div th:if="${customerProfiles}">
                         <ul class="list-group mt-3">
                             <li class="list-group-item" th:each="customer : ${customerProfiles}">
-                                <a th:href="@{/booking-form/{id}(id=${customer.id})}" th:text="${customer.fullName} + ' (' + customer.email + ')'" class="text-decoration-none">
+                                <a th:href="@{/active-events/{id}/booking/customerId(customerid=${customer.id},id=${activeEvent.activeEventListDTO.getId()})}" th:text="${customer.fullName} + ' (' + customer.email + ')'" class="text-decoration-none">
                                     Customer Name (Email)
                                 </a>
                             </li>
@@ -112,7 +112,7 @@
 
 
             <!-- TODO: Maybe change to permissions instead of Profile?
-            <div th:if="${user.user?.backOfficeProfile == null}">
+            <div th:if="${user.attributes?.backOfficeProfile == null}">
             -->
             <div class="card mt-4">
                 <div class="card-header bg-primary text-white">
@@ -122,19 +122,19 @@
                         <div class="mb-3">
                             <label for="firstName" class="form-label">First Name</label>
                             <input type="text" class="form-control" id="firstName" name="firstName" th:field="*{reservationist.firstName}">
-                            <!--  th:value="${user?.user?.customerProfile?.firstName ?: ''}" -->
+                            <!--  th:value="${user?.attributes?.customerProfile?.firstName ?: ''}" -->
 
                         </div>
                        <div class="mb-3">
                            <label for="lastName" class="form-label">Last Name</label>
                            <input type="text" class="form-control" id="lastName" name="lastName" th:field="*{reservationist.lastName}">
-                           <!--  th:value="${user.user?.customerProfile?.lastName}" -->
+                           <!--  th:value="${user.attributes?.customerProfile?.lastName}" -->
 
                         </div>
                       <div class="mb-3">
                           <label for="phoneNumber" class="form-label">Phone Number</label>
                           <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" th:field="*{reservationist.phoneNumber}">
-                          <!--  th:value="${user.user?.customerProfile?.phoneNumber}" -->
+                          <!--  th:value="${user.attributes?.customerProfile?.phoneNumber}" -->
 
                       </div>
                     </div>
@@ -147,7 +147,7 @@
                     <div class="form-group">
                         <label for="participantAddressCountry" class="form-label"><strong>Country:</strong></label>
                         <input type="text" id="participantAddressCountry" th:field="*{participantAddress.country}" class="form-control" placeholder="Enter your country">
-                        <!--  th:value="${user.user?.customerProfile?.address?.country?}" -->
+                        <!--  th:value="${user.attributes?.customerProfile?.address?.country?}" -->
 
                         <div th:if="${#fields.hasErrors('reservationist.addressDTO.country')}" class="text-danger"
                              th:errors="*{reservationist.addressDTO.country}"></div>
@@ -157,7 +157,7 @@
                         <label for="participantAddressRegion" class="form-label"><strong>Region:</strong></label>
                         <input type="text" id="participantAddressRegion" th:field="*{reservationist.addressDTO.region}"
                                class="form-control" placeholder="Enter your region">
-                        <!--   th:value="${user.user?.customerProfile?.address?.region?}" -->
+                        <!--   th:value="${user.attributes?.customerProfile?.address?.region?}" -->
                         <div th:if="${#fields.hasErrors('reservationist.addressDTO.region')}" class="text-danger"
                              th:errors="*{reservationist.addressDTO.region}"></div>
                     </div>
@@ -166,7 +166,7 @@
                         <label for="participantAddressCity" class="form-label"><strong>City:</strong></label>
                         <input type="text" id="participantAddressCity" th:field="*{reservationist.addressDTO.city}"
                                class="form-control" placeholder="Enter your city">
-                        <!--  th:value="${user.user?.customerProfile?.address?.city?}" -->
+                        <!--  th:value="${user.attributes?.customerProfile?.address?.city?}" -->
                         <div th:if="${#fields.hasErrors('reservationist.addressDTO.city')}" class="text-danger"
                              th:errors="*{reservationist.addressDTO.city}"></div>
                     </div>
@@ -175,7 +175,7 @@
                         <label for="participantAddressZip" class="form-label"><strong>Zip Code:</strong></label>
                         <input type="number" id="participantAddressZip" th:field="*{reservationist.addressDTO.zip}" class="form-control"
                                placeholder="Enter your zip code">
-                        <!--  th:value="${user.user?.customerProfile?.address?.zip?}" -->
+                        <!--  th:value="${user.attributes?.customerProfile?.address?.zip?}" -->
                         <div th:if="${#fields.hasErrors('reservationist.addressDTO.zip')}" class="text-danger"
                              th:errors="*{reservationist.addressDTO.zip}"></div>
                     </div>
@@ -184,7 +184,7 @@
                         <label for="participantAddressStreet" class="form-label"><strong>Street:</strong></label>
                         <input type="text" id="participantAddressStreet" th:field="*{reservationist.addressDTO.street}"
                                class="form-control" placeholder="Enter your street">
-                        <!-- th:value="${user.user?.customerProfile?.address?.street?}" -->
+                        <!-- th:value="${user.attributes?.customerProfile?.address?.street?}" -->
                         <div th:if="${#fields.hasErrors('reservationist.addressDTO.street')}" class="text-danger"
                              th:errors="*{reservationist.addressDTO.street}"></div>
                     </div>
@@ -193,7 +193,7 @@
                         <label for="participantAddressHouseNumber" class="form-label"><strong>House Number:</strong></label>
                         <input type="text" id="participantAddressHouseNumber" th:field="*{reservationist.addressDTO.houseNumber}"
                                class="form-control" placeholder="Enter your house number">
-                        <!-- th:value="${user.user?.customerProfile?.address?.houseNumber?}" -->
+                        <!-- th:value="${user.attributes?.customerProfile?.address?.houseNumber?}" -->
                         <div th:if="${#fields.hasErrors('reservationist.addressDTO.houseNumber')}" class="text-danger"
                              th:errors="*{reservationist.addressDTO.houseNumber}"></div>
                     </div>
