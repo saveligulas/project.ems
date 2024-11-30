@@ -9,8 +9,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 public class UserEntityDetails {
 
     @Id
@@ -21,16 +25,14 @@ public class UserEntityDetails {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "customer_profile_id")
+    @OneToOne(mappedBy = "userEntityDetails")
     private CustomerProfile customerProfile;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "back_office_profile_id")
+    @OneToOne(mappedBy = "userEntityDetails")
     private BackOfficeProfile backOfficeProfile;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "administrator_profile_id")
+    @OneToOne(mappedBy = "userEntityDetails")
     private AdministratorProfile administratorProfile;
 
+    //TODO:
 }
