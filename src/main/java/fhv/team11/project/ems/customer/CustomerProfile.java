@@ -15,4 +15,5 @@ public class CustomerProfile extends UserProfile {
     private Address address;
 
     private String phoneNumber;
+    private Integer secret;
 }
