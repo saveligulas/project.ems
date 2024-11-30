@@ -12,6 +12,7 @@ public class UserProfile {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToOne(mappedBy = "customerProfile")
-    private UserEntityDetails userEntity;
+    @OneToOne
+    @JoinColumn(name = "user_entity_details_id")
+    private UserEntityDetails userEntityDetails;
 }
