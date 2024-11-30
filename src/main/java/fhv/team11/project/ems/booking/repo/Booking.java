@@ -1,8 +1,8 @@
 package fhv.team11.project.ems.booking.repo;
 
 import fhv.team11.project.ems.commons.address.Address;
+import fhv.team11.project.ems.customer.CustomerProfile;
 import fhv.team11.project.ems.events.repo.ActiveEvent;
-import fhv.team11.project.ems.user.entity.UserEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -36,14 +36,14 @@ public class Booking {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "financer_id",nullable = true)
-    private UserEntity financer;
+    private CustomerProfile financer;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "active_event_id")
     private ActiveEvent bookedEvent;
 
     @Enumerated(EnumType.ORDINAL)
-    private Deposite deposite;
+    private Deposit deposit;
 
     private int bookedPlaces;
 
