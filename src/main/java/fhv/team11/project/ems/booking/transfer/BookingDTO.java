@@ -3,6 +3,7 @@ package fhv.team11.project.ems.booking.transfer;
 import fhv.team11.project.ems.booking.repo.Deposite;
 import fhv.team11.project.ems.commons.address.Address;
 import fhv.team11.project.ems.commons.address.AddressDTO;
+import fhv.team11.project.ems.customer.transfer.CustomerProfileDTO;
 import fhv.team11.project.ems.events.transfer.ActiveEventListDTO;
 import fhv.team11.project.ems.events.transfer.ActiveEventWizardDTO;
 import fhv.team11.project.ems.user.transfer.UserDTO;
@@ -20,7 +21,7 @@ public class BookingDTO {
 
     private UserDTO participant;
     //TODO participant to String
-    private UserDTO reservationist;
+    private CustomerProfileDTO reservationist;
 
     private ActiveEventListDTO bookedEvent;
 
