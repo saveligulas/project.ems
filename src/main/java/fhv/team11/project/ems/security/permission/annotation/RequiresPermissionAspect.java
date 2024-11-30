@@ -8,7 +8,6 @@ import fhv.team11.project.ems.user.entity.UserJDBC;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
@@ -32,7 +31,7 @@ public class RequiresPermissionAspect {
                 .toList();
         boolean allRequired = annotation.allRequired();
 
-        UserJDBC userJDBC = JwtSecurityContextHolder.getUserEntity();
+        UserJDBC userJDBC = JwtSecurityContextHolder.getUserJDBC();
         List<Role> userRoles = userJDBC.getRoles();
         List<GrantedPermission> userPermissions = userRoles.stream()
                 .map(RolePermissions::getPermissions)
