@@ -32,7 +32,7 @@ public class JwtSecurityContextHolder {
         throw new SecuredEndpointAccessException();
     }
 
-    public static UserJDBC getUserEntity() {
+    public static UserJDBC getUserJDBC() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             Object principal = authentication.getPrincipal();
