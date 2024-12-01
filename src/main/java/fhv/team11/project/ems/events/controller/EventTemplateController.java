@@ -1,5 +1,6 @@
 package fhv.team11.project.ems.events.controller;
 
+import fhv.team11.project.ems.events.error.EventTemplateDTOValidationException;
 import fhv.team11.project.ems.events.repo.EventCategory;
 import fhv.team11.project.ems.events.service.EventTemplateService;
 import fhv.team11.project.ems.events.transfer.EventTemplateDTO;
@@ -38,15 +39,22 @@ public class EventTemplateController {
     @PostMapping("/event/create")
     public String createTemplate(@Valid @ModelAttribute("eventTemplate") EventTemplateDTO eventTemplateDTO,
                                  BindingResult result,
-                                 RedirectAttributes redirectAttributes) {
-        if (result.hasErrors()) {
-            redirectAttributes.addFlashAttribute("eventTemplate", eventTemplateDTO);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.eventTemplate", result);
-            return "redirect:/event/manage";
+                                 Model model) {
+        model.addAttribute("categories", Arrays.asList(EventCategory.values()));
+
+        try {
+            eventTemplateService.createNewTemplate(eventTemplateDTO);
+        } catch (EventTemplateDTOValidationException ex) {
+            result.addAllErrors(ex.getBindingResult());
         }
-        eventTemplateService.createNewTemplate(eventTemplateDTO);
+        if (result.hasErrors()) {
+            result.getAllErrors().forEach(error -> System.out.println(error.getDefaultMessage()));//Für Logging
+            return "create-eventTemplate";
+        }
+
         return "redirect:/event";
     }
+
 
     @GetMapping("/event")
     public ModelAndView viewEventOrganizer() {

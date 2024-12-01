@@ -1,13 +1,16 @@
 package fhv.team11.project.ems.events.service;
 
 
+import fhv.team11.project.ems.commons.validation.domain.DomainValidatorFactory;
 import fhv.team11.project.ems.events.repo.*;
 import fhv.team11.project.ems.events.transfer.ActiveEventDateDTO;
 import fhv.team11.project.ems.events.transfer.ActiveEventWizardDTO;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 
 import java.util.ArrayList;
@@ -15,7 +18,10 @@ import java.util.List;
 
 
 @Service
+@Validated
+@Slf4j
 public class ActiveEventWizardService {
+    private final DomainValidatorFactory domainValidatorFactory;
 
     private final ActiveEventRepository activeEventRepository;
     private final AppointmentRepository appointmentRepository;
@@ -28,7 +34,9 @@ public class ActiveEventWizardService {
                                     AppointmentRepository appointmentRepository,
                                     ScheduleRepository scheduleRepository,
                                     EventDateRepository eventDateRepository,
-                                    EventTemplateRepository eventTemplateRepository) {
+                                    EventTemplateRepository eventTemplateRepository,
+                                    DomainValidatorFactory domainValidatorFactory) {
+        this.domainValidatorFactory = domainValidatorFactory;
         this.activeEventRepository = activeEventRepository;
         this.appointmentRepository = appointmentRepository;
         this.scheduleRepository = scheduleRepository;
