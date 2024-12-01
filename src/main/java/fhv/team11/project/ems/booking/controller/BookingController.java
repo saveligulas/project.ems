@@ -2,6 +2,7 @@ package fhv.team11.project.ems.booking.controller;
 
 import fhv.team11.project.ems.booking.service.BookingService;
 import fhv.team11.project.ems.booking.transfer.BookingDTO;
+import fhv.team11.project.ems.commons.qrcode.QRCodeGenerator;
 import fhv.team11.project.ems.events.service.ActiveEventService;
 import fhv.team11.project.ems.events.service.ActiveEventWizardService;
 import fhv.team11.project.ems.events.service.EventTemplateService;
@@ -60,6 +61,7 @@ public class BookingController {
     public ModelAndView getAllBooking(){
         ModelAndView modelAndView = new ModelAndView("all-bookings");
         modelAndView.addObject("bookings",bookingService.getAllBooking());
+        modelAndView.addObject("qrCodeImage", QRCodeGenerator.generateQRCodeImage("localhost8080","Halllo",100,100));
         return modelAndView;
     }
 }
