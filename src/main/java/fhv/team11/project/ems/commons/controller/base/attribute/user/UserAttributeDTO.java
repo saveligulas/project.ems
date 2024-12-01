@@ -1,23 +1,18 @@
-package fhv.team11.project.ems.commons.controller.base.attribute;
+package fhv.team11.project.ems.commons.controller.base.attribute.user;
 
-import fhv.team11.project.ems.customer.CustomerProfile;
 import fhv.team11.project.ems.customer.transfer.CustomerProfileDTO;
 import fhv.team11.project.ems.customer.transfer.CustomerProfileDTOMapper;
 import fhv.team11.project.ems.security.error.SecuredEndpointAccessException;
 import fhv.team11.project.ems.security.jwt.JwtSecurityContextHolder;
-import fhv.team11.project.ems.security.permission.annotation.RequiresPermission;
 import fhv.team11.project.ems.user.entity.UserEntity;
 import fhv.team11.project.ems.user.entity.UserJDBC;
-import lombok.Data;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.jspecify.annotations.NullMarked;
-import org.jspecify.annotations.NullUnmarked;
 import org.jspecify.annotations.Nullable;
-import org.springframework.security.core.userdetails.User;
-
-import java.util.Optional;
 
 @Slf4j
+@Getter(AccessLevel.PACKAGE)
 public class UserAttributeDTO {
     @Nullable
     final String username;
@@ -30,7 +25,9 @@ public class UserAttributeDTO {
         try {
             UserEntity user = JwtSecurityContextHolder.getUser();
             UserJDBC userJDBC = JwtSecurityContextHolder.getUserJDBC();
+
             name = userJDBC.getUsername();
+
             if (user.getUserEntityDetails() == null) {
                 log.info("User has not set their UserEntityDetails");
             } else {
