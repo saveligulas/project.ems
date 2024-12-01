@@ -72,8 +72,18 @@
 
 
                     </li>
+
+                    <div class="text-center list-group-item">
+                        <img th:src="'data:image/png;base64,' + ${qrCodeImage}" alt="QR Code">
+                    </div>
+
                 </ul>
+
+
+
             </div>
+
+
 
             <div class="text-center">
                 <a th:href="@{/}" class="btn btn-secondary btn-back">Back to Home</a>
