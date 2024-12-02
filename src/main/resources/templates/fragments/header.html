@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Header Fragment</title>
@@ -9,6 +9,7 @@
 </head>
 <body>
 <!--@thymesVar id="user" type="fhv.team11.project.ems.commons.controller.base.attribute.user.UserAttributes"-->
+<!--@thymesVar id="env" type="fhv.team11.project.ems.commons.controller.base.attribute.dev.EnvironmentAttributes"-->
 <header th:fragment="header" class="main-header">
     <div class="header-left">
         <h1>
@@ -18,8 +19,8 @@
 
     <nav class="header-center">
         <ul>
-            <li><a href="./bookings-view.html" th:href="@{/bookings}">Bookings</a></li>
-            <li><a href="./event-organizer.html" th:href="@{/event}">Events</a></li>
+            <li><a href="/bookings" th:href="@{/bookings}">Bookings</a></li>
+            <li><a href="/event" th:href="@{/event}">Events</a></li>
             <li><a href="/users" th:href="@{/users}">Users</a></li>
         </ul>
     </nav>
@@ -36,13 +37,17 @@
                     <li><a class="dropdown-item" href="/logout" th:href="@{/logout}">Logout</a></li>
                 </ul>
             </div>
-            <a href="./event/manage" th:href="@{/event/manage}" class="btn btn-primary header-btn">Create Event</a>
+            <!--<a href="./event/manage" th:href="@{/event/manage}" class="btn btn-primary header-btn">Create Event</a>-->
         </span>
 
         <span th:unless="${user?.isAuthenticated()}">
             <a href="./login.html" th:href="@{/login}" class="btn btn-outline header-btn">Login</a>
             <a href="./register.html" th:href="@{/register}" class="btn btn-primary header-btn">Register</a>
         </span>
+
+        <h1 th:if="${@environment.getProperty('dev.mode')}">
+            Dev Mode
+        </h1>
     </div>
 </header>
 </body>
