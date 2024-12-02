@@ -1,0 +1,36 @@
+package fhv.team11.project.ems.booking.transfer;
+
+import fhv.team11.project.ems.booking.repo.Deposite;
+import fhv.team11.project.ems.commons.address.AddressDTO;
+import fhv.team11.project.ems.events.transfer.ActiveEventListDTO;
+import fhv.team11.project.ems.user.transfer.UserDTO;
+import lombok.Data;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
+@Data
+public class BookingListDTO {
+
+    private Long id;
+
+    private AddressDTO participantAddress;
+
+    private UserDTO participant;
+    //TODO participant to String
+    private UserDTO reservationist;
+
+    private ActiveEventListDTO bookedEvent;
+
+    private Deposite deposite;
+
+    private int bookedPlaces;
+
+    private LocalDate cancellationDeadline;
+
+    private LocalDate optionDate;
+
+    private BigDecimal price;
+
+    private BookingIdentifierListDTO identifier;
+}
