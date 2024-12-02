@@ -1,5 +1,6 @@
 package fhv.team11.project.ems.user.transfer;
 
+import fhv.team11.project.ems.backoffice.transfer.BackOfficeProfileDTO;
 import fhv.team11.project.ems.customer.transfer.CustomerProfileDTO;
 import lombok.Data;
 
@@ -12,5 +13,5 @@ public class UserDTO {
     private Optional<CustomerProfileDTO> customerProfileDTO;
     private Optional<EventOrganizerProfileDTO> eventOrganizerProfile;
     private Optional<AdministratorProfileDTO> administratorProfile;
-    private Optional<BackOfficeEmployeeProfileDTO> backOfficeEmployeeProfileDTO;
+    private Optional<BackOfficeProfileDTO> backOfficeEmployeeProfileDTO;
 }

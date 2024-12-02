@@ -3,8 +3,7 @@ package fhv.team11.project.ems.user.entity;
 import fhv.team11.project.ems.admin.AdministratorProfile;
 import fhv.team11.project.ems.customer.CustomerProfile;
 import fhv.team11.project.ems.organization.EventOrganizerProfile;
-import fhv.team11.project.ems.user.profile.BackOfficeProfile;
-import jakarta.persistence.CascadeType;
+import fhv.team11.project.ems.backoffice.BackOfficeProfile;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -12,7 +11,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.Setter;
-import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 @Entity

@@ -21,8 +21,13 @@ public class HomeController {
         this.activeEventWizardService = activeEventWizardService;
     }
 
-    @GetMapping("/index")
-    public ModelAndView index() {
+    @GetMapping("/")
+    public String index() {
+        return "redirect:/home";
+    }
+
+    @GetMapping("/home")
+    public ModelAndView getHomePage() {
         ModelAndView modelAndView = new ModelAndView("index");
 
 
