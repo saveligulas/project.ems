@@ -3,13 +3,15 @@ package fhv.team11.project.ems.booking.service;
 import fhv.team11.project.ems.booking.repo.Booking;
 import fhv.team11.project.ems.booking.repo.Deposite;
 import fhv.team11.project.ems.booking.transfer.BookingDTO;
+import fhv.team11.project.ems.booking.transfer.BookingListDTO;
 import fhv.team11.project.ems.commons.address.AddressDTOMapper;
 import fhv.team11.project.ems.commons.database.IDTOEntityBiMapper;
+import fhv.team11.project.ems.commons.database.IDTOEntityMapper;
 import fhv.team11.project.ems.events.repo.ActiveEvent;
 import fhv.team11.project.ems.events.transfer.ActiveEventListDTO;
 import fhv.team11.project.ems.security.jwt.JwtSecurityContextHolder;
 
-public class BookingDTOMapper implements IDTOEntityBiMapper<Booking,BookingDTO> {
+public class BookingDTOMapper implements IDTOEntityMapper<Booking,BookingDTO> {
 
     public static final BookingDTOMapper INSTANCE = new BookingDTOMapper();
 
@@ -44,35 +46,6 @@ public class BookingDTOMapper implements IDTOEntityBiMapper<Booking,BookingDTO> 
     }
 
 
-    @Override
-    public BookingDTO getDTO(Booking entity) {
-        BookingDTO dto = new BookingDTO();
 
-        dto.setId(entity.getId());
-
-        dto.setParticipantAddress(AddressDTOMapper.INSTANCE.toDTO(entity.getParticipantAddress()));
-
-        if (entity.getParticipant() != null) {
-            dto.setParticipant(null);
-        }//TODO user
-
-        if (entity.getFinancer() != null) {
-            dto.setReservationist(null);
-        }//TODO implement the reservationist from user
-
-        if (entity.getBookedEvent() != null) {
-            ActiveEventListDTO activeEventDTO = new ActiveEventListDTO();
-            activeEventDTO.setId(entity.getBookedEvent().getId());
-            dto.setBookedEvent(activeEventDTO);
-        }
-
-        dto.setDeposite(entity.getDeposite());
-        dto.setBookedPlaces(entity.getBookedPlaces());
-        dto.setPrice(entity.getPrice());
-        dto.setOptionDate(entity.getOptionDate());
-        dto.setCancellationDeadline(entity.getCancellationDeadline());
-
-        return dto;
-    }
 
 }
