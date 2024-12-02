@@ -1,8 +1,12 @@
 package fhv.team11.project.ems.booking.service;
 
 import fhv.team11.project.ems.booking.repo.Booking;
+
+import fhv.team11.project.ems.booking.repo.BookingIdentifierRepository;
 import fhv.team11.project.ems.booking.repo.BookingRepository;
+import fhv.team11.project.ems.booking.repo.BookingStatus;
 import fhv.team11.project.ems.booking.transfer.BookingDTO;
+import fhv.team11.project.ems.booking.transfer.BookingListDTO;
 import fhv.team11.project.ems.commons.address.Address;
 import fhv.team11.project.ems.commons.address.AddressDTOMapper;
 import fhv.team11.project.ems.commons.address.AddressRepository;
@@ -22,13 +26,15 @@ public class BookingService {
     private final UserJDBCRepository userJDBCRepository;
     private final ActiveEventRepository activeEventRepository;
     private final AddressRepository addressRepository;
+    private final BookingIdentifierRepository bookingIdentifierRepository;
 
     @Autowired
-    public BookingService(BookingRepository bookingRepository, UserJDBCRepository userJDBCRepository, ActiveEventRepository activeEventRepository, AddressRepository addressRepository) {
+    public BookingService(BookingRepository bookingRepository, UserJDBCRepository userJDBCRepository, ActiveEventRepository activeEventRepository, AddressRepository addressRepository, BookingIdentifierRepository bookingIdentifierRepository, BookingIdentifierRepository bookingIdentifierRepository1) {
         this.bookingRepository = bookingRepository;
         this.userJDBCRepository = userJDBCRepository;
         this.activeEventRepository = activeEventRepository;
         this.addressRepository = addressRepository;
+        this.bookingIdentifierRepository = bookingIdentifierRepository1;
     }
 
 
@@ -61,12 +67,17 @@ public class BookingService {
         bookingRepository.persist(booking);
     }
 
-    public List<BookingDTO> getAllBooking() {
+    public List<BookingListDTO> getAllBooking() {
         List<Booking> bookings = bookingRepository.findAll();
 
         return bookings.stream()
-                .map(BookingDTOMapper.INSTANCE::getDTO)
+                .map(BookingListDTOMapper.INSTANCE::getDTO)
                 .collect(Collectors.toList());
+    }
+
+    public void checkInBooking(String identifierId) {
+        bookingIdentifierRepository.updateUUIDStatus(identifierId, BookingStatus.Checked_In);
+
     }
 }
 
