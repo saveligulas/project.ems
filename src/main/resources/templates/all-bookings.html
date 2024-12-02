@@ -71,11 +71,12 @@
                         <strong>Date:</strong> <span th:text="${booking.getCancellationDeadline()}"></span><br>
 
 
-                    </li>
+                        <img th:src="'data:image/png;base64,' + ${booking.getIdentifier().getQRCode()}" alt="QR Code" >
+                        <a th:href="@{/bookings/checkin(token=${booking.getIdentifier().getToken()})}"> QRCode link</a>
 
-                    <div class="text-center list-group-item">
-                        <img th:src="'data:image/png;base64,' + ${qrCodeImage}" alt="QR Code">
-                    </div>
+
+
+                    </li>
 
                 </ul>
 
