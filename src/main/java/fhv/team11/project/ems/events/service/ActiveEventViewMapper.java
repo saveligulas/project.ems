@@ -1,22 +1,19 @@
 package fhv.team11.project.ems.events.service;
 
-import fhv.team11.project.ems.commons.database.IEntityDTOMapper;
 import fhv.team11.project.ems.events.repo.ActiveEvent;
 import fhv.team11.project.ems.events.repo.Appointment;
 import fhv.team11.project.ems.events.repo.EventDate;
-import fhv.team11.project.ems.events.repo.Schedule;
 import fhv.team11.project.ems.events.transfer.*;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class ActiveEventWizardDTOMapper {
+public class ActiveEventViewMapper {
 
-    public static final ActiveEventWizardDTOMapper INSTANCE = new ActiveEventWizardDTOMapper();
+    public static final ActiveEventViewMapper INSTANCE = new ActiveEventViewMapper();
 
-    public ActiveEventWizardDTO getDTO(ActiveEvent activeEvent, Set<EventDate> eventDate, Appointment appointment) {
-        ActiveEventWizardDTO dto = new ActiveEventWizardDTO();
+    public ActiveEventView getDTO(ActiveEvent activeEvent, Set<EventDate> eventDate, Appointment appointment) {
+        ActiveEventView dto = new ActiveEventView();
         ScheduleEventDTO scheduleEventDTO = new ScheduleEventDTO();
         scheduleEventDTO.setEndTime(appointment.getEndTime());
         scheduleEventDTO.setStartTime(appointment.getStartTime());

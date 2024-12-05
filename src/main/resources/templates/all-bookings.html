@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{base}"
+      th:with="title='All Bookings'">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">All Bookings</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/css/stylesheet.css" th:href="@{/css/stylesheet.css}">
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0 auto;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom right, #e8f5e9, #b2dfdb);
+            background-attachment: fixed;
+            background-size: cover;
+        }
+
+        .bookings-section {
+            padding: 2rem;
+            width: 100%;
+            margin-top: 90px;
+        }
+
+        .list-container {
+            background-color: #ffffff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .list-group-item {
+            margin-bottom: 1rem;
+        }
+
+        .btn-back {
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+<main class="container-fluid" style="padding: 0;">
+    <div layout:fragment="content">
+        <div class="bookings-section">
+            <h1 class="mb-4 text-center">All Bookings</h1>
+
+            <div th:if="${#lists.isEmpty(bookings)}" class="alert alert-info text-center">
+                No bookings available.
+            </div>
+
+            <div class="list-container" th:if="${!#lists.isEmpty(bookings)}">
+                <ul class="list-group">
+                    <li th:each="booking : ${bookings}" class="list-group-item">
+                        <strong>ID:</strong> <span th:text="${booking.id}"></span><br>
+                        <strong>ID:</strong> <span th:text="${booking.getBookedEvent().getId()}"></span><br>
+                        <strong>Participant:</strong> <span th:text="${booking.participant != null ? booking.participant.name : 'N/A'}"></span><br>
+                        <strong>Reservationist:</strong> <span th:text="${booking.reservationist != null ? booking.reservationist.name : 'N/A'}"></span><br>
+                        <strong>Deposit:</strong> <span th:text="${booking.getDeposite()}"></span><br>
+                        <strong>Places:</strong> <span th:text="${booking.getBookedPlaces()}"></span><br>
+                        <strong>Price:</strong> <span th:text="${booking.getPrice()}"></span><br>
+                        <strong>Date:</strong> <span th:text="${booking.getOptionDate()}"></span><br>
+                        <strong>Date:</strong> <span th:text="${booking.getCancellationDeadline()}"></span><br>
+
+
+                    </li>
+                </ul>
+            </div>
+
+            <div class="text-center">
+                <a th:href="@{/}" class="btn btn-secondary btn-back">Back to Home</a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

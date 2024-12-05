@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base}"
+      th:with="title='Booking for Event'">
+
+<head>
+    <title th:text="${title}">Booking for Event</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom right, #e8f5e9, #b2dfdb);
+            background-attachment: fixed;
+            background-size: cover;
+            padding: 0;
+            margin: 0 auto;
+            height: 100%;
+            width: 100%;
+        }
+
+        .event-details {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #ffffff;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-book {
+            margin-top: 1.5rem;
+        }
+
+        .alert {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 5px;
+        }
+
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+    </style>
+</head>
+
+<body>
+<div layout:fragment="content" class="container-fluid mt-5">
+    <div class="event-details">
+        <h1 class="text-center mb-4"
+            th:text="'Booking for ' + (${activeEvent?.eventTemplateDTO?.name} ?: 'Unnamed Event')">
+            Booking for Event Name
+        </h1>
+        <!--
+        <div th:if="${user.user?.customerProfile == null}">
+        -->
+            <div class="card mt-4">
+                <div class="card-header bg-info text-white">
+                    Search for Customer Profile
+                </div>
+                <div class="card-body">
+                    <!-- Search Form -->
+                    <form th:action="@{/active-events/{id}/booking/search-customers(id=${activeEvent.activeEventListDTO.getId()})}" method="get">
+                        <div class="form-group">
+                            <label for="customerSearch" class="form-label"><strong>Find Customer:</strong></label>
+                            <input type="text" id="customerSearch" name="query" class="form-control" placeholder="Search by name or email..." />
+                        </div>
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </form>
+
+                    <!-- Search Results -->
+                    <div th:if="${customerProfiles}">
+                        <ul class="list-group mt-3">
+                            <li class="list-group-item" th:each="customer : ${customerProfiles}">
+                                <a th:href="@{/active-events/{id}/booking/customerId(customerid=${customer.id},id=${activeEvent.activeEventListDTO.getId()})}" th:text="${customer.fullName} + ' (' + customer.email + ')'" class="text-decoration-none">
+                                    Customer Name (Email)
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        <!--
+        </div>
+        -->
+        <!-- Success Message -->
+        <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+
+        <!-- Error Message -->
+        <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+        <form th:action="@{/active-events/{id}/booking(id=${activeEvent.activeEventListDTO.getId()})}" th:object="${booking}" method="post"
+               novalidate>
+
+            <input type="hidden" name="EventPrice" th:value="${activeEvent.getEventTemplateDTO().getPrice()}"/>
+
+            <!-- Hidden Field for Booked Event ID -->
+            <input type="hidden" th:field="*{bookedEvent.id}" />
+
+
+            <!-- TODO: Maybe change to permissions instead of Profile?
+            <div th:if="${user.attributes?.backOfficeProfile == null}">
+            -->
+            <div class="card mt-4">
+                <div class="card-header bg-primary text-white">
+                    Customer Profile
+                </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="firstName" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="firstName" name="firstName" th:field="*{reservationist.firstName}">
+                            <!--  th:value="${user?.attributes?.customerProfile?.firstName ?: ''}" -->
+
+                        </div>
+                       <div class="mb-3">
+                           <label for="lastName" class="form-label">Last Name</label>
+                           <input type="text" class="form-control" id="lastName" name="lastName" th:field="*{reservationist.lastName}">
+                           <!--  th:value="${user.attributes?.customerProfile?.lastName}" -->
+
+                        </div>
+                      <div class="mb-3">
+                          <label for="phoneNumber" class="form-label">Phone Number</label>
+                          <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" th:field="*{reservationist.phoneNumber}">
+                          <!--  th:value="${user.attributes?.customerProfile?.phoneNumber}" -->
+
+                      </div>
+                    </div>
+
+                <div class="card mt-3">
+                    <div class="card-header bg-secondary text-white">
+                        Finanzer Address
+                    </div>
+
+                    <div class="form-group">
+                        <label for="participantAddressCountry" class="form-label"><strong>Country:</strong></label>
+                        <input type="text" id="participantAddressCountry" th:field="*{participantAddress.country}" class="form-control" placeholder="Enter your country">
+                        <!--  th:value="${user.attributes?.customerProfile?.address?.country?}" -->
+
+                        <div th:if="${#fields.hasErrors('reservationist.addressDTO.country')}" class="text-danger"
+                             th:errors="*{reservationist.addressDTO.country}"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="participantAddressRegion" class="form-label"><strong>Region:</strong></label>
+                        <input type="text" id="participantAddressRegion" th:field="*{reservationist.addressDTO.region}"
+                               class="form-control" placeholder="Enter your region">
+                        <!--   th:value="${user.attributes?.customerProfile?.address?.region?}" -->
+                        <div th:if="${#fields.hasErrors('reservationist.addressDTO.region')}" class="text-danger"
+                             th:errors="*{reservationist.addressDTO.region}"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="participantAddressCity" class="form-label"><strong>City:</strong></label>
+                        <input type="text" id="participantAddressCity" th:field="*{reservationist.addressDTO.city}"
+                               class="form-control" placeholder="Enter your city">
+                        <!--  th:value="${user.attributes?.customerProfile?.address?.city?}" -->
+                        <div th:if="${#fields.hasErrors('reservationist.addressDTO.city')}" class="text-danger"
+                             th:errors="*{reservationist.addressDTO.city}"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="participantAddressZip" class="form-label"><strong>Zip Code:</strong></label>
+                        <input type="number" id="participantAddressZip" th:field="*{reservationist.addressDTO.zip}" class="form-control"
+                               placeholder="Enter your zip code">
+                        <!--  th:value="${user.attributes?.customerProfile?.address?.zip?}" -->
+                        <div th:if="${#fields.hasErrors('reservationist.addressDTO.zip')}" class="text-danger"
+                             th:errors="*{reservationist.addressDTO.zip}"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="participantAddressStreet" class="form-label"><strong>Street:</strong></label>
+                        <input type="text" id="participantAddressStreet" th:field="*{reservationist.addressDTO.street}"
+                               class="form-control" placeholder="Enter your street">
+                        <!-- th:value="${user.attributes?.customerProfile?.address?.street?}" -->
+                        <div th:if="${#fields.hasErrors('reservationist.addressDTO.street')}" class="text-danger"
+                             th:errors="*{reservationist.addressDTO.street}"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="participantAddressHouseNumber" class="form-label"><strong>House Number:</strong></label>
+                        <input type="text" id="participantAddressHouseNumber" th:field="*{reservationist.addressDTO.houseNumber}"
+                               class="form-control" placeholder="Enter your house number">
+                        <!-- th:value="${user.attributes?.customerProfile?.address?.houseNumber?}" -->
+                        <div th:if="${#fields.hasErrors('reservationist.addressDTO.houseNumber')}" class="text-danger"
+                             th:errors="*{reservationist.addressDTO.houseNumber}"></div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <!--
+            </div>
+            -->
+
+
+            <!-- Booked Places -->
+            <div class="form-group">
+                <label for="bookedPlaces" class="form-label"><strong>Number of Places:</strong></label>
+                <input type="number" id="bookedPlaces" th:field="*{bookedPlaces}" class="form-control"
+                       placeholder="Enter number of places">
+                <div th:if="${#fields.hasErrors('bookedPlaces')}" class="text-danger"
+                     th:errors="*{bookedPlaces}"></div>
+            </div>
+
+            <!-- Option Date -->
+            <div class="form-group">
+                <label for="optionDate" class="form-label"><strong>Option Date:</strong></label>
+                <input type="date" id="optionDate" th:field="*{optionDate}" class="form-control">
+                <div th:if="${#fields.hasErrors('optionDate')}" class="text-danger" th:errors="*{optionDate}"></div>
+            </div>
+
+            <!-- Cancellation Deadline -->
+            <div class="form-group">
+                <label for="cancellationDeadline" class="form-label"><strong>Cancellation Deadline:</strong></label>
+                <input type="date" id="cancellationDeadline" th:field="*{cancellationDeadline}" class="form-control">
+                <div th:if="${#fields.hasErrors('cancellationDeadline')}" class="text-danger"
+                     th:errors="*{cancellationDeadline}"></div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit Booking</button>
+        </form>
+
+        <p class="mt-4">
+            <a th:href="@{/active-events}" class="btn btn-secondary">Back to All Events</a>
+        </p>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
