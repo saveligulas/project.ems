@@ -14,7 +14,7 @@ public class CustomerProfile extends UserProfile {
     private String firstName;
     private String lastName;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     private Address address;
 
