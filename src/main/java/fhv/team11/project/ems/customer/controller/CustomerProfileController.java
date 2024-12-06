@@ -40,7 +40,7 @@ public class CustomerProfileController implements HandleBindingResultException {
 
     @GetMapping("profiles/customer/create")
     public ModelAndView viewCustomerProfileCreatePage() {
-        return new ModelAndView("bo-customer-profile-create");
+        return new ModelAndView("bo/bo-customer-profile-create");
     }
 
     @PostMapping("profiles/customer/create")
@@ -52,6 +52,7 @@ public class CustomerProfileController implements HandleBindingResultException {
             addBindingResultToRedirect(CUSTOMER_PROFILE_MODEL_ATTRIBUTE_NAME, bindingResult, redirectAttributes);
             return "redirect:/profiles/customer/create";
         }
+
         customerProfileService.createNewCustomerProfile(customerProfileDTO);
         return "redirect:/profiles/customer";
     }
