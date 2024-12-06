@@ -2,13 +2,14 @@ package fhv.team11.project.ems.events.service.validators;
 
 import fhv.team11.project.ems.commons.validation.domain.IDomainValidator;
 import fhv.team11.project.ems.commons.validation.domain.ValidatorFor;
+import fhv.team11.project.ems.events.error.EventTemplateDTOValidationException;
 import fhv.team11.project.ems.events.repo.EventTemplate;
 import fhv.team11.project.ems.events.transfer.EventTemplateDTO;
-import jakarta.validation.constraints.DecimalMax;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
+import fhv.team11.project.ems.events.validation.MaxMinParticipants;
+import groovyjarjarantlr4.v4.runtime.misc.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
@@ -26,7 +27,13 @@ public class EventTemplateDomainValidator implements IDomainValidator<EventTempl
     }
 
     @AllArgsConstructor
+    @Getter
+    @MaxMinParticipants(max = "maxParticipants",min = "minParticipants")
     private static class EventTemplateValidation {
+
+        @NotBlank(message = "Das Namenfeld darf nicht leer sein")
+        private String name;
+
         @DecimalMax(value = "1000.0", message = "Der Preis darf nicht höher als 1000 sein")
         @DecimalMin(value = "0.0", message = "Der Preis darf nicht negativ sein")
         private double price;
@@ -44,6 +51,7 @@ public class EventTemplateDomainValidator implements IDomainValidator<EventTempl
     public BindingResult validate(EventTemplateDTO eventTemplateDTO) {
         BindingResult bindingResult = buildBindingResult(eventTemplateDTO);
         validator.validate(new EventTemplateValidation(
+                eventTemplateDTO.getName(),
                 eventTemplateDTO.getPrice(),
                 eventTemplateDTO.getMaxParticipants(),
                 eventTemplateDTO.getMinParticipants()),

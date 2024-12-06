@@ -14,11 +14,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
 @Service
 @Slf4j
+@Validated
 public class EventTemplateService {
 
     private final EventTemplateRepository eventTemplateRepository;

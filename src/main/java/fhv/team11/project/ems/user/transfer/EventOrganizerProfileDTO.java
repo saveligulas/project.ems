@@ -1,4 +1,6 @@
 package fhv.team11.project.ems.user.transfer;
 
-public class EventOrganizerProfileDTO {
+import fhv.team11.project.ems.commons.validation.model.IModelAttribute;
+
+public class EventOrganizerProfileDTO implements IModelAttribute {
 }

@@ -1,5 +1,6 @@
 package fhv.team11.project.ems.events.transfer;
 
+import fhv.team11.project.ems.commons.validation.model.IModelAttribute;
 import fhv.team11.project.ems.events.validation.MaxDate;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.FutureOrPresent;
@@ -10,9 +11,9 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 @Data
-public class ActiveEventDateDTO implements Comparable<ActiveEventDateDTO> {
-    @FutureOrPresent(message = "Date cannot be in the past")
-    @MaxDate
+public class ActiveEventDateDTO implements Comparable<ActiveEventDateDTO>,IModelAttribute {
+
+
     private LocalDate date;
     private String name;
 

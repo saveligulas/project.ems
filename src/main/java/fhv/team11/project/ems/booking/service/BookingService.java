@@ -6,25 +6,33 @@ import fhv.team11.project.ems.booking.transfer.BookingDTO;
 import fhv.team11.project.ems.commons.address.Address;
 import fhv.team11.project.ems.commons.address.AddressDTOMapper;
 import fhv.team11.project.ems.commons.address.AddressRepository;
+import fhv.team11.project.ems.commons.validation.domain.DomainValidatorFactory;
 import fhv.team11.project.ems.events.repo.ActiveEventRepository;
 import fhv.team11.project.ems.user.repo.UserJDBCRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
+@Validated
 public class BookingService {
 
     private final BookingRepository bookingRepository;
     private final UserJDBCRepository userJDBCRepository;
     private final ActiveEventRepository activeEventRepository;
     private final AddressRepository addressRepository;
+    private final DomainValidatorFactory domainValidatorFactory;
 
     @Autowired
-    public BookingService(BookingRepository bookingRepository, UserJDBCRepository userJDBCRepository, ActiveEventRepository activeEventRepository, AddressRepository addressRepository) {
+    public BookingService(BookingRepository bookingRepository, UserJDBCRepository userJDBCRepository, ActiveEventRepository activeEventRepository, AddressRepository addressRepository,
+                          DomainValidatorFactory domainValidatorFactory) {
+        this.domainValidatorFactory = domainValidatorFactory;
         this.bookingRepository = bookingRepository;
         this.userJDBCRepository = userJDBCRepository;
         this.activeEventRepository = activeEventRepository;
