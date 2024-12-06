@@ -23,16 +23,9 @@ import java.time.LocalDate;
 @Setter
 public class Booking {
 
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "address_id")
-    private Address participantAddress;
-    
-    private String participant;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "financer_id",nullable = true)
@@ -45,12 +38,13 @@ public class Booking {
     @Enumerated(EnumType.ORDINAL)
     private Deposit deposit;
 
-    private int bookedPlaces;
+    private Integer bookedPlaces;
 
+    //TODO: set them from Service, by predefined dates by event organizer
     private LocalDate cancellationDeadline;
 
     private LocalDate optionDate;
 
+    //TODO: Load in service
     private BigDecimal price;
-
 }
