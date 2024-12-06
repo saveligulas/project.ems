@@ -5,10 +5,7 @@
       th:with="title='Booking for Event'">
 
 <head>
-    <title th:text="${title}">Booking for Event</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
-    <style>
+    <!--<style>
         body {
             font-family: 'Arial', sans-serif;
             background: linear-gradient(to bottom right, #e8f5e9, #b2dfdb);
@@ -54,19 +51,18 @@
             background-color: #f8d7da;
             border-color: #f5c6cb;
         }
-    </style>
+    </style>-->
 </head>
 
 <body>
+<!--@thymesVar id="user" type="fhv.team11.project.ems.commons.controller.base.attribute.user.UserAttributes"-->
 <div layout:fragment="content" class="container-fluid mt-5">
     <div class="event-details">
         <h1 class="text-center mb-4"
             th:text="'Booking for ' + (${activeEvent?.eventTemplateDTO?.name} ?: 'Unnamed Event')">
             Booking for Event Name
         </h1>
-        <!--
-        <div th:if="${user.user?.customerProfile == null}">
-        -->
+        <div th:if="${user.hasRole(${T(fhv.team11.project.ems.security.permission.role.Role.EMPLOYEE)})}">
             <div class="card mt-4">
                 <div class="card-header bg-info text-white">
                     Search for Customer Profile
@@ -93,9 +89,27 @@
                     </div>
                 </div>
             </div>
-        <!--
         </div>
-        -->
+        <div th:if="${user.hasRole(${T(fhv.team11.project.ems.security.permission.role.Role.CUSTOMER)})}">
+            <div th:if="${!user.hasCustomerProfile()}">
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const userConfirmed = confirm("You don't have a customer profile. Do you want to proceed?");
+                        if (userConfirmed) {
+                            window.location.href = '/user/details/customer-profile';
+                        } else {
+                            window.location.href = '/home';
+                        }
+                    });
+                </script>
+            </div>
+
+            <div class="card mt-4">
+
+            </div>
+        </div>
+
+
         <!-- Success Message -->
         <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
 
