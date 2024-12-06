@@ -14,7 +14,7 @@ public class CustomerProfileDTOMapper implements IDTOEntityBiMapper<CustomerProf
     public CustomerProfile getEntity(CustomerProfileDTO dto) {
         CustomerProfile customerProfile = new CustomerProfile();
 
-        customerProfile.setAddress(AddressDTOMapperImpl.INSTANCE.toEntity(dto.getAddressDTO()));
+        customerProfile.setAddress(AddressDTOMapperImpl.INSTANCE.toEntity(dto.getAddress()));
         customerProfile.setFirstName(dto.getFirstName());
         customerProfile.setLastName(dto.getLastName());
         customerProfile.setPhoneNumber(dto.getPhoneNumber());
@@ -30,7 +30,7 @@ public class CustomerProfileDTOMapper implements IDTOEntityBiMapper<CustomerProf
         }
         CustomerProfileDTO customerProfileDTO = new CustomerProfileDTO();
 
-        customerProfileDTO.setAddressDTO(AddressDTOMapperImpl.INSTANCE.toDTO(entity.getAddress()));
+        customerProfileDTO.setAddress(AddressDTOMapperImpl.INSTANCE.toDTO(entity.getAddress()));
         customerProfileDTO.setFirstName(entity.getFirstName());
         customerProfileDTO.setLastName(entity.getLastName());
         customerProfileDTO.setPhoneNumber(entity.getPhoneNumber());
