@@ -18,7 +18,7 @@ public class CustomerProfileDTO implements IModelAttribute {
     private String lastName;
 
     @Valid
-    private AddressDTO addressDTO;
+    private AddressDTO address;
 
     @NotBlank
     private String phoneNumber;
