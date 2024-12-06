@@ -13,7 +13,7 @@ import java.util.List;
 
 @NullMarked
 public class UserAttributes {
-    private static final List<Role> ROLES = Arrays.asList(Role.values());
+    public static final List<Role> ROLES = Arrays.asList(Role.values());
 
     private final UserAttributeDTO attributes;
     private final List<Role> roles;
