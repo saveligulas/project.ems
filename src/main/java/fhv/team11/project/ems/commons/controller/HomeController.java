@@ -28,6 +28,11 @@ public class HomeController {
         return "redirect:/home";
     }
 
+    @GetMapping("/index")
+    public String indexRedirect() {
+        return "redirect:/home";
+    }
+
     @GetMapping("/home")
     public ModelAndView getHomePage() {
         ModelAndView modelAndView = new ModelAndView("index");
