@@ -54,11 +54,4 @@ public class BookingController {
         bookingService.createBooking(createBookingDTO, eventId);
         return "redirect:/bookings";
     }
-
-    @GetMapping("/bookings")
-    public ModelAndView getAllBooking(){
-        ModelAndView modelAndView = new ModelAndView("all-bookings");
-        modelAndView.addObject("bookings",bookingService.getAllBooking());
-        return modelAndView;
-    }
 }
