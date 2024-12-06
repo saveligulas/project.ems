@@ -1,13 +1,14 @@
 package fhv.team11.project.ems.user.transfer;
 
 import fhv.team11.project.ems.backoffice.transfer.BackOfficeProfileDTO;
+import fhv.team11.project.ems.commons.validation.model.IModelAttribute;
 import fhv.team11.project.ems.customer.transfer.CustomerProfileDTO;
 import lombok.Data;
 
 import java.util.Optional;
 
 @Data
-public class UserDTO {
+public class UserDTO implements IModelAttribute {
 
     private String username;
     private Optional<CustomerProfileDTO> customerProfileDTO;
