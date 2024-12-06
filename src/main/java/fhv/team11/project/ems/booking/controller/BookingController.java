@@ -1,7 +1,7 @@
 package fhv.team11.project.ems.booking.controller;
 
 import fhv.team11.project.ems.booking.service.BookingService;
-import fhv.team11.project.ems.booking.transfer.BookingDTO;
+import fhv.team11.project.ems.booking.transfer.CreateBookingDTO;
 import fhv.team11.project.ems.events.service.ActiveEventService;
 import fhv.team11.project.ems.events.service.ActiveEventWizardService;
 import fhv.team11.project.ems.events.service.EventTemplateService;
@@ -36,23 +36,22 @@ public class BookingController {
         ActiveEventView activeEvent = activeEventService.getActiveEventById(id);
         ModelAndView modelAndView = new ModelAndView("booking-form");
 
-        BookingDTO bookingDTO = new BookingDTO();
-        ActiveEventListDTO bookedEvent = new ActiveEventListDTO();
-        bookedEvent.setId(activeEvent.getActiveEventListDTO().getId());
-        bookingDTO.setBookedEvent(bookedEvent);
+        CreateBookingDTO createBookingDTO = new CreateBookingDTO();
+        ActiveEventListDTO activeEventListDTO = new ActiveEventListDTO();
+        activeEventListDTO.setId(activeEvent.getActiveEventListDTO().getId());
 
         modelAndView.addObject("activeEvent", activeEvent);
-        modelAndView.addObject("booking", bookingDTO);
+        modelAndView.addObject("activeEventList", activeEventListDTO);
+        modelAndView.addObject("createBooking", createBookingDTO);
         return modelAndView;
     }
 
 
 
     @PostMapping("/active-events/{id}/booking")
-    public String sendBookingForm(@ModelAttribute("booking") BookingDTO bookingDTO,
-                                  @ModelAttribute("EventPrice") BigDecimal eventPrice) {
-        bookingDTO.setPrice(eventPrice);
-        bookingService.createBooking(bookingDTO);
+    public String sendBookingForm(@ModelAttribute("createBooking") CreateBookingDTO createBookingDTO,
+                                  @PathVariable("id") Long eventId) {
+        bookingService.createBooking(createBookingDTO, eventId);
         return "redirect:/bookings";
     }
 
