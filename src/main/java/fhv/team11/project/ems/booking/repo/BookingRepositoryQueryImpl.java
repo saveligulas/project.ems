@@ -17,7 +17,6 @@ public class BookingRepositoryQueryImpl implements BookingRepositoryQuery {
     @Transactional
     @Override
     public Booking persist(Booking entity) {
-        entityManager.persist(entity.getParticipantAddress());
         entityManager.persist(entity);
         return entity;
     }
