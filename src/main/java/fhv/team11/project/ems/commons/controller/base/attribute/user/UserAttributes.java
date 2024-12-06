@@ -67,6 +67,13 @@ public class UserAttributes {
         return attributes.customerProfileDTO;
     }
 
+    public Long getCustomerProfileId() {
+        if (attributes.customerProfileId == null) {
+            throw new IllegalStateException("Customer profile ID not set");
+        }
+        return attributes.customerProfileId;
+    }
+
     public boolean hasBackOfficeProfile() {
         return attributes.backOfficeProfileDTO != null;
     }

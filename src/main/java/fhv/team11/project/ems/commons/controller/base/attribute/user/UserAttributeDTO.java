@@ -16,17 +16,21 @@ import org.jspecify.annotations.Nullable;
 @Slf4j
 @Getter(AccessLevel.PACKAGE)
 public class UserAttributeDTO {
+    //TODO: fetch data from service which will later use caching
     @Nullable
     final String username;
     @Nullable
     final CustomerProfileDTO customerProfileDTO;
     @Nullable
     final BackOfficeProfileDTO backOfficeProfileDTO;
+    @Nullable
+    final Long customerProfileId;
 
     public UserAttributeDTO() {
         String name = null;
         CustomerProfileDTO customerProfile = null;
         BackOfficeProfileDTO backOfficeProfile = null;
+        Long customerProfileId = null;
 
         try {
             UserEntity user = JwtSecurityContextHolder.getUser();
@@ -37,6 +41,9 @@ public class UserAttributeDTO {
             if (user.getUserEntityDetails() == null) {
                 log.info("User has not set their UserEntityDetails");
             } else {
+                if (user.getUserEntityDetails().getCustomerProfile() != null) {
+                    customerProfileId = user.getUserEntityDetails().getCustomerProfile().getId();
+                }
                 customerProfile = CustomerProfileDTOMapper.INSTANCE.getDTO(user.getUserEntityDetails().getCustomerProfile());
                 backOfficeProfile = BackOfficeProfileDTOMapper.INSTANCE.getDTO(user.getUserEntityDetails().getBackOfficeProfile());
             }
@@ -47,5 +54,6 @@ public class UserAttributeDTO {
         this.username = name;
         this.customerProfileDTO = customerProfile;
         this.backOfficeProfileDTO = backOfficeProfile;
+        this.customerProfileId = customerProfileId;
     }
 }
