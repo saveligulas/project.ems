@@ -2,17 +2,14 @@ package fhv.team11.project.ems.admin.service;
 
 import fhv.team11.project.ems.security.error.RegistrationEmailAlreadyRegisteredException;
 import fhv.team11.project.ems.security.jwt.JwtTokenService;
-import fhv.team11.project.ems.security.permission.UserPermission;
-import fhv.team11.project.ems.security.permission.annotation.RequiresPermission;
 import fhv.team11.project.ems.user.entity.UserJDBC;
 import fhv.team11.project.ems.user.profile.repo.UserProfilesRepository;
 import fhv.team11.project.ems.security.permission.role.Role;
 import fhv.team11.project.ems.user.repo.UserJDBCRepository;
-import fhv.team11.project.ems.user.transfer.UserDTO;
+import fhv.team11.project.ems.user.transfer.UserView;
 import fhv.team11.project.ems.user.transfer.UserListDTO;
 import fhv.team11.project.ems.user.transfer.UserListDTOMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -40,8 +37,8 @@ public class AdminUserService {
                 .toList();
     }
 
-    public UserDTO getUserDetails(Long id) {
-        return new UserDTO();
+    public UserView getUserDetails(Long id) {
+        return new UserView();
     }
 
     public void createUserWithSetPassword(String email) {

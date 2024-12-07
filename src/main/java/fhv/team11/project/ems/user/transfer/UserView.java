@@ -8,7 +8,7 @@ import lombok.Data;
 import java.util.Optional;
 
 @Data
-public class UserDTO implements IModelAttribute {
+public class UserView implements IModelAttribute {
 
     private String username;
     private Optional<CustomerProfileDTO> customerProfileDTO;
