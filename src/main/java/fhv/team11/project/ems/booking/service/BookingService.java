@@ -1,7 +1,7 @@
 package fhv.team11.project.ems.booking.service;
 
-import fhv.team11.project.ems.booking.repo.Booking;
-import fhv.team11.project.ems.booking.repo.BookingRepository;
+import fhv.team11.project.ems.booking.repo.*;
+import fhv.team11.project.ems.booking.transfer.BookingListDTO;
 import fhv.team11.project.ems.booking.transfer.CreateBookingDTO;
 import fhv.team11.project.ems.customer.CustomerProfileRepository;
 import fhv.team11.project.ems.events.repo.ActiveEventRepository;
@@ -22,13 +22,15 @@ public class BookingService {
     private final BookingRepository bookingRepository;
     private final ActiveEventRepository activeEventRepository;
     private final CustomerProfileRepository customerProfileRepository;
+    private final BookingIdentifierRepository bookingIdentifierRepository;
 
 
     @Autowired
-    public BookingService(BookingRepository bookingRepository, ActiveEventRepository activeEventRepository, CustomerProfileRepository customerProfileRepository) {
+    public BookingService(BookingRepository bookingRepository, ActiveEventRepository activeEventRepository, CustomerProfileRepository customerProfileRepository, BookingIdentifierRepository bookingIdentifierRepository) {
         this.bookingRepository = bookingRepository;
         this.activeEventRepository = activeEventRepository;
         this.customerProfileRepository = customerProfileRepository;
+        this.bookingIdentifierRepository = bookingIdentifierRepository;
     }
 
 
@@ -46,8 +48,19 @@ public class BookingService {
                 customerProfileRepository.findById(createBookingDTO.getFinancerId())
                         .orElseThrow(() -> new EntityNotFoundException("Customer Profile not found"))
         );
+        bookingRepository.persist(booking);
+    }
 
-        bookingRepository.save(booking);
+    public List<BookingListDTO> getAllBooking() {
+        List<Booking> bookings = bookingRepository.findAll();
+
+        return bookings.stream()
+                .map(BookingListDTOMapper.INSTANCE::getDTO)
+                .collect(Collectors.toList());
+    }
+
+    public void checkInBooking(String identifierId) {
+        bookingIdentifierRepository.updateUUIDStatus(identifierId, BookingStatus.Checked_In);
     }
 }
 

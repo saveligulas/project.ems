@@ -3,15 +3,7 @@ package fhv.team11.project.ems.booking.repo;
 import fhv.team11.project.ems.commons.address.Address;
 import fhv.team11.project.ems.customer.CustomerProfile;
 import fhv.team11.project.ems.events.repo.ActiveEvent;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -47,4 +39,7 @@ public class Booking {
 
     //TODO: Load in service
     private BigDecimal price;
+
+    @OneToOne(mappedBy = "booking", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private BookingIdentifier bookingIdentifier;
 }

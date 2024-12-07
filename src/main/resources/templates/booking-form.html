@@ -111,13 +111,15 @@
         <!-- Error Message -->
         <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
 
-        <form th:action="@{/active-events/{id}/booking(id=${activeEvent.activeEventListDTO.getId()})}" th:object="${createBooking}" method="post"
+        <form th:if="${user?.hasCustomerProfile()}" th:action="@{/active-events/{id}/booking(id=${activeEvent.activeEventListDTO.getId()})}" th:object="${createBooking}" method="post"
                novalidate>
 
             <!--
             <label for="financerId" class="form-label">Financer Id</label>
             <input type="number" id="financerId" name="financerId" th:field="*{financerId}" th:value="${user?.getCustomerProfileId()}" readonly>
             -->
+
+
             <input type="hidden" name="financerId" th:value="${user?.getCustomerProfileId()}">
 
             <div class="card mt-4">
