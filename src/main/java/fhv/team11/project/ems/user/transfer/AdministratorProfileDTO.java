@@ -1,4 +1,6 @@
 package fhv.team11.project.ems.user.transfer;
 
-public class AdministratorProfileDTO {
+import fhv.team11.project.ems.commons.validation.model.IModelAttribute;
+
+public class AdministratorProfileDTO implements IModelAttribute {
 }

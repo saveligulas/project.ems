@@ -5,4 +5,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserEntityRepository extends JpaRepository<UserEntity, Long> {
+   //TODO: add method to add UserEntityDetails to User with Id....... / Maybe works with update please test!!!
 }

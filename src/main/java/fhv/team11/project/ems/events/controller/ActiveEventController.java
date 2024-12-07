@@ -1,5 +1,7 @@
 package fhv.team11.project.ems.events.controller;
 
+import fhv.team11.project.ems.commons.validation.domain.DomainValidatorFactory;
+import fhv.team11.project.ems.events.error.ScheduleEventDTOValidationException;
 import fhv.team11.project.ems.events.service.ActiveEventService;
 import fhv.team11.project.ems.events.service.ActiveEventWizardService;
 import fhv.team11.project.ems.events.service.EventTemplateService;
@@ -12,6 +14,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -23,12 +26,13 @@ public class ActiveEventController {
     private final EventTemplateService eventTemplateService;
     private final ActiveEventWizardService activeEventWizardService;
     private final ActiveEventService activeEventService;
-
+    private final DomainValidatorFactory domainValidatorFactory;
     @Autowired
-    public ActiveEventController(ActiveEventWizardService activeEventWizardService, EventTemplateService eventTemplateService, ActiveEventService activeEventService) {
+    public ActiveEventController(ActiveEventWizardService activeEventWizardService, EventTemplateService eventTemplateService, ActiveEventService activeEventService, DomainValidatorFactory domainValidatorFactory) {
         this.activeEventWizardService = activeEventWizardService;
         this.eventTemplateService = eventTemplateService;
         this.activeEventService = activeEventService;
+        this.domainValidatorFactory = domainValidatorFactory;
     }
 
     @GetMapping("/event/manage/{id}/plan")
@@ -39,7 +43,7 @@ public class ActiveEventController {
 
         ActiveEventWizardDTO wizard = (ActiveEventWizardDTO) session.getAttribute("wizard");
         if (wizard == null) {
-            wizard = new ActiveEventWizardDTO();
+            wizard = new ActiveEventWizardDTO(domainValidatorFactory);
             session.setAttribute("wizard", wizard);
         }
         modelAndView.addObject("wizard", wizard);
@@ -48,17 +52,37 @@ public class ActiveEventController {
     }
 
     @PostMapping("/event/manage/{id}/plan")
-    public String addEventDate(@Valid ActiveEventDateDTO activeEventDateDTO,
+    public String addEventDate(@Valid @ModelAttribute("eventDate") ActiveEventDateDTO activeEventDateDTO,
                                HttpSession session,
-                               @PathVariable("id") Long templateId) {
+                               @PathVariable("id") Long templateId,
+                               BindingResult result,
+                               Model model) {
+        // Retrieve the wizard from the session
         ActiveEventWizardDTO wizard = (ActiveEventWizardDTO) session.getAttribute("wizard");
         if (wizard == null) {
-            wizard = new ActiveEventWizardDTO();
+            wizard = new ActiveEventWizardDTO(domainValidatorFactory);
         }
-        wizard.addActiveEvent(activeEventDateDTO);
-        session.setAttribute("wizard", wizard);
+
+        try {
+            wizard.addActiveEvent(activeEventDateDTO);
+            session.setAttribute("wizard", wizard);
+        } catch (ScheduleEventDTOValidationException ex) {
+            ex.getBindingResult().getAllErrors().forEach(error -> {
+                System.out.println("Validation Error: " + error.getDefaultMessage()); // Logging
+                result.addError(error);
+            });
+        }
+
+        if (result.hasErrors()) {
+            model.addAttribute("eventDate", activeEventDateDTO);
+            model.addAttribute("wizard", wizard);
+            model.addAttribute("eventTemplate", eventTemplateService.getTemplateById(templateId));
+            model.addAttribute("listTemplate", eventTemplateService.getTemplateListByID(templateId));
+            return "plan-event";
+        }
         return "redirect:/event/manage/" + templateId + "/plan";
     }
+
 
     @GetMapping("/event/manage/{id}/plan/redirect")
     public String planAppointmentsRedirect(@PathVariable("id") Long templateId) {

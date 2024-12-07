@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{base}"
+      th:with="title='Customer Profile'">
+<body>
+<!--@thymesVar id="user" type="fhv.team11.project.ems.commons.controller.base.attribute.user.UserAttributes"-->
+<div layout:fragment="content">
+  <form th:action="@{/profiles/customer/create}" th:object="${customerProfile}" method="post"
+        novalidate>
+    <div class="card mt-4">
+      <div class="card-header bg-primary text-white">
+        Customer Profile
+      </div>
+      <div class="card-body">
+        <div class="mb-3">
+          <label for="firstName" class="form-label">First Name</label>
+          <input type="text" class="form-control" id="firstName" name="firstName" th:field="*{firstName}">
+        </div>
+
+        <div class="mb-3">
+          <label for="lastName" class="form-label">Last Name</label>
+          <input type="text" class="form-control" id="lastName" name="lastName" th:field="*{lastName}">
+        </div>
+
+        <div class="mb-3">
+          <label for="phoneNumber" class="form-label">Phone Number</label>
+          <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" th:field="*{phoneNumber}">
+        </div>
+
+        <div class="mb-3">
+          <label for="secret" class="form-label">Secret</label>
+          <input type="number" class="form-control" id="secret" name="secret" th:field="*{secret}">
+        </div>
+
+        <div th:include="~{fragments/address-form :: address(${customerProfile.address})}"></div>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+</body>
+</html>

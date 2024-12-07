@@ -23,8 +23,18 @@ public class HomeController {
         this.activeEventService = activeEventService;
     }
 
+    @GetMapping("/")
+    public String index() {
+        return "redirect:/home";
+    }
+
     @GetMapping("/index")
-    public ModelAndView index() {
+    public String indexRedirect() {
+        return "redirect:/home";
+    }
+
+    @GetMapping("/home")
+    public ModelAndView getHomePage() {
         ModelAndView modelAndView = new ModelAndView("index");
 
 

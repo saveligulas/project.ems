@@ -1,7 +1,10 @@
 package fhv.team11.project.ems.customer.transfer;
 
+import fhv.team11.project.ems.commons.address.AddressDTOMapperImpl;
 import fhv.team11.project.ems.commons.database.IDTOEntityBiMapper;
 import fhv.team11.project.ems.customer.CustomerProfile;
+import jakarta.validation.constraints.Null;
+import org.jspecify.annotations.Nullable;
 
 public class CustomerProfileDTOMapper implements IDTOEntityBiMapper<CustomerProfile, CustomerProfileDTO> {
 
@@ -9,11 +12,30 @@ public class CustomerProfileDTOMapper implements IDTOEntityBiMapper<CustomerProf
 
     @Override
     public CustomerProfile getEntity(CustomerProfileDTO dto) {
-        return null;
+        CustomerProfile customerProfile = new CustomerProfile();
+
+        customerProfile.setAddress(AddressDTOMapperImpl.INSTANCE.toEntity(dto.getAddress()));
+        customerProfile.setFirstName(dto.getFirstName());
+        customerProfile.setLastName(dto.getLastName());
+        customerProfile.setPhoneNumber(dto.getPhoneNumber());
+        customerProfile.setSecret(dto.getSecret());
+
+        return customerProfile;
     }
 
     @Override
-    public CustomerProfileDTO getDTO(CustomerProfile entity) {
-        return null;
+    public @Nullable CustomerProfileDTO getDTO(@Nullable CustomerProfile entity) {
+        if (entity == null) {
+            return null;
+        }
+        CustomerProfileDTO customerProfileDTO = new CustomerProfileDTO();
+
+        customerProfileDTO.setAddress(AddressDTOMapperImpl.INSTANCE.toDTO(entity.getAddress()));
+        customerProfileDTO.setFirstName(entity.getFirstName());
+        customerProfileDTO.setLastName(entity.getLastName());
+        customerProfileDTO.setPhoneNumber(entity.getPhoneNumber());
+        customerProfileDTO.setSecret(entity.getSecret());
+
+        return customerProfileDTO;
     }
 }
