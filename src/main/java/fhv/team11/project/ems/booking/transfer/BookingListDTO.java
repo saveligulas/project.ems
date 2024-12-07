@@ -1,6 +1,6 @@
 package fhv.team11.project.ems.booking.transfer;
 
-import fhv.team11.project.ems.booking.repo.Deposite;
+import fhv.team11.project.ems.booking.repo.Deposit;
 import fhv.team11.project.ems.commons.address.AddressDTO;
 import fhv.team11.project.ems.events.transfer.ActiveEventListDTO;
 import fhv.team11.project.ems.user.transfer.UserDTO;
@@ -22,7 +22,7 @@ public class BookingListDTO {
 
     private ActiveEventListDTO bookedEvent;
 
-    private Deposite deposite;
+    private Deposit deposit;
 
     private int bookedPlaces;
 

@@ -1,7 +1,6 @@
 package fhv.team11.project.ems.booking.service;
 
 import fhv.team11.project.ems.booking.repo.Booking;
-import fhv.team11.project.ems.booking.transfer.BookingDTO;
 import fhv.team11.project.ems.booking.transfer.BookingIdentifierListDTO;
 import fhv.team11.project.ems.booking.transfer.BookingListDTO;
 import fhv.team11.project.ems.commons.address.AddressDTOMapper;
@@ -19,11 +18,7 @@ public class BookingListDTOMapper implements IEntityDTOMapper<Booking, BookingLi
 
         dto.setId(entity.getId());
 
-        dto.setParticipantAddress(AddressDTOMapper.INSTANCE.toDTO(entity.getParticipantAddress()));
-
-        if (entity.getParticipant() != null) {
-            dto.setParticipant(null);
-        }//TODO user
+        dto.setParticipantAddress(AddressDTOMapper.INSTANCE.toDTO(entity.getFinancer().getAddress()));
 
         if (entity.getFinancer() != null) {
             dto.setReservationist(null);
@@ -35,7 +30,7 @@ public class BookingListDTOMapper implements IEntityDTOMapper<Booking, BookingLi
             dto.setBookedEvent(activeEventDTO);
         }
 
-        dto.setDeposite(entity.getDeposite());
+        dto.setDeposit(entity.getDeposit());
         dto.setBookedPlaces(entity.getBookedPlaces());
         dto.setPrice(entity.getPrice());
         dto.setOptionDate(entity.getOptionDate());
