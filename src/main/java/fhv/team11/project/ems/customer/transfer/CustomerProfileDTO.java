@@ -4,6 +4,7 @@ import fhv.team11.project.ems.commons.address.AddressDTO;
 import fhv.team11.project.ems.commons.validation.model.IModelAttribute;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.thymeleaf.model.IModel;
 
@@ -17,9 +18,12 @@ public class CustomerProfileDTO implements IModelAttribute {
     private String lastName;
 
     @Valid
-    private AddressDTO addressDTO;
+    private AddressDTO address;
 
     @NotBlank
     private String phoneNumber;
+
+    @NotNull
+    private Integer secret;
 
 }

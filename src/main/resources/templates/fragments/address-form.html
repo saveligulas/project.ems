@@ -1,0 +1,47 @@
+<!--
+    TODO: Make the fields errors dynamic with the basePath to allow multiple addresses
+-->
+<div th:fragment="address(address)">
+    <div class="form-group mb-4">
+        <label for="country"><strong>Country *</strong></label>
+        <input type="text" id="country" name="location" th:field="*{address.country}"
+               th:classappend="${#fields.hasErrors('address.country') ? 'input-error' : ''}" placeholder="e.g., Austria" class="form-control">
+    </div>
+
+    <div class="form-group mb-4">
+        <label for="county"><strong>Region</strong></label>
+        <input type="text" id="county" name="county" th:field="*{address.region}"
+               th:classappend="${#fields.hasErrors('address.region') ? 'input-error' : ''}" placeholder="e.g., Vorarlberg" class="form-control">
+    </div>
+
+    <div class="form-group mb-4">
+        <label for="city"><strong>City</strong></label>
+        <input type="text" id="city" name="zip" th:field="*{address.city}"
+               th:classappend="${#fields.hasErrors('address.city') ? 'input-error' : ''}" placeholder="e.g., Musterstadt" class="form-control">
+    </div>
+
+    <div class="form-group mb-4">
+        <label for="zip"><strong>ZIP</strong></label>
+        <input type="number" id="zip" name="zip" th:field="*{address.zip}"
+               th:classappend="${#fields.hasErrors('address.zip') ? 'input-error' : ''}" placeholder="e.g., 11111" class="form-control">
+    </div>
+
+    <div class="form-group mb-4">
+        <label for="street"><strong>Street</strong></label>
+        <input type="text" id="street" name="street" th:field="*{address.street}"
+               th:classappend="${#fields.hasErrors('address.street') ? 'input-error' : ''}" placeholder="e.g., Musterstrasse" class="form-control">
+    </div>
+
+    <div class="form-group mb-4">
+        <label for="house-number"><strong>House Number</strong></label>
+        <input type="text" id="house-number" name="house-number" th:field="*{address.houseNumber}"
+               th:classappend="${#fields.hasErrors('address.houseNumber') ? 'input-error' : ''}" placeholder="e.g., 11" class="form-control">
+    </div>
+
+    <div class="form-group mb-4">
+        <label for="optionalLine"><strong>Optional Line</strong></label>
+        <textarea id="optionalLine" name="optionalLine" th:field="*{address.optionalText}" maxlength="150"
+                  th:classappend="${#fields.hasErrors('address.optionalText') ? 'input-error' : ''}"
+                  placeholder="max 150 characters" rows="4" class="form-control"></textarea>
+    </div>
+</div>

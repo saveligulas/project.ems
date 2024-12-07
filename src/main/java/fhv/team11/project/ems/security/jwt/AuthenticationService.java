@@ -6,6 +6,9 @@ import fhv.team11.project.ems.security.transfer.domain.error.AuthenticationReque
 import fhv.team11.project.ems.security.transfer.domain.error.RegisterRequestValidationException;
 import fhv.team11.project.ems.security.transfer.RegisterRequest;
 import fhv.team11.project.ems.security.permission.role.Role;
+import fhv.team11.project.ems.user.entity.UserEntity;
+import fhv.team11.project.ems.user.entity.UserEntityDetails;
+import fhv.team11.project.ems.user.entity.UserEntityRepository;
 import fhv.team11.project.ems.user.repo.UserJDBCRepository;
 import fhv.team11.project.ems.security.error.*;
 import fhv.team11.project.ems.security.transfer.AuthenticationRequest;
@@ -27,13 +30,15 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenService jwtTokenService;
     private final DomainValidatorFactory factory;
+    private final UserEntityRepository userEntityRepository;
 
     @Autowired
-    public AuthenticationService(UserJDBCRepository userJDBCRepository, AuthenticationManager authenticationManager, JwtTokenService jwtTokenService, DomainValidatorFactory domainValidatorFactory) {
+    public AuthenticationService(UserJDBCRepository userJDBCRepository, AuthenticationManager authenticationManager, JwtTokenService jwtTokenService, DomainValidatorFactory domainValidatorFactory, UserEntityRepository userEntityRepository) {
         this.userJDBCRepository = userJDBCRepository;
         this.authenticationManager = authenticationManager;
         this.jwtTokenService = jwtTokenService;
         this.factory = domainValidatorFactory;
+        this.userEntityRepository = userEntityRepository;
     }
 
     //!ALERT - do not encode the password here
@@ -54,8 +59,19 @@ public class AuthenticationService {
         user.setEmail(email);
         user.setPassword(password);
         user.setRoles(List.of(Role.CUSTOMER, Role.ADMIN, Role.EMPLOYEE));
+        //TODO: Save UserEntityDetails
 
-        userJDBCRepository.save(user);
+        user = userJDBCRepository.save(user);
+
+        UserEntity userEntity = new UserEntity();
+        userEntity.setId(user.getId());
+
+        UserEntityDetails userEntityDetails = new UserEntityDetails();
+        userEntityDetails.setUser(userEntity);
+
+        userEntity.setUserEntityDetails(userEntityDetails);
+
+        userEntityRepository.save(userEntity);
 
         return new AuthenticationResponse("User registration was successful");
     }

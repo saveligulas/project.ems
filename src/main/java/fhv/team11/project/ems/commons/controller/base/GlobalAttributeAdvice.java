@@ -1,6 +1,6 @@
 package fhv.team11.project.ems.commons.controller.base;
 
-import fhv.team11.project.ems.commons.controller.base.attribute.UserAttributes;
+import fhv.team11.project.ems.commons.controller.base.attribute.user.UserAttributes;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;

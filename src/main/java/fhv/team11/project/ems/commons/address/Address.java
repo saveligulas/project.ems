@@ -38,7 +38,4 @@ public class Address {
     @NotNull
     private String houseNumber;
     private String optionalText;
-
-    @OneToMany(mappedBy = "participantAddress", fetch = FetchType.LAZY)
-    private Set<Booking> booking;
 }
