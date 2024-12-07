@@ -17,7 +17,13 @@ public class BookingRepositoryQueryImpl implements BookingRepositoryQuery {
     @Transactional
     @Override
     public Booking persist(Booking entity) {
+        BookingIdentifier bookingIdentifier = new BookingIdentifier();
+        bookingIdentifier.setStatus(BookingStatus.Valid);
+        bookingIdentifier.setBooking(entity);
+        entity.setBookingIdentifier(bookingIdentifier);
+
         entityManager.persist(entity);
+
         return entity;
     }
 

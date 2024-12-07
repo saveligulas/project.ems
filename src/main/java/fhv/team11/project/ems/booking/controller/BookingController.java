@@ -1,7 +1,9 @@
 package fhv.team11.project.ems.booking.controller;
 
 import fhv.team11.project.ems.booking.service.BookingService;
+import fhv.team11.project.ems.booking.transfer.BookingListDTO;
 import fhv.team11.project.ems.booking.transfer.CreateBookingDTO;
+import fhv.team11.project.ems.commons.qrcode.QRCodeGenerator;
 import fhv.team11.project.ems.events.service.ActiveEventService;
 import fhv.team11.project.ems.events.service.ActiveEventWizardService;
 import fhv.team11.project.ems.events.service.EventTemplateService;
@@ -9,13 +11,11 @@ import fhv.team11.project.ems.events.transfer.ActiveEventListDTO;
 import fhv.team11.project.ems.events.transfer.ActiveEventView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Controller
 public class BookingController {
@@ -53,5 +53,22 @@ public class BookingController {
                                   @PathVariable("id") Long eventId) {
         bookingService.createBooking(createBookingDTO, eventId);
         return "redirect:/bookings";
+    }
+
+    @GetMapping("/bookings")
+    public ModelAndView getAllBooking(){
+        ModelAndView modelAndView = new ModelAndView("all-bookings");
+        modelAndView.addObject("bookings",bookingService.getAllBooking());
+        modelAndView.addObject("qrCodeImage", QRCodeGenerator.generateQRCodeImage("localhost8080","Halllo",100,100));
+        List<BookingListDTO> bookingListDTOS = bookingService.getAllBooking();
+        modelAndView.addObject("bookings",bookingListDTOS);
+        return modelAndView;
+    }
+
+    @GetMapping("/bookings/checkin")
+    public String checkinBooking(@RequestParam("token")String token){
+        bookingService.checkInBooking(token);
+        return "redirect:/bookings";
+        //TODO: redirect to Dashboard for active event
     }
 }

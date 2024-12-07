@@ -40,6 +40,6 @@ public class Booking {
     //TODO: Load in service
     private BigDecimal price;
 
-    @OneToOne
+    @OneToOne(mappedBy = "booking", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private BookingIdentifier bookingIdentifier;
 }

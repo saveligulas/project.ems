@@ -64,7 +64,7 @@
                         <strong>ID:</strong> <span th:text="${booking.getBookedEvent().getId()}"></span><br>
                         <strong>Participant:</strong> <span th:text="${booking.participant != null ? booking.participant.name : 'N/A'}"></span><br>
                         <strong>Reservationist:</strong> <span th:text="${booking.reservationist != null ? booking.reservationist.name : 'N/A'}"></span><br>
-                        <strong>Deposit:</strong> <span th:text="${booking.getDeposite()}"></span><br>
+                        <strong>Deposit:</strong> <span th:text="${booking.getDeposit()}"></span><br>
                         <strong>Places:</strong> <span th:text="${booking.getBookedPlaces()}"></span><br>
                         <strong>Price:</strong> <span th:text="${booking.getPrice()}"></span><br>
                         <strong>Date:</strong> <span th:text="${booking.getOptionDate()}"></span><br>
