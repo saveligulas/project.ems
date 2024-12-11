@@ -2,7 +2,7 @@ package fhv.team11.project.ems.user.service.validators;
 
 import fhv.team11.project.ems.commons.validation.domain.IDomainValidator;
 import fhv.team11.project.ems.commons.validation.domain.ValidatorFor;
-import fhv.team11.project.ems.user.transfer.UserDTO;
+import fhv.team11.project.ems.user.transfer.UserView;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +12,8 @@ import org.springframework.validation.Validator;
 
 
 @Component
-@ValidatorFor(UserDTO.class)
-public class UserDTOValidator implements IDomainValidator<UserDTO> {
+@ValidatorFor(UserView.class)
+public class UserDTOValidator implements IDomainValidator<UserView> {
 
     private final Validator validator;
 
@@ -28,7 +28,7 @@ public class UserDTOValidator implements IDomainValidator<UserDTO> {
 
     }
     @Override
-    public BindingResult validate(UserDTO userDTO) {
+    public BindingResult validate(UserView userView) {
         return null;
     }
 }
