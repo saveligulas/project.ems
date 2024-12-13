@@ -21,7 +21,7 @@ public class BookingListDTOMapper implements IEntityDTOMapper<Booking, BookingLi
         dto.setParticipantAddress(AddressDTOMapper.INSTANCE.toDTO(entity.getFinancer().getAddress()));
 
         if (entity.getFinancer() != null) {
-            dto.setReservationist(null);
+            dto.setFinancer(null);
         }//TODO implement the reservationist from user
 
         if (entity.getBookedEvent() != null) {

@@ -3,31 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <title>Header Fragment</title>
-    <link rel="stylesheet" href="../../static/css/stylesheet.css" th:href="@{/css/stylesheet.css}">
-    <link rel="stylesheet" th:href="@{/bootstrap-5.3.3-dist/css/bootstrap.min.css}">
-    <script th:src="@{/bootstrap-5.3.3-dist/js/bootstrap.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/pico-main/css/pico.min.jade.css}"/>
 </head>
 <body>
 <!--@thymesVar id="user" type="fhv.team11.project.ems.commons.controller.base.attribute.user.UserAttributes"-->
 <!--@thymesVar id="env" type="fhv.team11.project.ems.commons.controller.base.attribute.dev.EnvironmentAttributes"-->
-<header th:fragment="header" class="main-header">
-    <div class="header-left">
-        <h1>
-            <a href="/" th:href="@{/index}" style="text-decoration: none; color: inherit;">Eventastic</a>
-        </h1>
-    </div>
-
-    <nav class="header-center">
+<header th:fragment="header" class="container">
+    <nav>
+        <ul class="container-fluid">
+            <li>
+                <h2>
+                    <a th:href="@{/index}" style="text-decoration: none"></a>
+                    <strong></strong>
+                </h2>
+            </li>
+        </ul>
         <ul>
-            <li><a href="/bookings" th:href="@{/bookings}">Bookings</a></li>
-            <li><a href="/event" th:href="@{/event}">Events</a></li>
-            <li><a href="/users" th:href="@{/users}">Users</a></li>
+            <li><a th:href="@{/bookings}">Booking</a></li>
+            <li><a th:href="@{/event}">Event</a></li>
+            <li><a th:href="@{/users}">Users</a></li>
+        </ul>
+        <ul>
+            <li><a th:href="@{/login}" class="contrast">Login</a></li>
+            <li><a th:href="@{/register}" class="contrast">Register</a></li>
         </ul>
     </nav>
 
-    <div class="header-right">
+
+    <!--<div class="header-right">
         <span th:if="${user?.isAuthenticated()}">
-            <!-- Dropdown für den Benutzer -->
+            &lt;!&ndash; Dropdown für den Benutzer &ndash;&gt;
             <div class="dropdown d-inline">
                 <a href="#" id="userDropdown" class="btn btn-outline header-btn dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${user?.getUsername()}"></a>
                 <ul class="dropdown-menu" aria-labelledby="userDropdown">
@@ -37,14 +42,14 @@
                     <li><a class="dropdown-item" href="/logout" th:href="@{/logout}">Logout</a></li>
                 </ul>
             </div>
-            <!--<a href="./event/manage" th:href="@{/event/manage}" class="btn btn-primary header-btn">Create Event</a>-->
+            &lt;!&ndash;<a href="./event/manage" th:href="@{/event/manage}" class="btn btn-primary header-btn">Create Event</a>&ndash;&gt;
         </span>
 
         <span th:unless="${user?.isAuthenticated()}">
             <a href="./login.html" th:href="@{/login}" class="btn btn-outline header-btn">Login</a>
             <a href="./register.html" th:href="@{/register}" class="btn btn-primary header-btn">Register</a>
         </span>
-    </div>
+    </div>-->
 </header>
 </body>
 </html>

@@ -33,9 +33,9 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable);
         http.cors(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(
-                req -> req
-                        .anyRequest()
-                        .permitAll()
+                authorize -> authorize
+                        .requestMatchers("/static/**", "/css/**", "/js/**", "/images/**").permitAll()
+                        .anyRequest().permitAll()
         );
         http.sessionManagement(
                 session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
