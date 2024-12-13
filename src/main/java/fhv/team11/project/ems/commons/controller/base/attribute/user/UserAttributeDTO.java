@@ -41,10 +41,10 @@ public class UserAttributeDTO {
             if (user.getUserEntityDetails() == null) {
                 log.info("User has not set their UserEntityDetails");
             } else {
-                if (user.getUserEntityDetails().getCustomerProfile() != null) {
-                    customerProfileId = user.getUserEntityDetails().getCustomerProfile().getId();
+                if (user.getUserEntityDetails().getCustomerProfileEntity() != null) {
+                    customerProfileId = user.getUserEntityDetails().getCustomerProfileEntity().getId();
                 }
-                customerProfile = CustomerProfileDTOMapper.INSTANCE.getDTO(user.getUserEntityDetails().getCustomerProfile());
+                customerProfile = CustomerProfileDTOMapper.INSTANCE.getDTO(user.getUserEntityDetails().getCustomerProfileEntity());
                 backOfficeProfile = BackOfficeProfileDTOMapper.INSTANCE.getDTO(user.getUserEntityDetails().getBackOfficeProfile());
             }
         } catch (SecuredEndpointAccessException e) {

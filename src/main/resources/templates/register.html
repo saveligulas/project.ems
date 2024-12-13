@@ -16,6 +16,44 @@
   </style>
 </head>
 <body class="bg-light d-flex align-items-start justify-content-center min-vh-100 pt-5">
+<div layout:fragment="center">
+  <form th:action="@{/authenticate}" method="POST" th:object="${authenticationRequest}" novalidate>
+    <fieldset>
+      <label>
+        Email
+        <input
+                placeholder="Email"
+                name="email"
+                th:field="*{email}"
+        />
+      </label>
+    </fieldset>
+    <fieldset>
+      <label>
+        Password
+        <input
+          placeholder="Password"
+          name="password"
+          type="password"
+          th:field="*{password}"
+        />
+      </label>
+    </fieldset>
+    <fieldset>
+      <label>
+        Confirm Password
+        <input
+          placeholder="Confirm Password"
+          name="confirmPassword"
+          type="password"
+          th:field="*{confirmPassword}"
+        />
+      </label>
+    </fieldset>
+  </form>
+</div>
+
+
 <div layout:fragment="content">
 <div class="container d-flex justify-content-center">
   <div class="card p-4 shadow-sm" style="max-width: 500px; width: 100%; margin-top: 50px;">

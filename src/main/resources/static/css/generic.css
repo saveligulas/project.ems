@@ -1,0 +1,8 @@
+.align-items-right {
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.input-error {
+    border: 1px solid red;
+}

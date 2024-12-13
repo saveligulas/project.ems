@@ -1,9 +1,9 @@
 package fhv.team11.project.ems.user.entity;
 
-import fhv.team11.project.ems.admin.AdministratorProfile;
-import fhv.team11.project.ems.customer.CustomerProfile;
-import fhv.team11.project.ems.organization.EventOrganizerProfile;
-import fhv.team11.project.ems.backoffice.BackOfficeProfile;
+import fhv.team11.project.ems.admin.AdministratorProfileEntity;
+import fhv.team11.project.ems.customer.CustomerProfileEntityEntity;
+import fhv.team11.project.ems.organization.EventOrganizerProfileEntity;
+import fhv.team11.project.ems.backoffice.BackOfficeProfileEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,33 +25,33 @@ public class UserEntityDetails {
 
     @Nullable
     @OneToOne(mappedBy = "userEntityDetails", cascade = CascadeType.ALL)
-    private CustomerProfile customerProfile;
+    private CustomerProfileEntityEntity customerProfileEntity;
 
     @Nullable
     @OneToOne(mappedBy = "userEntityDetails")
-    private BackOfficeProfile backOfficeProfile;
+    private BackOfficeProfileEntity backOfficeProfile;
 
     @Nullable
     @OneToOne(mappedBy = "userEntityDetails")
-    private AdministratorProfile administratorProfile;
+    private AdministratorProfileEntity administratorProfile;
 
     @Nullable
     @OneToOne(mappedBy = "userEntityDetails")
-    private EventOrganizerProfile eventOrganizerProfile;
+    private EventOrganizerProfileEntity eventOrganizerProfile;
 
-    public @Nullable CustomerProfile getCustomerProfile() {
-        return customerProfile;
+    public @Nullable CustomerProfileEntityEntity getCustomerProfileEntity() {
+        return customerProfileEntity;
     }
 
-    public @Nullable BackOfficeProfile getBackOfficeProfile() {
+    public @Nullable BackOfficeProfileEntity getBackOfficeProfile() {
         return backOfficeProfile;
     }
 
-    public @Nullable AdministratorProfile getAdministratorProfile() {
+    public @Nullable AdministratorProfileEntity getAdministratorProfile() {
         return administratorProfile;
     }
 
-    public @Nullable EventOrganizerProfile getEventOrganizerProfile() {
+    public @Nullable EventOrganizerProfileEntity getEventOrganizerProfile() {
         return eventOrganizerProfile;
     }
 }

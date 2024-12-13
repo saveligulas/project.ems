@@ -7,7 +7,7 @@
 <body>
 <!--@thymesVar id="user" type="fhv.team11.project.ems.commons.controller.base.attribute.user.UserAttributes"-->
 <div layout:fragment="content">
-  <form th:action="@{/profiles/customer/create}" th:object="${customerProfile}" method="post"
+  <form th:action="@{/profiles/customer/create}" th:object="${customerProfileEntity}" method="post"
         novalidate>
     <div class="card mt-4">
       <div class="card-header bg-primary text-white">
@@ -34,7 +34,7 @@
           <input type="number" class="form-control" id="secret" name="secret" th:field="*{secret}">
         </div>
 
-        <div th:include="~{fragments/address-form :: address(${customerProfile.address})}"></div>
+        <div th:include="~{fragments/address-form :: address(${customerProfileEntity.address})}"></div>
       </div>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>

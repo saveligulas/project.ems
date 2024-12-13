@@ -2,29 +2,28 @@ package fhv.team11.project.ems.customer.transfer;
 
 import fhv.team11.project.ems.commons.address.AddressDTOMapperImpl;
 import fhv.team11.project.ems.commons.database.IDTOEntityBiMapper;
-import fhv.team11.project.ems.customer.CustomerProfile;
-import jakarta.validation.constraints.Null;
+import fhv.team11.project.ems.customer.CustomerProfileEntityEntity;
 import org.jspecify.annotations.Nullable;
 
-public class CustomerProfileDTOMapper implements IDTOEntityBiMapper<CustomerProfile, CustomerProfileDTO> {
+public class CustomerProfileDTOMapper implements IDTOEntityBiMapper<CustomerProfileEntityEntity, CustomerProfileDTO> {
 
     public static final CustomerProfileDTOMapper INSTANCE = new CustomerProfileDTOMapper();
 
     @Override
-    public CustomerProfile getEntity(CustomerProfileDTO dto) {
-        CustomerProfile customerProfile = new CustomerProfile();
+    public CustomerProfileEntityEntity getEntity(CustomerProfileDTO dto) {
+        CustomerProfileEntityEntity customerProfileEntity = new CustomerProfileEntityEntity();
 
-        customerProfile.setAddress(AddressDTOMapperImpl.INSTANCE.toEntity(dto.getAddress()));
-        customerProfile.setFirstName(dto.getFirstName());
-        customerProfile.setLastName(dto.getLastName());
-        customerProfile.setPhoneNumber(dto.getPhoneNumber());
-        customerProfile.setSecret(dto.getSecret());
+        customerProfileEntity.setAddress(AddressDTOMapperImpl.INSTANCE.toEntity(dto.getAddress()));
+        customerProfileEntity.setFirstName(dto.getFirstName());
+        customerProfileEntity.setLastName(dto.getLastName());
+        customerProfileEntity.setPhoneNumber(dto.getPhoneNumber());
+        customerProfileEntity.setSecret(dto.getSecret());
 
-        return customerProfile;
+        return customerProfileEntity;
     }
 
     @Override
-    public @Nullable CustomerProfileDTO getDTO(@Nullable CustomerProfile entity) {
+    public @Nullable CustomerProfileDTO getDTO(@Nullable CustomerProfileEntityEntity entity) {
         if (entity == null) {
             return null;
         }

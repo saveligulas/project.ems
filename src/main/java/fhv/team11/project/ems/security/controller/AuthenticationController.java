@@ -1,6 +1,5 @@
 package fhv.team11.project.ems.security.controller;
 
-import fhv.team11.project.ems.security.error.SecuredEndpointAccessException;
 import fhv.team11.project.ems.security.error.RegistrationError;
 import fhv.team11.project.ems.security.transfer.AuthenticationRequest;
 import fhv.team11.project.ems.security.transfer.AuthenticationResponse;
@@ -71,7 +70,7 @@ public class AuthenticationController {
     @GetMapping("/login")
     public ModelAndView loginPage() {
         ModelAndView modelAndView = new ModelAndView("login");
-        modelAndView.addObject("hideHeader", true);
+        modelAndView.addObject("hideHeader", false);
         return modelAndView;
     }
 
