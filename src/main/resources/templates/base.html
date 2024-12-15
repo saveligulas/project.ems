@@ -4,6 +4,9 @@
     <title th:text="'Eventastic | ' + (${title} ?: '')"></title>
     <link rel="stylesheet" href="../static/pico-main/css/pico.jade.min.css" th:href="@{/pico-main/css/pico.jade.min.css}"/>
     <link rel="stylesheet" th:href="@{/css/generic.css}"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&icon_names=info,settings&display=block" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 <!--@thymesVar id="universal" type="fhv.team11.project.ems.commons.controller.base.attribute.user.UserAttributes"-->
@@ -13,21 +16,17 @@
     </th:block>
 
     <main layout:fragment="content" class="container">
-        <div class="grid">
+        <div layout:fragment="top" class="container"></div>
+        <div layout:fragment="center" class="grid">
             <div layout:fragment class="left">
-
             </div>
-
-            <div layout:fragment="center" role="document">
-                <p>
-                    Blablabla
-                </p>
+            <div layout:fragment="mid" role="document">
             </div>
-
             <div layout:fragment="right" class="align-items-right">
-
             </div>
         </div>
+        <div layout:fragment="bottom" class="container"></div>
     </main>
+<script th:src="@{/js/theme-switcher.js}"></script>
 </body>
 </html>

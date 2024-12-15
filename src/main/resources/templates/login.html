@@ -5,62 +5,45 @@
       layout:decorate="~{base}"
       th:with="title='Login'">
 <body>
-<div layout:fragment="center">
-  <form th:action="@{/authenticate}" method="POST" th:object="${authenticationRequest}" novalidate>
-    <fieldset>
-      <label>
-        Email
-        <input
-          placeholder="Email"
-          name="email"
-          th:field="*{email}"
-        />
-      </label>
-    </fieldset>
-    <fieldset>
-      <label>
-        Password
-        <input
-          placeholder="Password"
-          name="password"
-          type="password"
-          th:field="*{password}"
-        />
-      </label>
-    </fieldset>
-  </form>
-</div>
-<!--<div class="container d-flex justify-content-center">
-  <div class="card p-4 shadow-sm" style="max-width: 500px; width: 100%; margin-top: 50px;">
-    &lt;!&ndash; Login Form &ndash;&gt;
-    <div class="card-body">
-      <h2 class="text-center mb-4">Welcome to Eventastic</h2>
-      <p class="text-center text-muted mb-4">Log in to explore exciting events happening near you.</p>
-
-      <form th:action="@{/authenticate}" method="POST" th:object="${authenticationRequest}" novalidate>
-        <div class="mb-3">
-          <label for="email" class="form-label"><strong>Email *</strong></label>
-          <input type="email" id="email" name="email" placeholder="Email"
-                 th:field="*{email}" th:classappend="${hasError} ? 'is-invalid'" class="form-control" required>
-          <div class="invalid-feedback" th:if="${hasError}" th:text="${hasError}"></div>
-        </div>
-
-        <div class="mb-3">
-          <label for="password" class="form-label"><strong>Password *</strong></label>
-          <input type="password" id="password" name="password" placeholder="Password"
-                 th:field="*{password}" th:classappend="${hasError} ? 'is-invalid'" class="form-control" required>
-          <div class="invalid-feedback" th:if="${hasError}" th:text="${hasError}"></div>
-          <a href="#" class="d-block mt-2 text-primary">Forgot your password?</a> &lt;!&ndash; Password reset link &ndash;&gt;
-        </div>
-
-        <button type="submit" class="btn w-100 mt-4" style="background-color: #2C3E50; color: white;">Log In</button>
-      </form>
-
-      <div class="mt-4 text-center">
-        <p class="text-muted">Not registered yet? <a th:href="@{/register}" class="fw-bold text-primary">Create an account</a></p>
-      </div>
+  <div layout:fragment="top">
+    <div class="text-center">
+      <h2>Login to Eventastic!</h2>
     </div>
   </div>
-</div>-->
+  <div layout:fragment="mid">
+    <form th:action="@{/authenticate}" method="POST" th:object="${authenticationRequest}" novalidate>
+      <fieldset>
+        <label>
+          Email
+          <input
+            placeholder="Email"
+            name="email"
+            th:field="*{email}"
+            th:attr="aria-invalid=${hasError != null} ? 'true'"
+          />
+        </label>
+      </fieldset>
+      <fieldset>
+        <label>
+          Password
+          <input
+            placeholder="Password"
+            name="password"
+            type="password"
+            th:field="*{password}"
+            th:attr="aria-invalid=${hasError != null} ? 'true'"
+          />
+          <small th:text="${hasError}"></small>
+        </label>
+      </fieldset>
+      <input
+              type="submit"
+              value="Login"
+      />
+    </form>
+    <div >
+      <p class="secondary text-center">Don't have an account? <a th:href="@{/register}">Register here</a></p>
+    </div>
+  </div>
 </body>
 </html>
