@@ -1,5 +1,6 @@
 package fhv.team11.project.ems.events.controller;
 
+import fhv.team11.project.ems.commons.validation.domain.handler.HandleBindingResultException;
 import fhv.team11.project.ems.events.error.EventTemplateDTOValidationException;
 import fhv.team11.project.ems.events.repo.EventCategory;
 import fhv.team11.project.ems.events.service.EventTemplateService;
@@ -19,7 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Controller
-public class EventTemplateController {
+public class EventTemplateController implements HandleBindingResultException {
 
     private final EventTemplateService eventTemplateService;
 
@@ -28,30 +29,30 @@ public class EventTemplateController {
         this.eventTemplateService = eventTemplateService;
     }
 
+    @ModelAttribute("eventTemplate")
+    public EventTemplateDTO eventTemplateDTO() {
+        return new EventTemplateDTO();
+    }
+
     @GetMapping("/event/manage")
     public ModelAndView createTemplatePage() {
-        ModelAndView modelAndView = new ModelAndView("create-eventTemplate");
+        ModelAndView modelAndView = new ModelAndView("eo/create-eventTemplate");
         modelAndView.addObject("categories", Arrays.asList(EventCategory.values()));
-        modelAndView.addObject("eventTemplate", new EventTemplateDTO());
         return modelAndView;
     }
 
     @PostMapping("/event/create")
     public String createTemplate(@Valid @ModelAttribute("eventTemplate") EventTemplateDTO eventTemplateDTO,
-                                 BindingResult result,
-                                 Model model) {
-        model.addAttribute("categories", Arrays.asList(EventCategory.values()));
+                                 BindingResult bindingResult,
+                                 RedirectAttributes redirectAttributes) {
 
-        try {
-            eventTemplateService.createNewTemplate(eventTemplateDTO);
-        } catch (EventTemplateDTOValidationException ex) {
-            result.addAllErrors(ex.getBindingResult());
-        }
-        if (result.hasErrors()) {
-            result.getAllErrors().forEach(error -> System.out.println(error.getDefaultMessage()));//Für Logging
-            return "create-eventTemplate";
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute(eventTemplateDTO.getModelAttributeName(), eventTemplateDTO);
+            redirectAttributes.addFlashAttribute(this.getBindingResultKey(eventTemplateDTO.getModelAttributeName()), bindingResult);
+            return "redirect:/event/manage";
         }
 
+        eventTemplateService.createNewTemplate(eventTemplateDTO);
         return "redirect:/event";
     }
 
