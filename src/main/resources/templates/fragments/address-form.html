@@ -7,7 +7,7 @@
         <fieldset class="grid">
             <label>
                 Country *
-                <select th:field="*{address.country}">
+                <!--<select th:field="*{address.country}">
                     <option selected disabled value="">
                         Select your Country...
                     </option>
@@ -16,7 +16,14 @@
                             th:text="${countryOption.getName()}"
                             th:value="${countryOption}">
                     </option>
-                </select>
+                </select>-->
+                <input
+                        placeholder="Country"
+                        type="text"
+                        name="country"
+                        th:field="*{address.country}"
+                        th:attr="aria-invalid=${#fields.hasErrors('address.country')} ? 'true'"
+                />
             </label>
             <label>
                 Region
@@ -25,6 +32,7 @@
                         type="text"
                         name="region"
                         th:field="*{address.region}"
+                        th:attr="aria-invalid=${#fields.hasErrors('address.region')} ? 'true'"
                 />
             </label>
         </fieldset>
@@ -36,6 +44,7 @@
                         type="text"
                         name="city"
                         th:field="*{address.city}"
+                        th:attr="aria-invalid=${#fields.hasErrors('address.city')} ? 'true'"
                 />
             </label>
             <label>
@@ -45,6 +54,7 @@
                         step="1"
                         name="zip"
                         th:field="*{address.zip}"
+                        th:attr="aria-invalid=${#fields.hasErrors('address.zip')} ? 'true'"
                 />
             </label>
         </fieldset>
@@ -56,6 +66,7 @@
                         type="text"
                         name="street"
                         th:field="*{address.street}"
+                        th:attr="aria-invalid=${#fields.hasErrors('address.street')} ? 'true'"
                 />
             </label>
             <label>
@@ -65,6 +76,7 @@
                         type="text"
                         name="houseNumber"
                         th:field="*{address.houseNumber}"
+                        th:attr="aria-invalid=${#fields.hasErrors('address.houseNumber')} ? 'true'"
                 />
             </label>
         </fieldset>
@@ -74,6 +86,7 @@
                     placeholder="Please provide additional information if necessary..."
                     aria-label="Professional short bio"
                     th:field="*{address.optionalText}"
+                    th:attr="aria-invalid=${#fields.hasErrors('address.optionalText')} ? 'true'"
                     maxlength="150">
             </textarea>
         </fieldset>
