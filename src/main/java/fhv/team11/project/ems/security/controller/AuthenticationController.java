@@ -46,7 +46,6 @@ public class AuthenticationController {
             @Valid @ModelAttribute("registerRequest") RegisterRequest registerRequest,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes) {
-        ModelAndView errorModel = new ModelAndView("register");
 
         if (bindingResult.hasErrors()) {
             if (bindingResult.hasFieldErrors("email")) {
