@@ -11,11 +11,12 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @NullMarked
 public class User implements IDomainObject {
     @Nullable
-    private transient HashMap<String, String> fieldErrors;
+    private transient Map<String, String> fieldErrors;
 
     private String email;
     private String password;
@@ -35,6 +36,8 @@ public class User implements IDomainObject {
         this.setUserProfile(userProfile);
         this.setRoles(roles);
         this.setGrantedPermissions(grantedPermissions);
+
+        this.checkDependencies();
 
         checkFieldErrors();
     }
@@ -81,6 +84,13 @@ public class User implements IDomainObject {
 
     public void setGrantedPermissions(List<String> grantedPermissions) {
         this.grantedPermissions = grantedPermissions;
+    }
+
+    private void addError(String fieldName, String errorMessage) {
+
+    }
+
+    private void checkDependencies() {
     }
 
     @Override
