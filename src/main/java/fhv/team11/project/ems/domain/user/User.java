@@ -1,23 +1,18 @@
 package fhv.team11.project.ems.domain.user;
 
-import fhv.team11.project.ems.commons.domain.DomainFieldValidationException;
-import fhv.team11.project.ems.commons.domain.DomainInstantiationException;
-import fhv.team11.project.ems.commons.domain.IDomainObject;
-import fhv.team11.project.ems.domain.commons.EmailValidator;
-import fhv.team11.project.ems.domain.commons.PasswordValidator;
+import fhv.team11.project.ems.domain.commons.*;
+import fhv.team11.project.ems.domain.commons.exception.DomainFieldValidationException;
 import fhv.team11.project.ems.security.permission.role.Role;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @NullMarked
 public class User implements IDomainObject {
-    @Nullable
-    private transient Map<String, String> fieldErrors;
+    private final DomainObjectConstructorHelper constructorHelper;
 
+    private Long id;
     private String email;
     private String password;
     private String username;
@@ -27,9 +22,10 @@ public class User implements IDomainObject {
     private List<Role> roles;
     private List<String> grantedPermissions;
 
-    public User(String email, String password, String username, UserProfile userProfile, List<Role> roles, List<String> grantedPermissions) throws DomainFieldValidationException {
-        fieldErrors = new HashMap<>();
+    public User(Long id, String email, String password, String username, UserProfile userProfile, List<Role> roles, List<String> grantedPermissions) throws DomainFieldValidationException {
+        this.constructorHelper = new DomainObjectConstructorHelper();
 
+        this.setId(id);
         this.setEmail(email);
         this.setPassword(password);
         this.setUsername(username);
@@ -37,21 +33,19 @@ public class User implements IDomainObject {
         this.setRoles(roles);
         this.setGrantedPermissions(grantedPermissions);
 
-        this.checkDependencies();
+        this.checkDependantFields();
+    }
 
-        checkFieldErrors();
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setEmail(String email) throws DomainFieldValidationException {
         String fieldName = "email";
-        String errorMessage = "Email is invalid";
-
+        String errorMessage;
         if (!EmailValidator.isValid(email)) {
-            if (this.isInstantiated()) {
-                throw new DomainFieldValidationException(fieldName, errorMessage);
-            } else {
-                fieldErrors.put(fieldName, errorMessage);
-            }
+            errorMessage = "Email is invalid";
+            handleError(fieldName, errorMessage);
         }
 
         this.email = email;
@@ -86,23 +80,18 @@ public class User implements IDomainObject {
         this.grantedPermissions = grantedPermissions;
     }
 
-    private void addError(String fieldName, String errorMessage) {
-
-    }
-
-    private void checkDependencies() {
-    }
-
-    @Override
-    public void checkFieldErrors() throws DomainInstantiationException {
-        if (fieldErrors != null && !fieldErrors.isEmpty()) {
-            throw new DomainInstantiationException(fieldErrors);
+    private void handleError(String fieldName, String errorMessage) throws DomainFieldValidationException {
+        if (this.isInstantiated()) {
+            throw new DomainFieldValidationException(fieldName, errorMessage);
         }
-        fieldErrors = null;
+        constructorHelper.add(new DomainFieldError(fieldName, errorMessage));
+    }
+
+    private void checkDependantFields() {
     }
 
     @Override
     public boolean isInstantiated() {
-        return fieldErrors == null;
+        return !constructorHelper.isBeingConstructed();
     }
 }
