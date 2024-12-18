@@ -3,6 +3,7 @@ package fhv.team11.project.ems.commons.controller.error;
 import lombok.Getter;
 
 @Getter
+//TODO add errorMessages List of strings to the redirectattributes to handle in the frontend
 public class RedirectionException extends RuntimeException {
     private final String exceptionEndpoint;
     private final String redirectEndpoint;
