@@ -33,19 +33,28 @@ public class User implements IDomainObject {
         this.setRoles(roles);
         this.setGrantedPermissions(grantedPermissions);
 
-        this.checkDependantFields();
+        this.constructorHelper.finish();
     }
 
-    public void setId(Long id) {
+    private void setId(Long id) throws DomainFieldValidationException {
+        String fieldName = "id";
+        String errorMessage;
+
+        if (!IdValidator.isValid(id)) {
+            errorMessage = "ID is invalid";
+            handleError(fieldName, errorMessage, constructorHelper);
+        }
+
         this.id = id;
     }
 
     public void setEmail(String email) throws DomainFieldValidationException {
         String fieldName = "email";
         String errorMessage;
+
         if (!EmailValidator.isValid(email)) {
             errorMessage = "Email is invalid";
-            handleError(fieldName, errorMessage);
+            handleError(fieldName, errorMessage, constructorHelper);
         }
 
         this.email = email;
@@ -53,18 +62,25 @@ public class User implements IDomainObject {
 
     public void setPassword(String password) throws DomainFieldValidationException {
         String fieldName = "password";
-        String errorMessage = "Password must contain min.: 8 letters, 1 uppercase, 1 digit";
+        String errorMessage;
 
         if (!PasswordValidator.isValid(password)) {
-            if (this.isInstantiated()) {
-                throw new DomainFieldValidationException(fieldName, errorMessage);
-            }
+            errorMessage ="Password must contain min.: 8 letters, 1 uppercase, 1 digit";
+            handleError(fieldName, errorMessage, constructorHelper);
         }
 
         this.password = password;
     }
 
-    public void setUsername(String username) {
+    public void setUsername(String username) throws DomainFieldValidationException {
+        String fieldName = "username";
+        String errorMessage;
+
+        if (!StringValidator.isValid(username, 3)) {
+            errorMessage ="Username is invalid";
+            handleError(fieldName, errorMessage, constructorHelper);
+        }
+
         this.username = username;
     }
 
@@ -72,26 +88,19 @@ public class User implements IDomainObject {
         this.userProfile = userProfile;
     }
 
-    public void setRoles(List<Role> roles) {
+    public void setRoles(List<Role> roles) throws DomainFieldValidationException {
+        String fieldName = "roles";
+        String errorMessage;
+
+        if (roles.isEmpty()) {
+            errorMessage = "Roles is empty";
+            handleError(fieldName, errorMessage, constructorHelper);
+        }
+
         this.roles = roles;
     }
 
     public void setGrantedPermissions(List<String> grantedPermissions) {
         this.grantedPermissions = grantedPermissions;
-    }
-
-    private void handleError(String fieldName, String errorMessage) throws DomainFieldValidationException {
-        if (this.isInstantiated()) {
-            throw new DomainFieldValidationException(fieldName, errorMessage);
-        }
-        constructorHelper.add(new DomainFieldError(fieldName, errorMessage));
-    }
-
-    private void checkDependantFields() {
-    }
-
-    @Override
-    public boolean isInstantiated() {
-        return !constructorHelper.isBeingConstructed();
     }
 }
