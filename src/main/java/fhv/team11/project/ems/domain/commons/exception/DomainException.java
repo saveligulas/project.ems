@@ -1,4 +1,4 @@
-package fhv.team11.project.ems.commons.domain;
+package fhv.team11.project.ems.domain.commons.exception;
 
 public class DomainException extends Exception {
     public DomainException() {

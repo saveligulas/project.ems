@@ -24,6 +24,7 @@
                         th:field="*{address.country}"
                         th:attr="aria-invalid=${#fields.hasErrors('address.country')} ? 'true'"
                 />
+                <small th:errors="*{address.country}"></small>
             </label>
             <label>
                 Region
@@ -34,7 +35,9 @@
                         th:field="*{address.region}"
                         th:attr="aria-invalid=${#fields.hasErrors('address.region')} ? 'true'"
                 />
+                <small th:errors="*{address.region}"></small>
             </label>
+
         </fieldset>
         <fieldset class="grid">
             <label>
@@ -46,7 +49,9 @@
                         th:field="*{address.city}"
                         th:attr="aria-invalid=${#fields.hasErrors('address.city')} ? 'true'"
                 />
+                <small th:errors="*{address.city}"></small>
             </label>
+
             <label>
                 Postal Code *
                 <input
@@ -56,7 +61,9 @@
                         th:field="*{address.zip}"
                         th:attr="aria-invalid=${#fields.hasErrors('address.zip')} ? 'true'"
                 />
+                <small th:errors="*{address.zip}"></small>
             </label>
+
         </fieldset>
         <fieldset class="grid">
             <label>
@@ -68,7 +75,9 @@
                         th:field="*{address.street}"
                         th:attr="aria-invalid=${#fields.hasErrors('address.street')} ? 'true'"
                 />
+                <small th:errors="*{address.street}"></small>
             </label>
+
             <label>
                 House Number
                 <input
@@ -78,6 +87,7 @@
                         th:field="*{address.houseNumber}"
                         th:attr="aria-invalid=${#fields.hasErrors('address.houseNumber')} ? 'true'"
                 />
+                <small th:errors="*{address.houseNumber}"></small>
             </label>
         </fieldset>
         <fieldset>
