@@ -1,21 +1,16 @@
 package fhv.team11.project.ems.domain.adress;
 
-import fhv.team11.project.ems.commons.domain.DomainFieldValidationException;
-import fhv.team11.project.ems.commons.domain.DomainInstantiationException;
-import fhv.team11.project.ems.commons.domain.IDomainObject;
+
 import fhv.team11.project.ems.domain.commons.*;
-import fhv.team11.project.ems.events.repo.EventTemplate;
-import jakarta.persistence.OneToOne;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import fhv.team11.project.ems.domain.commons.exception.DomainFieldValidationException;
+import lombok.Getter;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
 
+@Getter
 public class AddressModel implements IDomainObject {
 
-    @Nullable
-    private transient HashMap<String, String> fieldErrors;
+    private final DomainObjectConstructorHelper constructorHelper;
 
     @Nullable
     private Long id;
@@ -30,14 +25,17 @@ public class AddressModel implements IDomainObject {
     private String optionalText;
 
     public AddressModel(Long id, String country, String region, String city, Integer zip, String street, String houseNumber, String optionalText) throws DomainFieldValidationException {
+        this.constructorHelper = new DomainObjectConstructorHelper();
         setId(id);
         setCountry(country);
         setRegion(region);
         setCity(city);
         setZip(zip);
-        this.street = street;
-        this.houseNumber = houseNumber;
-        this.optionalText = optionalText;
+        setStreet(street);
+        setHouseNumber(houseNumber);
+        setOptionalText(optionalText);
+
+        this.constructorHelper.finish();
     }
 
     public void setRegion(String region) throws DomainFieldValidationException {
@@ -46,12 +44,7 @@ public class AddressModel implements IDomainObject {
 
 
         if(!CountryValidator.isValid(country)){
-            if(isInstantiated()){
-                throw new DomainFieldValidationException(fieldName,errorMessage);
-            }
-            else {
-                fieldErrors.put(fieldName, errorMessage);
-            }
+            handleError(fieldName,errorMessage,constructorHelper);
         }
 
         this.region = region;
@@ -63,12 +56,7 @@ public class AddressModel implements IDomainObject {
 
 
         if(!StreetValidator.isValid(country)){
-            if(isInstantiated()){
-                throw new DomainFieldValidationException(fieldName,errorMessage);
-            }
-            else {
-                fieldErrors.put(fieldName, errorMessage);
-            }
+            handleError(fieldName,errorMessage,constructorHelper);
         }
         this.street = street;
     }
@@ -79,12 +67,7 @@ public class AddressModel implements IDomainObject {
 
 
         if(!HouseNumberValidator.isValid(country)){
-            if(isInstantiated()){
-                throw new DomainFieldValidationException(fieldName,errorMessage);
-            }
-            else {
-                fieldErrors.put(fieldName, errorMessage);
-            }
+            handleError(fieldName,errorMessage,constructorHelper);
         }
         this.houseNumber = houseNumber;
     }
@@ -99,12 +82,7 @@ public class AddressModel implements IDomainObject {
 
 
         if(!CountryValidator.isValid(country)){
-            if(isInstantiated()){
-                throw new DomainFieldValidationException(fieldName,errorMessage);
-            }
-            else {
-                fieldErrors.put(fieldName, errorMessage);
-            }
+            handleError(fieldName,errorMessage,constructorHelper);
         }
 
         this.country = country;
@@ -116,12 +94,7 @@ public class AddressModel implements IDomainObject {
 
 
         if(!CityValidator.isValid(city)){
-            if(isInstantiated()){
-                throw new DomainFieldValidationException(fieldName,errorMessage);
-            }
-            else {
-                fieldErrors.put(fieldName, errorMessage);
-            }
+            handleError(fieldName,errorMessage,constructorHelper);
         }
 
         this.city = city;
@@ -133,12 +106,7 @@ public class AddressModel implements IDomainObject {
 
 
         if(!ZipValidation.isValid(zip)){
-            if(isInstantiated()){
-                throw new DomainFieldValidationException(fieldName,errorMessage);
-            }
-            else {
-                fieldErrors.put(fieldName, errorMessage);
-            }
+            handleError(fieldName,errorMessage,constructorHelper);
         }
 
         this.zip = zip;
@@ -150,26 +118,11 @@ public class AddressModel implements IDomainObject {
             String fieldName = "Id";
             String errorMessage = "Id must be positive";
 
-            if (this.isInstantiated()) {
-                throw new DomainFieldValidationException(fieldName, errorMessage);
-            } else {
-                fieldErrors.put(fieldName, errorMessage);
-            }
+            handleError(fieldName,errorMessage,constructorHelper);
         }
 
         this.id = id;
     }
 
-    @Override
-    public void checkFieldErrors() throws DomainInstantiationException {
-        if (fieldErrors != null && !fieldErrors.isEmpty()) {
-            throw new DomainInstantiationException(fieldErrors);
-        }
-        fieldErrors = null;
-    }
 
-    @Override
-    public boolean isInstantiated() {
-        return fieldErrors == null;
-    }
 }
