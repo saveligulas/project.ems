@@ -37,8 +37,7 @@ public class DomainObjectConstructorHelper {
     public void finish() throws DomainInstantiationException {
         isBeingConstructed = false;
         if (!domainFieldErrors.isEmpty() || !domainFieldGroupErrors.isEmpty() || !domainStateErrors.isEmpty()) {
-
+            DomainObjectConstructorHelperExceptionBuilder.buildException(this);
         }
-
     }
 }

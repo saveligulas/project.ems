@@ -1,4 +1,4 @@
 package fhv.team11.project.ems.domain.user;
 
-public class UserProfile {
+public class BackOfficeProfile {
 }

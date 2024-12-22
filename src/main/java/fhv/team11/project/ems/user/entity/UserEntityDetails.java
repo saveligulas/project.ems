@@ -1,7 +1,7 @@
 package fhv.team11.project.ems.user.entity;
 
 import fhv.team11.project.ems.admin.AdministratorProfileEntity;
-import fhv.team11.project.ems.customer.CustomerProfileEntityEntity;
+import fhv.team11.project.ems.customer.CustomerProfileEntity;
 import fhv.team11.project.ems.organization.EventOrganizerProfileEntity;
 import fhv.team11.project.ems.backoffice.BackOfficeProfileEntity;
 import jakarta.persistence.*;
@@ -25,7 +25,7 @@ public class UserEntityDetails {
 
     @Nullable
     @OneToOne(mappedBy = "userEntityDetails", cascade = CascadeType.ALL)
-    private CustomerProfileEntityEntity customerProfileEntity;
+    private CustomerProfileEntity customerProfileEntity;
 
     @Nullable
     @OneToOne(mappedBy = "userEntityDetails")
@@ -39,7 +39,7 @@ public class UserEntityDetails {
     @OneToOne(mappedBy = "userEntityDetails")
     private EventOrganizerProfileEntity eventOrganizerProfile;
 
-    public @Nullable CustomerProfileEntityEntity getCustomerProfileEntity() {
+    public @Nullable CustomerProfileEntity getCustomerProfileEntity() {
         return customerProfileEntity;
     }
 

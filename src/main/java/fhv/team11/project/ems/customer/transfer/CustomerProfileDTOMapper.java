@@ -2,16 +2,16 @@ package fhv.team11.project.ems.customer.transfer;
 
 import fhv.team11.project.ems.commons.address.AddressDTOMapperImpl;
 import fhv.team11.project.ems.commons.database.IDTOEntityBiMapper;
-import fhv.team11.project.ems.customer.CustomerProfileEntityEntity;
+import fhv.team11.project.ems.customer.CustomerProfileEntity;
 import org.jspecify.annotations.Nullable;
 
-public class CustomerProfileDTOMapper implements IDTOEntityBiMapper<CustomerProfileEntityEntity, CustomerProfileDTO> {
+public class CustomerProfileDTOMapper implements IDTOEntityBiMapper<CustomerProfileEntity, CustomerProfileDTO> {
 
     public static final CustomerProfileDTOMapper INSTANCE = new CustomerProfileDTOMapper();
 
     @Override
-    public CustomerProfileEntityEntity getEntity(CustomerProfileDTO dto) {
-        CustomerProfileEntityEntity customerProfileEntity = new CustomerProfileEntityEntity();
+    public CustomerProfileEntity getEntity(CustomerProfileDTO dto) {
+        CustomerProfileEntity customerProfileEntity = new CustomerProfileEntity();
 
         customerProfileEntity.setAddress(AddressDTOMapperImpl.INSTANCE.toEntity(dto.getAddress()));
         customerProfileEntity.setFirstName(dto.getFirstName());
@@ -23,7 +23,7 @@ public class CustomerProfileDTOMapper implements IDTOEntityBiMapper<CustomerProf
     }
 
     @Override
-    public @Nullable CustomerProfileDTO getDTO(@Nullable CustomerProfileEntityEntity entity) {
+    public @Nullable CustomerProfileDTO getDTO(@Nullable CustomerProfileEntity entity) {
         if (entity == null) {
             return null;
         }

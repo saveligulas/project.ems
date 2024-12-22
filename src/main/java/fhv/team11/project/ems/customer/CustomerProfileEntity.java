@@ -9,7 +9,7 @@ import lombok.Setter;
 @Entity
 @Setter
 @Getter
-public class CustomerProfileEntityEntity extends UserProfileEntity {
+public class CustomerProfileEntity extends UserProfileEntity {
 
     private String firstName;
     private String lastName;

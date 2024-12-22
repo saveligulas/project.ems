@@ -1,7 +1,7 @@
 package fhv.team11.project.ems.domain.user;
 
 import fhv.team11.project.ems.domain.commons.*;
-import fhv.team11.project.ems.domain.commons.exception.DomainFieldValidationException;
+import fhv.team11.project.ems.domain.commons.exception.DomainFieldException;
 import fhv.team11.project.ems.security.permission.role.Role;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
@@ -12,35 +12,56 @@ import java.util.List;
 public class User implements IDomainObject {
     private final DomainObjectConstructorHelper constructorHelper;
 
+    @Nullable
     private Long id;
     private String email;
     private String password;
     private String username;
 
-    @Nullable
-    private UserProfile userProfile;
     private List<Role> roles;
     private List<String> grantedPermissions;
 
-    public User(Long id, String email, String password, String username, UserProfile userProfile, List<Role> roles, List<String> grantedPermissions) throws DomainFieldValidationException {
+    @Nullable
+    private CustomerProfile customerProfile;
+    @Nullable
+    private BackOfficeProfile backOfficeProfile;
+    @Nullable
+    private AdministratorProfile administratorProfile;
+    @Nullable
+    private EventOrganizerProfile eventOrganizerProfile;
+
+    public User(Long id,
+                String email,
+                String password,
+                String username,
+                List<Role> roles,
+                List<String> grantedPermissions,
+                @Nullable CustomerProfile customerProfile,
+                @Nullable BackOfficeProfile backOfficeProfile,
+                @Nullable AdministratorProfile administratorProfile,
+                @Nullable EventOrganizerProfile eventOrganizerProfile
+    ) throws DomainFieldException {
         this.constructorHelper = new DomainObjectConstructorHelper();
 
         this.setId(id);
         this.setEmail(email);
         this.setPassword(password);
         this.setUsername(username);
-        this.setUserProfile(userProfile);
         this.setRoles(roles);
         this.setGrantedPermissions(grantedPermissions);
+        this.setCustomerProfile(customerProfile);
+        this.setBackOfficeProfile(backOfficeProfile);
+        this.setAdministratorProfile(administratorProfile);
+        this.setEventOrganizerProfile(eventOrganizerProfile);
 
         this.constructorHelper.finish();
     }
 
-    private void setId(Long id) throws DomainFieldValidationException {
+    private void setId(Long id) throws DomainFieldException {
         String fieldName = "id";
         String errorMessage;
 
-        if (!IdValidator.isValid(id)) {
+        if (!IdValidator.isValid(id, constructorHelper)) {
             errorMessage = "ID is invalid";
             handleError(fieldName, errorMessage, constructorHelper);
         }
@@ -48,7 +69,7 @@ public class User implements IDomainObject {
         this.id = id;
     }
 
-    public void setEmail(String email) throws DomainFieldValidationException {
+    public void setEmail(String email) throws DomainFieldException {
         String fieldName = "email";
         String errorMessage;
 
@@ -60,7 +81,7 @@ public class User implements IDomainObject {
         this.email = email;
     }
 
-    public void setPassword(String password) throws DomainFieldValidationException {
+    public void setPassword(String password) throws DomainFieldException {
         String fieldName = "password";
         String errorMessage;
 
@@ -72,7 +93,7 @@ public class User implements IDomainObject {
         this.password = password;
     }
 
-    public void setUsername(String username) throws DomainFieldValidationException {
+    public void setUsername(String username) throws DomainFieldException {
         String fieldName = "username";
         String errorMessage;
 
@@ -84,11 +105,7 @@ public class User implements IDomainObject {
         this.username = username;
     }
 
-    public void setUserProfile(UserProfile userProfile) {
-        this.userProfile = userProfile;
-    }
-
-    public void setRoles(List<Role> roles) throws DomainFieldValidationException {
+    public void setRoles(List<Role> roles) throws DomainFieldException {
         String fieldName = "roles";
         String errorMessage;
 
@@ -102,5 +119,21 @@ public class User implements IDomainObject {
 
     public void setGrantedPermissions(List<String> grantedPermissions) {
         this.grantedPermissions = grantedPermissions;
+    }
+
+    public void setCustomerProfile(@Nullable CustomerProfile customerProfile) {
+        this.customerProfile = customerProfile;
+    }
+
+    public void setBackOfficeProfile(@Nullable BackOfficeProfile backOfficeProfile) {
+        this.backOfficeProfile = backOfficeProfile;
+    }
+
+    public void setAdministratorProfile(@Nullable AdministratorProfile administratorProfile) {
+        this.administratorProfile = administratorProfile;
+    }
+
+    public void setEventOrganizerProfile(@Nullable EventOrganizerProfile eventOrganizerProfile) {
+        this.eventOrganizerProfile = eventOrganizerProfile;
     }
 }

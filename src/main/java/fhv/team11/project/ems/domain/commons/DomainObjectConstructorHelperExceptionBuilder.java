@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public class DomainObjectConstructorHelperExceptionBuilder {
-    public static void buildException(DomainObjectConstructorHelper domainObjectConstructorHelper) throws DomainInstantiationException {
+    static void buildException(DomainObjectConstructorHelper domainObjectConstructorHelper) throws DomainInstantiationException {
         Map<String, String> fieldErrorMessages = new HashMap<>();
         List<String> stateErrorMessages = new ArrayList<>();
 

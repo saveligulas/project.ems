@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CustomerProfileRepository extends JpaRepository<CustomerProfileEntityEntity, Long> {
-    Page<CustomerProfileEntityEntity> findAll(@NotNull Pageable pageable);
+public interface CustomerProfileRepository extends JpaRepository<CustomerProfileEntity, Long> {
+    Page<CustomerProfileEntity> findAll(@NotNull Pageable pageable);
 }

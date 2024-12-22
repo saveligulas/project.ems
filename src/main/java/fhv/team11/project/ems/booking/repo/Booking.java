@@ -1,6 +1,6 @@
 package fhv.team11.project.ems.booking.repo;
 
-import fhv.team11.project.ems.customer.CustomerProfileEntityEntity;
+import fhv.team11.project.ems.customer.CustomerProfileEntity;
 import fhv.team11.project.ems.events.repo.ActiveEvent;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -20,7 +20,7 @@ public class Booking {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "financer_id",nullable = true)
-    private CustomerProfileEntityEntity financer;
+    private CustomerProfileEntity financer;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "active_event_id")

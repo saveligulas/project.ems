@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class DomainInstantiationException extends DomainFieldValidationException {
+public class DomainInstantiationException extends DomainFieldException {
     private final List<String> stateErrorMessages;
 
     public DomainInstantiationException(Map<String, String> fieldErrors, List<String> stateErrorMessages) {
