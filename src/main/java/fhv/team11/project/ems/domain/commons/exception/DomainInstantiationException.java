@@ -4,11 +4,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class DomainInstantiationException extends DomainFieldException {
-    private final List<String> stateErrorMessages;
-
+public class DomainInstantiationException extends DomainValidationException {
     public DomainInstantiationException(Map<String, String> fieldErrors, List<String> stateErrorMessages) {
-        super(fieldErrors);
-        this.stateErrorMessages = Collections.unmodifiableList(stateErrorMessages);
+        super(fieldErrors, stateErrorMessages);
     }
 }

@@ -2,13 +2,16 @@ package fhv.team11.project.ems.domain.user;
 
 import fhv.team11.project.ems.domain.commons.*;
 import fhv.team11.project.ems.domain.commons.exception.DomainFieldException;
+import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
 import fhv.team11.project.ems.security.permission.role.Role;
+import lombok.Getter;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 
 @NullMarked
+@Getter
 public class User implements IDomainObject {
     private final DomainObjectConstructorHelper constructorHelper;
 
@@ -30,7 +33,7 @@ public class User implements IDomainObject {
     @Nullable
     private EventOrganizerProfile eventOrganizerProfile;
 
-    public User(Long id,
+    public User(@Nullable Long id,
                 String email,
                 String password,
                 String username,
@@ -40,7 +43,7 @@ public class User implements IDomainObject {
                 @Nullable BackOfficeProfile backOfficeProfile,
                 @Nullable AdministratorProfile administratorProfile,
                 @Nullable EventOrganizerProfile eventOrganizerProfile
-    ) throws DomainFieldException {
+    ) throws DomainValidationException {
         this.constructorHelper = new DomainObjectConstructorHelper();
 
         this.setId(id);
@@ -57,7 +60,7 @@ public class User implements IDomainObject {
         this.constructorHelper.finish();
     }
 
-    private void setId(Long id) throws DomainFieldException {
+    private void setId(@Nullable Long id) throws DomainFieldException {
         String fieldName = "id";
         String errorMessage;
 

@@ -1,6 +1,6 @@
 package fhv.team11.project.ems.admin.service;
 
-import fhv.team11.project.ems.security.error.RegistrationEmailAlreadyRegisteredException;
+import fhv.team11.project.ems.security.error.RegistrationException;
 import fhv.team11.project.ems.security.jwt.JwtTokenService;
 import fhv.team11.project.ems.user.entity.UserJDBC;
 import fhv.team11.project.ems.user.profile.repo.UserProfilesRepository;
@@ -45,10 +45,6 @@ public class AdminUserService {
         String setPassword = UUID.fromString(email).toString();
 
         //TODO: Messaging Bus with email that sends out the set password
-
-        if (userJDBCRepository.findByEmail(email).isPresent()) {
-            throw new RegistrationEmailAlreadyRegisteredException();
-        }
 
         UserJDBC user = new UserJDBC();
         user.setEmail(email);

@@ -3,7 +3,10 @@ package fhv.team11.project.ems.domain.user;
 import fhv.team11.project.ems.domain.commons.DomainObjectConstructorHelper;
 import fhv.team11.project.ems.domain.commons.IdValidator;
 import fhv.team11.project.ems.domain.commons.exception.DomainFieldException;
+import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
+import lombok.Getter;
 
+@Getter
 public class CustomerProfile {
     private final DomainObjectConstructorHelper constructorHelper;
 
@@ -20,7 +23,7 @@ public class CustomerProfile {
                            TempAddress address,
                            String lastName,
                            String firstName
-    ) throws DomainFieldException {
+    ) throws DomainValidationException {
         this.constructorHelper = new DomainObjectConstructorHelper();
 
         this.setId(id);

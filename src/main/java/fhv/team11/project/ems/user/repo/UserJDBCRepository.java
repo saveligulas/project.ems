@@ -2,7 +2,6 @@ package fhv.team11.project.ems.user.repo;
 
 import fhv.team11.project.ems.commons.error.EntityNotFoundException;
 import fhv.team11.project.ems.commons.database.IDatabaseMapper;
-import fhv.team11.project.ems.security.error.RegistrationError;
 import fhv.team11.project.ems.user.entity.UserJDBC;
 import jakarta.validation.ValidationException;
 import jakarta.validation.Validator;
@@ -41,12 +40,6 @@ public class UserJDBCRepository implements IDatabaseMapper<UserJDBC, Long> {
 
     @Override
     public UserJDBC save(UserJDBC entity) {
-        try {
-            validator.validate(entity);
-        } catch (ValidationException e) {
-            throw new RegistrationError();
-        }
-
         entity.setPassword(passwordEncoder.encode(entity.getPassword()));
         userRepositoryQuery.save(entity);
         return userRepositoryQuery.findByEmail(entity.getEmail());

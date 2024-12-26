@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.jspecify.annotations.NullMarked;
 
 @Entity
 @Table(name = "user")
@@ -16,6 +17,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
+@NullMarked
 public class UserEntity {
     @Id
     private Long id;

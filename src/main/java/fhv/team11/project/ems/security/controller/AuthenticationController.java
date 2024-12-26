@@ -1,6 +1,11 @@
 package fhv.team11.project.ems.security.controller;
 
-import fhv.team11.project.ems.security.error.RegistrationError;
+import fhv.team11.project.ems.commons.domain.DomainToBindingResultException;
+import fhv.team11.project.ems.commons.validation.ValidationExceptionToBindingResultFactory;
+import fhv.team11.project.ems.commons.validation.domain.IValidationException;
+import fhv.team11.project.ems.commons.validation.error.SimpleValidationException;
+import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
+import fhv.team11.project.ems.security.error.RegistrationException;
 import fhv.team11.project.ems.security.transfer.AuthenticationRequest;
 import fhv.team11.project.ems.security.transfer.AuthenticationResponse;
 import fhv.team11.project.ems.security.transfer.RegisterRequest;
@@ -48,22 +53,18 @@ public class AuthenticationController {
             RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
-            if (bindingResult.hasFieldErrors("email")) {
-                redirectAttributes.addFlashAttribute("hasEmailError", true);
-            }
             redirectAttributes.addFlashAttribute("registerRequest", registerRequest);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.registerRequest", bindingResult);
             return "redirect:/register";
         }
 
         try {
-            AuthenticationResponse response = authenticationService.register(registerRequest);
+            AuthenticationResponse response = authenticationService.register(registerRequest.getEmail(), registerRequest.getPassword());
             return "redirect:/login";
-        } catch (RegistrationError e) {
-            redirectAttributes.addFlashAttribute("hasEmailError", true);
-            redirectAttributes.addFlashAttribute("emailError", e.getMessage());
-            return "redirect:/register";
+        } catch (SimpleValidationException | DomainValidationException e) {
+            ValidationExceptionToBindingResultFactory.handle((IValidationException) e, registerRequest, "register");
         }
+        return "redirect:/error";
     }
 
     @GetMapping("/login")
