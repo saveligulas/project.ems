@@ -1,7 +1,7 @@
 package fhv.team11.project.ems.events.mapper;
 
-import fhv.team11.project.ems.domain.commons.exception.DomainFieldValidationException;
-import fhv.team11.project.ems.domain.events.TemplateModel;
+import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
+import fhv.team11.project.ems.domain.events.EventTemplate;
 import fhv.team11.project.ems.events.transfer.EventTemplateDTO;
 import fhv.team11.project.ems.events.transfer.EventTemplateDTOContainer;
 import fhv.team11.project.ems.events.transfer.EventTemplateListDTO;
@@ -12,7 +12,7 @@ public class TemplateDTOMapper {
 
     public static final TemplateDTOMapper INSTANCE = new TemplateDTOMapper();
 
-    public EventTemplateDTOContainer toDTO(TemplateModel eventTemplate) {
+    public EventTemplateDTOContainer toDTO(EventTemplate eventTemplate) {
         EventTemplateDTO dto = new EventTemplateDTO();
         EventTemplateListDTO eventTemplateListDTO = new EventTemplateListDTO();
 
@@ -29,8 +29,8 @@ public class TemplateDTOMapper {
     }
 
     //TODO: Change DTO and mapper for overbook places if needed
-    public TemplateModel toModel(EventTemplateDTO eventTemplateDTO,@Nullable EventTemplateListDTO eventTemplateListDTO, @Nullable Long addressId) throws DomainFieldValidationException {
-        return new TemplateModel(eventTemplateListDTO.getId(), eventTemplateDTO.getName(), eventTemplateDTO.getCategory(), eventTemplateDTO.getPrice(),
+    public EventTemplate toModel(EventTemplateDTO eventTemplateDTO, @Nullable EventTemplateListDTO eventTemplateListDTO, @Nullable Long addressId) throws DomainValidationException {
+        return new EventTemplate(eventTemplateListDTO.getId(), eventTemplateDTO.getName(), eventTemplateDTO.getCategory(), eventTemplateDTO.getPrice(),
                 eventTemplateDTO.getMaxParticipants(), eventTemplateDTO.getMinParticipants(), AddressDTOMapper.INSTANCE.toModel(eventTemplateDTO.getAddress(),addressId), null);
     }
 }

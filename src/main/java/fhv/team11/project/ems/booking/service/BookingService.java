@@ -36,7 +36,7 @@ public class BookingService {
 
 
     public void createBooking(CreateBookingDTO createBookingDTO, Long eventId) {
-        Booking booking = CreateBookingDTOMapper.INSTANCE.getEntity(createBookingDTO);
+        Booking booking = CreateBookingDTOMapper.INSTANCE.getDomain(createBookingDTO);
 
         // Fetch the ActiveEvent from the repository
         booking.setBookedEvent(
@@ -55,7 +55,7 @@ public class BookingService {
         List<Booking> bookings = bookingRepository.findAll();
 
         return bookings.stream()
-                .map(BookingListDTOMapper.INSTANCE::getDTO)
+                .map(BookingListDTOMapper.INSTANCE::getView)
                 .collect(Collectors.toList());
     }
 

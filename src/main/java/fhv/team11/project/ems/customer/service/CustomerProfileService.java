@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -33,7 +34,9 @@ public class CustomerProfileService {
     public void createNewCustomerProfile(CustomerProfileDTO customerProfileDTO) {
         UserJDBC userJDBC = JwtSecurityContextHolder.getUserJDBC();
         UserEntity user = JwtSecurityContextHolder.getUser();
-        CustomerProfileEntity customerProfileEntity = CustomerProfileDTOMapper.INSTANCE.getEntity(customerProfileDTO);
+        //TODO FIX
+        //CustomerProfileEntity customerProfileEntity = CustomerProfileDTOMapper.INSTANCE.getEntity(customerProfileDTO);
+        CustomerProfileEntity customerProfileEntity = new CustomerProfileEntity();
         if (userJDBC.getRoles().contains(Role.CUSTOMER)) {
             customerProfileEntity.setUserEntityDetails(user.getUserEntityDetails());
             user.getUserEntityDetails().setCustomerProfileEntity(customerProfileEntity);
@@ -46,8 +49,7 @@ public class CustomerProfileService {
     public List<CustomerProfileDTO> getListOfCustomerProfiles(int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<CustomerProfileEntity> page = customerProfileRepository.findAll(pageable);
-        return page.getContent().stream()
-                .map(CustomerProfileDTOMapper.INSTANCE::getDTO)
-                .toList();
+        //TODO fix
+        return new ArrayList<>();
     }
 }

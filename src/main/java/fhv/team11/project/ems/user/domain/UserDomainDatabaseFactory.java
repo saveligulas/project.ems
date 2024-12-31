@@ -1,5 +1,7 @@
 package fhv.team11.project.ems.user.domain;
 
+import fhv.team11.project.ems.commons.domain.IFindByIdDomainDatabaseMapper;
+import fhv.team11.project.ems.commons.domain.IHandleDomainPersistence;
 import fhv.team11.project.ems.commons.error.EntityNotFoundException;
 import fhv.team11.project.ems.customer.CustomerProfileDomainDatabaseFactory;
 import fhv.team11.project.ems.commons.domain.DomainDatabaseFactory;
@@ -18,7 +20,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class UserDomainDatabaseFactory extends DomainDatabaseFactory<User, Long> {
+public class UserDomainDatabaseFactory extends DomainDatabaseFactory implements IFindByIdDomainDatabaseMapper<User, Long>, IHandleDomainPersistence<User> {
 
     private final UserJDBCRepository userJDBCRepository;
     private final UserEntityRepository userEntityRepository;
@@ -57,7 +59,7 @@ public class UserDomainDatabaseFactory extends DomainDatabaseFactory<User, Long>
 
     @Override
     @Transactional
-    public Long persist(User user) {
+    public User persist(User user) throws DomainValidationException {
         UserJDBC userJDBC = new UserJDBC();
 
         userJDBC.setEmail(user.getEmail());
@@ -77,7 +79,23 @@ public class UserDomainDatabaseFactory extends DomainDatabaseFactory<User, Long>
         }
 
         userEntity.setUserEntityDetails(userEntityDetails);
+        userEntity = userEntityRepository.save(userEntity);
 
-        return userEntityRepository.save(userEntity).getId();
+        return toDomain(userJDBC, userEntity);
+    }
+
+    private User toDomain(UserJDBC userJDBC, UserEntity userEntity) throws DomainValidationException {
+        return new User(
+                userEntity.getId(),
+                userJDBC.getEmail(),
+                userJDBC.getPassword(),
+                userJDBC.getEmail(),
+                userJDBC.getRoles(),
+                List.of(),
+                customerProfileDomainDatabaseFactory.toDomain(userEntity.getUserEntityDetails().getCustomerProfileEntity()),
+                null,
+                null,
+                null
+        );
     }
 }

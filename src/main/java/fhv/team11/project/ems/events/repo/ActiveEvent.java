@@ -17,11 +17,11 @@ public class ActiveEvent {
     private Long id;
 
     @OneToMany(mappedBy = "activeEvent",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<EventDate> eventDate;
+    private Set<EventDateEntity> eventDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "template_id",nullable = false)
-    private EventTemplate eventTemplate;
+    private EventTemplateEntity eventTemplate;
 
     @OneToMany(mappedBy = "bookedEvent",fetch = FetchType.LAZY)
     private Set<Booking> bookings;

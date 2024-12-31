@@ -14,9 +14,9 @@ import java.util.TreeSet;
 public class ActiveEventView implements IModelAttribute {
 
     @Valid
-    private TreeSet<ActiveEventDateDTO> activeEventDates = new TreeSet<>();
+    private TreeSet<EventDateDTO> activeEventDates = new TreeSet<>();
     @Valid
-    private ScheduleEventDTO scheduleEvent;
+    private EventScheduleDTO scheduleEvent;
 
     private Long templateId;
     @Valid

@@ -1,14 +1,11 @@
 package fhv.team11.project.ems.organization.transfer;
 
-import fhv.team11.project.ems.commons.database.IDTOEntityBiMapper;
-import fhv.team11.project.ems.commons.database.IDTOEntityMapper;
+import fhv.team11.project.ems.commons.mapper.IBiPresentationDomainMapper;
 import fhv.team11.project.ems.organization.PartnerOrganization;
-import org.springframework.security.core.parameters.P;
 
-public class PartnerOrganizationDTOMapper implements IDTOEntityBiMapper<PartnerOrganization, OrganizationDTO> {
+public class PartnerOrganizationDTOMapper {
     public static final PartnerOrganizationDTOMapper INSTANCE = new PartnerOrganizationDTOMapper();
 
-    @Override
     public PartnerOrganization getEntity(OrganizationDTO organizationDTO) {
         PartnerOrganization partnerOrganization = new PartnerOrganization();
         partnerOrganization.setName(organizationDTO.getName());
@@ -16,8 +13,7 @@ public class PartnerOrganizationDTOMapper implements IDTOEntityBiMapper<PartnerO
         return partnerOrganization;
     }
 
-    @Override
-    public OrganizationDTO getDTO(PartnerOrganization entity) {
+    public OrganizationDTO getDomain(PartnerOrganization entity) {
         OrganizationDTO organizationDTO = new OrganizationDTO();
         organizationDTO.setName(entity.getName());
         return organizationDTO;

@@ -1,10 +1,10 @@
 package fhv.team11.project.ems.events.service;
 
-import fhv.team11.project.ems.commons.database.IEntityDTOMapper;
-import fhv.team11.project.ems.events.repo.EventTemplate;
+import fhv.team11.project.ems.commons.mapper.IDomainPresentationMapper;
+import fhv.team11.project.ems.events.repo.EventTemplateEntity;
 import fhv.team11.project.ems.events.transfer.EventTemplateListDTO;
 
-public class EventTemplateListDTOMapper implements IEntityDTOMapper<EventTemplate, EventTemplateListDTO> {
+public class EventTemplateListDTOMapper implements IDomainPresentationMapper<EventTemplateListDTO, EventTemplateEntity> {
 
     public static final EventTemplateListDTOMapper INSTANCE = new EventTemplateListDTOMapper();
 
@@ -12,7 +12,7 @@ public class EventTemplateListDTOMapper implements IEntityDTOMapper<EventTemplat
     }
 
     @Override
-    public EventTemplateListDTO getDTO(EventTemplate entity) {
+    public EventTemplateListDTO getView(EventTemplateEntity entity) {
         EventTemplateListDTO listDTO = new EventTemplateListDTO();
         listDTO.setId(entity.getId());
         listDTO.setName(entity.getName());

@@ -44,8 +44,9 @@ public class UserAttributeDTO {
                 if (user.getUserEntityDetails().getCustomerProfileEntity() != null) {
                     customerProfileId = user.getUserEntityDetails().getCustomerProfileEntity().getId();
                 }
-                customerProfile = CustomerProfileDTOMapper.INSTANCE.getDTO(user.getUserEntityDetails().getCustomerProfileEntity());
-                backOfficeProfile = BackOfficeProfileDTOMapper.INSTANCE.getDTO(user.getUserEntityDetails().getBackOfficeProfile());
+                // TODO FIX
+                //customerProfile = CustomerProfileDTOMapper.INSTANCE.getDomain(user.getUserEntityDetails().getCustomerProfileEntity());
+                backOfficeProfile = BackOfficeProfileDTOMapper.INSTANCE.getDomain(user.getUserEntityDetails().getBackOfficeProfile());
             }
         } catch (SecuredEndpointAccessException e) {
             log.info("User is not logged in");

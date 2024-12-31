@@ -4,21 +4,20 @@ import fhv.team11.project.ems.booking.repo.Booking;
 import fhv.team11.project.ems.booking.transfer.BookingIdentifierListDTO;
 import fhv.team11.project.ems.booking.transfer.BookingListDTO;
 import fhv.team11.project.ems.commons.address.AddressDTOMapper;
-import fhv.team11.project.ems.commons.database.IEntityDTOMapper;
+import fhv.team11.project.ems.commons.mapper.IDomainPresentationMapper;
 import fhv.team11.project.ems.commons.qrcode.QRCodeGenerator;
 import fhv.team11.project.ems.events.transfer.ActiveEventListDTO;
 
-public class BookingListDTOMapper implements IEntityDTOMapper<Booking, BookingListDTO> {
+public class BookingListDTOMapper {
 
     public static final BookingListDTOMapper INSTANCE = new BookingListDTOMapper();
 
-    @Override
-    public BookingListDTO getDTO(Booking entity) {
+    public BookingListDTO getView(Booking entity) {
         BookingListDTO dto = new BookingListDTO();
 
         dto.setId(entity.getId());
 
-        dto.setParticipantAddress(AddressDTOMapper.INSTANCE.toDTO(entity.getFinancer().getAddress()));
+        dto.setParticipantAddress(AddressDTOMapper.INSTANCE.toDTO(entity.getFinancer().getAddressEntity()));
 
         if (entity.getFinancer() != null) {
             dto.setFinancer(null);

@@ -2,8 +2,11 @@ package fhv.team11.project.ems.events.service;
 
 import fhv.team11.project.ems.commons.error.EntityNotFoundException;
 import fhv.team11.project.ems.commons.validation.domain.DomainValidatorFactory;
+import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
+import fhv.team11.project.ems.events.EventTemplateDomainDatabaseFactory;
 import fhv.team11.project.ems.events.error.EventTemplateDTOValidationException;
-import fhv.team11.project.ems.events.repo.EventTemplate;
+import fhv.team11.project.ems.events.mapper.presentation.EventTemplateDTOMapper;
+import fhv.team11.project.ems.events.repo.EventTemplateEntity;
 import fhv.team11.project.ems.events.repo.EventTemplateRepository;
 
 import fhv.team11.project.ems.events.transfer.EventTemplateDTO;
@@ -24,51 +27,51 @@ import java.util.List;
 public class EventTemplateService {
 
     private final EventTemplateRepository eventTemplateRepository;
-    private final DomainValidatorFactory domainValidatorFactory;
+    private final EventTemplateDomainDatabaseFactory domainDatabaseFactory;
+    private final EventTemplateDomainDatabaseFactory eventTemplateDomainDatabaseFactory;
 
     @Autowired
-    public EventTemplateService(EventTemplateRepository eventTemplateRepository, DomainValidatorFactory domainValidatorFactory) {
+    public EventTemplateService(EventTemplateRepository eventTemplateRepository, EventTemplateDomainDatabaseFactory domainDatabaseFactory, EventTemplateDomainDatabaseFactory eventTemplateDomainDatabaseFactory) {
         this.eventTemplateRepository = eventTemplateRepository;
-        this.domainValidatorFactory = domainValidatorFactory;
+        this.domainDatabaseFactory = domainDatabaseFactory;
+        this.eventTemplateDomainDatabaseFactory = eventTemplateDomainDatabaseFactory;
     }
 
-    private boolean hasAccess(EventTemplate eventTemplate) {
-        return eventTemplate.getUserEntity().getId().equals(JwtSecurityContextHolder.getUser().getId());
+    private boolean hasAccess(EventTemplateEntity eventTemplateEntity) {
+        return eventTemplateEntity.getUserEntity().getId().equals(JwtSecurityContextHolder.getUser().getId());
     }
 
-    public void createNewTemplate(EventTemplateDTO eventTemplateDTO) {
-        BindingResult bindingResult = domainValidatorFactory.getValidator(EventTemplateDTO.class).validate(eventTemplateDTO);
-        if (bindingResult.hasErrors()) {
-            throw new EventTemplateDTOValidationException(bindingResult);
-        }
-
-        EventTemplate eventTemplate = EventTemplateDTOMapper.INSTANCE.getEntity(eventTemplateDTO);
-        eventTemplateRepository.persist(eventTemplate);
+    public void createNewTemplate(EventTemplateDTO eventTemplateDTO) throws DomainValidationException {
+        eventTemplateDomainDatabaseFactory.persist(EventTemplateDTOMapper.INSTANCE.getDomain(eventTemplateDTO));
     }
 
     public List<EventTemplateListDTO> getListOfTemplates(int pageNumber, int pageSize) {
         return eventTemplateRepository.getEventTemplatesForPageNumber(pageNumber, pageSize, JwtSecurityContextHolder.getUser().getId())
                 .stream()
-                .map(EventTemplateListDTOMapper.INSTANCE::getDTO)
+                .map(EventTemplateListDTOMapper.INSTANCE::getView)
                 .toList();
     }
     public EventTemplateListDTO getTemplateListByID(long templateId) {
         return eventTemplateRepository.findById(templateId)
-                .map(EventTemplateListDTOMapper.INSTANCE::getDTO)
+                .map(EventTemplateListDTOMapper.INSTANCE::getView)
                 .orElse(null);
     }
     public EventTemplateDTO getTemplateByName(String name) {
-        return EventTemplateDTOMapper.INSTANCE.getDTO(eventTemplateRepository.getEventTemplateByName(name));
+        //TODO: fix
+        // return EventTemplateDTOMapper.INSTANCE.getDomain(eventTemplateRepository.getEventTemplateByName(name));
+        return null;
     }
 
     public EventTemplateDTO getTemplateById(Long templateId) {
-        EventTemplate eventTemplate = eventTemplateRepository.findById(templateId)
-                .orElseThrow(() -> new EntityNotFoundException(EventTemplate.class, templateId));
+        EventTemplateEntity eventTemplateEntity = eventTemplateRepository.findById(templateId)
+                .orElseThrow(() -> new EntityNotFoundException(EventTemplateEntity.class, templateId));
 
-        if (!hasAccess(eventTemplate)) {
+        if (!hasAccess(eventTemplateEntity)) {
             throw new SecuredEndpointAccessException();
         }
 
-        return EventTemplateDTOMapper.INSTANCE.getDTO(eventTemplate);
+        //TODO: fix
+        // return EventTemplateDTOMapper.INSTANCE.getDomain(eventTemplateEntity);
+        return null;
     }
 }

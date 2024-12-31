@@ -34,7 +34,7 @@
           <input type="number" class="form-control" id="secret" name="secret" th:field="*{secret}">
         </div>
 
-        <div th:include="~{fragments/address-form :: address(${customerProfileEntity.address})}"></div>
+        <div th:include="~{fragments/addressEntity-form :: addressEntity(${customerProfileEntity.addressEntity})}"></div>
       </div>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>

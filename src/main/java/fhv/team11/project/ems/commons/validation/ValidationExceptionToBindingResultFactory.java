@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class ValidationExceptionToBindingResultFactory {
     public static void handle(IValidationException e, IModelAttribute modelAttribute, String redirectEndpoint) {
-        throw new BindingResultException(buildBindingResult(modelAttribute, e.getFieldErrors()), modelAttribute.getModelAttributeName(), redirectEndpoint);
+        throw new BindingResultException(buildBindingResult(modelAttribute, e.getFieldErrors()), modelAttribute.getModelAttributeName(), redirectEndpoint, e.getErrorMessages());
     }
 
     private static BindingResult buildBindingResult(IModelAttribute modelAttribute, String fieldName, String errorMessage) {

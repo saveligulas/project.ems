@@ -2,7 +2,7 @@ package fhv.team11.project.ems.events.service;
 
 import fhv.team11.project.ems.events.repo.ActiveEvent;
 import fhv.team11.project.ems.events.repo.Appointment;
-import fhv.team11.project.ems.events.repo.EventDate;
+import fhv.team11.project.ems.events.repo.EventDateEntity;
 import fhv.team11.project.ems.events.transfer.*;
 
 import java.util.Set;
@@ -12,34 +12,36 @@ public class ActiveEventViewMapper {
 
     public static final ActiveEventViewMapper INSTANCE = new ActiveEventViewMapper();
 
-    public ActiveEventView getDTO(ActiveEvent activeEvent, Set<EventDate> eventDate, Appointment appointment) {
+    public ActiveEventView getDTO(ActiveEvent activeEvent, Set<EventDateEntity> eventDateEntity, Appointment appointment) {
         ActiveEventView dto = new ActiveEventView();
-        ScheduleEventDTO scheduleEventDTO = new ScheduleEventDTO();
-        scheduleEventDTO.setEndTime(appointment.getEndTime());
-        scheduleEventDTO.setStartTime(appointment.getStartTime());
+        EventScheduleDTO eventScheduleDTO = new EventScheduleDTO();
+        //TODO: fix this
+        //eventScheduleDTO.setEndTime(appointment.getEndTime());
+        //eventScheduleDTO.setStartTime(appointment.getStartTime());
 
-        dto.setScheduleEvent(scheduleEventDTO);
+        dto.setScheduleEvent(eventScheduleDTO);
         dto.setTemplateId(activeEvent.getEventTemplate().getId());
 
-        TreeSet<ActiveEventDateDTO> activeEventDateDTOS = new TreeSet<>();
-        for(EventDate ed : eventDate) {
-            ActiveEventDateDTO activeEventDateDTO = new ActiveEventDateDTO();
-            activeEventDateDTO.setDate(ed.getDate());
-            activeEventDateDTO.setName(ed.getName());
-            activeEventDateDTOS.add(activeEventDateDTO);
+        TreeSet<EventDateDTO> eventDateDTOS = new TreeSet<>();
+        for(EventDateEntity ed : eventDateEntity) {
+            EventDateDTO eventDateDTO = new EventDateDTO();
+            eventDateDTO.setDate(ed.getDate());
+            eventDateDTO.setName(ed.getName());
+            eventDateDTOS.add(eventDateDTO);
         }
         EventTemplateListDTO eventTemplateListDTO = new EventTemplateListDTO();
         eventTemplateListDTO.setName(activeEvent.getEventTemplate().getName());
         eventTemplateListDTO.setId(activeEvent.getEventTemplate().getId());
         dto.setEventTemplateListDTO(eventTemplateListDTO);
 
-        dto.setEventTemplateDTO(EventTemplateDTOMapper.INSTANCE.getDTO(activeEvent.getEventTemplate()));
+        //TODO: fix
+        //dto.setEventTemplateDTO(EventTemplateDTOMapper.INSTANCE.getDomain(activeEvent.getEventTemplate()));
 
         ActiveEventListDTO activeEventListDTO = new ActiveEventListDTO();
         activeEventListDTO.setId(activeEvent.getId());
 
         dto.setActiveEventListDTO(activeEventListDTO);
-        dto.setActiveEventDates(activeEventDateDTOS);
+        dto.setActiveEventDates(eventDateDTOS);
 
         return dto;
     }

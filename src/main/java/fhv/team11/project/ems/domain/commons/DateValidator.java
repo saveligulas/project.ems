@@ -10,9 +10,9 @@ public class DateValidator {
         }
 
         if(date.isAfter(LocalDate.now())){
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
 }

@@ -31,7 +31,9 @@ public class DomainObjectConstructorHelperExceptionBuilder {
 
     private static void addIfFieldPresent(Map<String, String> fieldErrorMessages, String fieldName, String errorMessage) {
         if (fieldErrorMessages.containsKey(fieldName)) {
-            fieldErrorMessages.put(fieldName, fieldErrorMessages.get(fieldName) + " | " + errorMessage);
+            if (!errorMessage.isBlank()) {
+                fieldErrorMessages.put(fieldName, fieldErrorMessages.get(fieldName) + " | " + errorMessage);
+            }
         } else {
             fieldErrorMessages.put(fieldName, errorMessage);
         }

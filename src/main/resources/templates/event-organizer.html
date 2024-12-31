@@ -115,7 +115,7 @@
 
     <!-- Create New Event Blueprint Button -->
     <div class="text-center mb-5">
-        <a href="eo/create-eventTemplate.html" th:href="@{/event/manage}" class="btn btn-success">
+        <a href="eo/create-eventTemplateEntity.html" th:href="@{/event/manage}" class="btn btn-success">
             <i class="bi bi-plus-circle me-2"></i>Create New Event Template
         </a>
     </div>
@@ -126,9 +126,9 @@
             Your Event Blueprints
         </div>
         <ul class="list-group list-group-flush">
-            <li class="list-group-item d-flex justify-content-between align-items-center" th:each="eventTemplate : ${templates}">
-                <span th:text="${eventTemplate.name}">Event Name</span>
-                <a th:href="@{/event/manage/{id}(id=${eventTemplate.id})}" class="btn btn-outline-primary">
+            <li class="list-group-item d-flex justify-content-between align-items-center" th:each="eventTemplateEntity : ${templates}">
+                <span th:text="${eventTemplateEntity.name}">Event Name</span>
+                <a th:href="@{/event/manage/{id}(id=${eventTemplateEntity.id})}" class="btn btn-outline-primary">
                     View Details
                 </a>
             </li>

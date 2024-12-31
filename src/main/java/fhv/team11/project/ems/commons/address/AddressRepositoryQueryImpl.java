@@ -1,15 +1,10 @@
 package fhv.team11.project.ems.commons.address;
 
-import fhv.team11.project.ems.commons.error.PersistException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.PersistenceException;
 import jakarta.transaction.Transactional;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
-
-import java.util.Optional;
 
 @Repository
 public class AddressRepositoryQueryImpl implements AddressRepositoryQuery {
@@ -19,7 +14,7 @@ public class AddressRepositoryQueryImpl implements AddressRepositoryQuery {
 
     @Override
     @Transactional
-    public Address persist(Address entity) {
+    public AddressEntity persist(AddressEntity entity) {
         if (entity == null || entity.getId() != null) {
             throw new PersistenceException();
         }
@@ -28,7 +23,7 @@ public class AddressRepositoryQueryImpl implements AddressRepositoryQuery {
     }
 
     @Override
-    public Address update(Address entity) {
+    public AddressEntity update(AddressEntity entity) {
         return null;
     }
 }

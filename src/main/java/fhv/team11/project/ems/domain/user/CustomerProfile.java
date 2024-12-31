@@ -1,5 +1,6 @@
 package fhv.team11.project.ems.domain.user;
 
+import fhv.team11.project.ems.domain.adress.Address;
 import fhv.team11.project.ems.domain.commons.DomainObjectConstructorHelper;
 import fhv.team11.project.ems.domain.commons.IdValidator;
 import fhv.team11.project.ems.domain.commons.exception.DomainFieldException;
@@ -13,14 +14,14 @@ public class CustomerProfile {
     private Long id;
     private String firstName;
     private String lastName;
-    private TempAddress address;
+    private Address address;
     private String phoneNumber;
     private Integer secret;
 
     public CustomerProfile(Long id,
                            Integer secret,
                            String phoneNumber,
-                           TempAddress address,
+                           Address address,
                            String lastName,
                            String firstName
     ) throws DomainValidationException {
@@ -48,7 +49,7 @@ public class CustomerProfile {
         this.lastName = lastName;
     }
 
-    public void setAddress(TempAddress address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 

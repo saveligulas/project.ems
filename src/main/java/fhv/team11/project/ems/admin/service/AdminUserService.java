@@ -1,6 +1,5 @@
 package fhv.team11.project.ems.admin.service;
 
-import fhv.team11.project.ems.security.error.RegistrationException;
 import fhv.team11.project.ems.security.jwt.JwtTokenService;
 import fhv.team11.project.ems.user.entity.UserJDBC;
 import fhv.team11.project.ems.user.profile.repo.UserProfilesRepository;
@@ -33,7 +32,7 @@ public class AdminUserService {
     public List<UserListDTO> getListOfUsers(int pageNumber, int pageSize) {
         return userJDBCRepository.getUsersForPageNumber(pageNumber, pageSize)
                 .stream()
-                .map(UserListDTOMapper.INSTANCE::getDTO)
+                .map(UserListDTOMapper.INSTANCE::getView)
                 .toList();
     }
 

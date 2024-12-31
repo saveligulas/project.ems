@@ -15,34 +15,34 @@ public class EventTemplateRepositoryQueryImpl implements EventTemplateRepository
 
     @Transactional
     @Override
-    public EventTemplate persist(EventTemplate eventTemplate) {
-        UserEntity userEntity = eventTemplate.getUserEntity();
+    public EventTemplateEntity persist(EventTemplateEntity eventTemplateEntity) {
+        UserEntity userEntity = eventTemplateEntity.getUserEntity();
 
         if (userEntity.getId() == null) {
             throw new PersistenceException("User");
         }
         entityManager.merge(userEntity);
-        entityManager.persist(eventTemplate.getAddress());
-        entityManager.persist(eventTemplate);
+        entityManager.persist(eventTemplateEntity.getAddressEntity());
+        entityManager.persist(eventTemplateEntity);
 
-        return eventTemplate;
+        return eventTemplateEntity;
     }
 
     @Transactional
     @Override
-    public EventTemplate update(EventTemplate entity) {
+    public EventTemplateEntity update(EventTemplateEntity entity) {
         return entityManager.merge(entity);
     }
 
     @Override
-    public List<EventTemplate> listNumberOfBlueprints(int num) {
-        return entityManager.createQuery("SELECT b FROM EventTemplate b", EventTemplate.class).setMaxResults(num).getResultList();
+    public List<EventTemplateEntity> listNumberOfBlueprints(int num) {
+        return entityManager.createQuery("SELECT b FROM EventTemplateEntity b", EventTemplateEntity.class).setMaxResults(num).getResultList();
     }
 
     @Override
-    public List<EventTemplate> getEventTemplatesForPageNumber(int pageNumber, int pageSize, Long userId) {
+    public List<EventTemplateEntity> getEventTemplatesForPageNumber(int pageNumber, int pageSize, Long userId) {
        String sqlQuery = "SELECT * FROM event_template WHERE user_id = :user_id ORDER BY created_at DESC";
-       Query query = entityManager.createNativeQuery(sqlQuery, EventTemplate.class);
+       Query query = entityManager.createNativeQuery(sqlQuery, EventTemplateEntity.class);
 
        query.setParameter("user_id", userId);
        query.setFirstResult(pageNumber * pageSize);
@@ -52,7 +52,7 @@ public class EventTemplateRepositoryQueryImpl implements EventTemplateRepository
     }
 
     @Override
-    public EventTemplate getEventTemplateByName(String templateName) {
-        return entityManager.createQuery("SELECT t from EventTemplate t where t.name= :name", EventTemplate.class).setParameter("name", templateName).getSingleResult();
+    public EventTemplateEntity getEventTemplateByName(String templateName) {
+        return entityManager.createQuery("SELECT t from EventTemplateEntity t where t.name= :name", EventTemplateEntity.class).setParameter("name", templateName).getSingleResult();
     }
 }

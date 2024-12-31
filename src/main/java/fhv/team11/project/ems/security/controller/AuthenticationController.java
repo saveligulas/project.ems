@@ -62,7 +62,7 @@ public class AuthenticationController {
             AuthenticationResponse response = authenticationService.register(registerRequest.getEmail(), registerRequest.getPassword());
             return "redirect:/login";
         } catch (SimpleValidationException | DomainValidationException e) {
-            ValidationExceptionToBindingResultFactory.handle((IValidationException) e, registerRequest, "register");
+            ValidationExceptionToBindingResultFactory.handle(e, registerRequest, "register");
         }
         return "redirect:/error";
     }

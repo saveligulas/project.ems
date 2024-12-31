@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Set;
 
 
@@ -18,8 +16,9 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    //TODO: OneToOne relationship
     @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL)
-    private Set<EventDate> eventDates;
+    private Set<EventDateEntity> eventDates;
 
     @OneToMany(mappedBy = "schedule")
     private Set<Appointment> appointments;
