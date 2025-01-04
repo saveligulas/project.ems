@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{base}"
+      th:with="title='Plan Event'">
+<body>
+
+<div layout:fragment="top">
+    <div class="text-center">
+        <h2>Plan the Dates for your Event</h2>
+    </div>
+</div>
+<div layout:fragment="center">
+    <form th:action="@{/event/manage/{id}/plan(id=${eventTemplateList.id})}" method="POST" th:object="${eventDate}" novalidate>
+        <article>
+            <fieldset>
+                <label>
+                    Date *
+                    <input
+                            type="date"
+                            name="date"
+                            aria-label="Date"
+                            th:field="*{date}"
+                            th:attr="aria-invalid=${#fields.hasErrors('date')} ? 'true'"
+                    />
+                    <small th:errors="*{date}"></small>
+                </label>
+            </fieldset>
+
+            <fieldset>
+                <label>
+                    Name
+                    <input
+                          placeholder="Will use Date if not specified"
+                          type="text"
+                          name="name"
+                          th:field="*{name}"
+                          th:attr="aria-invalid=${#fields.hasErrors('name')} ? 'true'"
+                    />
+                    <small th:errors="*{name}"></small>
+                </label>
+            </fieldset>
+        </article>
+        <input
+                type="submit"
+                value="Add Date to Event"
+        />
+        <div th:include="~{fragments/errors :: display-errors}"></div>
+    </form>
+    <div>
+        <article>
+            <div th:if="${#lists.isEmpty(wizard.eventDates)}">
+                <h4 class="text-center">No Dates added</h4>
+            </div>
+
+            <div th:if="${!#lists.isEmpty(wizard.eventDates)}">
+                <table class="striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Name</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="eventDate : ${wizard.eventDates}">
+                            <td th:text="${eventDate.date}"></td>
+                            <td th:text="${eventDate.name}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <a role="button"
+                   th:href="@{/event/manage/{id}/plan/redirect(id=${eventTemplateList.id})}"
+                   data-tooltip="You cannot return once you proceed"
+                   data-placement="bottom">
+                    Proceed to Schedules
+                </a>
+            </div>
+        </article>
+    </div>
+</div>
+</body>
+</html>
+

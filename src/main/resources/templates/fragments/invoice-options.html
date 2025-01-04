@@ -1,0 +1,33 @@
+<div th:fragment="paymentOption(paymentOption)">
+
+    <label>
+        Payment Method *
+        <select th:field="*{paymentOption.paymentMethod}">
+            <option selected disabled value="">
+                Select...
+            </option>
+            <option
+                    th:each="paymentOptionList : ${paymentMethods}"
+                    th:text="${paymentOptionList.getName()}"
+                    th:value="${paymentOptionList}">
+            </option>
+        </select>
+        <small th:errors="*{paymentOption.paymentMethod}"></small>
+    </label>
+    <label>
+        Invoice Delivery *
+        <select th:field="*{paymentOption.invoiceDelivery}">
+            <option selected disabled value="">
+                Select...
+            </option>
+            <option
+                th:each="deliveryOption : ${invoiceDeliveries}"
+                th:text="${deliveryOption.getName()}"
+                th:value="${deliveryOption}">
+            </option>
+        </select>
+        <small th:errors="*{paymentOption.invoiceDelivery}"></small>
+    </label>
+
+
+</div>

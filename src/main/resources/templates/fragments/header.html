@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Header Fragment</title>
+    <link rel="stylesheet" th:href="@{/pico-main/css/pico.min.jade.css}"/>
+    <link rel="stylesheet" th:href="@{/css/generic.css}"/>
+</head>
+<body>
+<!--@thymesVar id="user" type="fhv.team11.project.ems.commons.controller.base.attribute.user.UserAttributes"-->
+<!--@thymesVar id="env" type="fhv.team11.project.ems.commons.controller.base.attribute.dev.EnvironmentAttributes"-->
+<header th:fragment="header" class="container-fluid is-fixed-above-lg">
+    <div class="grid">
+        <div class="align-center">
+            <h2>
+                <a th:href="@{/index}" style="text-decoration: none">
+                    <strong>Eventastic</strong>
+                    <small><s>Chaos</s> Edition</small>
+                </a>
+            </h2>
+        </div>
+        <div class="align-center">
+            <th:block th:if="${user?.isAuthenticated()}">
+                <details class="dropdown">
+                    <summary th:text="${user?.getUsername()}" class="contrast"></summary>
+                    <ul dir="rtl">
+                        <li><a class="secondary" th:href="@{/user/details}">Account</a></li>
+                        <li><a class="secondary" th:href="@{/logout}">Logout</a></li>
+                        <li><a href="!" id="theme-toggle" class="secondary">Toggle Theme</a></li>
+                    </ul>
+                </details>
+            </th:block>
+            <th:block th:if="${!user?.isAuthenticated()}">
+                <div class="text-inline">
+                    <a th:href="@{/login}" class="button">Login</a>
+                    <a th:href="@{/register}" class="button secondary">Register</a>
+                </div>
+            </th:block>
+        </div>
+    </div>
+</header>
+<script th:src="@{/js/theme-switcher.js}"></script>
+</body>
+</html>

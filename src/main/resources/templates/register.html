@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{base}"
+      th:with="title='Register'">
+<body>
+<div layout:fragment="top">
+  <div class="text-center">
+    <h2>Register to Eventastic!</h2>
+    <p>Create an account to access our innovative Event platform.</p>
+  </div>
+</div>
+<div layout:fragment="mid">
+  <form th:action="@{/register/user}" method="POST" th:object="${registerRequest}" novalidate>
+    <fieldset>
+      <label>
+        Email
+        <input
+          placeholder="Email"
+          name="email"
+          th:field="*{email}"
+          th:attr="aria-invalid=${#fields.hasErrors('email')} ? 'true'"
+        />
+        <small th:errors="*{email}"></small>
+      </label>
+    </fieldset>
+    <fieldset>
+      <label>
+        Password
+        <input
+          placeholder="Password"
+          name="password"
+          type="password"
+          th:field="*{password}"
+          th:attr="aria-invalid=${#fields.hasErrors('password')} ? 'true'"
+        />
+        <small th:errors="*{password}"></small>
+      </label>
+    </fieldset>
+    <fieldset>
+      <label>
+        Confirm Password
+        <input
+          placeholder="Confirm Password"
+          name="confirmPassword"
+          type="password"
+          th:field="*{confirmPassword}"
+          th:attr="aria-invalid=${#fields.hasErrors('confirmPassword')} ? 'true'"
+        />
+        <small th:errors="*{confirmPassword}"></small>
+      </label>
+    </fieldset>
+    <input
+            type="submit"
+            value="Register"
+    />
+  </form>
+  <div>
+    <p class="secondary text-center">Already have an account? <a th:href="@{/login}">Login here</a></p>
+  </div>
+</div>
+</body>
+</html>

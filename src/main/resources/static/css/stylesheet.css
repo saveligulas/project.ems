@@ -1,0 +1,127 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/* Navigation */
+nav {
+    margin-bottom: 2em;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 1em;
+}
+
+nav li {
+    margin: 0;
+}
+
+/* Header styles */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em 2em;
+    background-color: #2c3e50;
+    border-bottom: 1px solid #34495e;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.header-left h1 {
+    margin: 0;
+    font-size: 1.5em;
+    color: white;
+}
+
+.header-center {
+    margin: 0;
+}
+
+.header-center ul {
+    display: flex;
+    gap: 2em;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.header-center a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5em 1em;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.header-center a:hover {
+    background-color: #34495e;
+    text-decoration: none;
+}
+
+.header-right {
+    display: flex;
+    gap: 1em;
+    align-items: center;
+}
+
+.header-btn {
+    padding: 0.5em 1em;
+    font-size: 0.875em;
+}
+
+/* Override some button styles for the header */
+.header-right .btn-outline {
+    border-color: white;
+    color: white;
+}
+
+.header-right .btn-outline:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.header-right .btn-primary {
+    background-color: #3498db;
+    border-color: #3498db;
+}
+
+.header-right .btn-primary:hover {
+    background-color: #2980b9;
+    border-color: #2980b9;
+}
+
+.input-error {
+    border: 1px solid red;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.9em;
+}
+
+/* Spacing utilities */
+.mt-1 { margin-top: 1em; }
+.mt-2 { margin-top: 2em; }
+.mb-1 { margin-bottom: 1em; }
+.mb-2 { margin-bottom: 2em; }
+.ml-1 { margin-left: 1em; }
+.mr-1 { margin-right: 1em; }
+.mx-1 { margin-left: 1em; margin-right: 1em; }
+.my-1 { margin-top: 1em; margin-bottom: 1em; }
+.p-1 { padding: 1em; }
+.p-2 { padding: 2em; }
+
+/* Text utilities */
+.text-small { font-size: 0.875em; }
+.text-large { font-size: 1.125em; }
+.text-muted { color: #6c757d; }
+.text-bold { font-weight: 500; }

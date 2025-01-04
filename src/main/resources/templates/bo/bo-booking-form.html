@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{base}"
+      th:with="title='Booking'">
+<head>
+    <script th:src="@{/js/search-customer-profile.js}"></script>
+</head>
+<body>
+<!--@thymesVar id="user" type="fhv.team11.project.ems.commons.controller.base.attribute.user.UserAttributes"-->
+<div layout:fragment="center" class="container-fluid">
+    <h1 class="text-center mb-4"
+        th:text="'Booking for ' + (${activeEvent?.eventTemplateView?.name} ?: 'Unnamed Event') + ' starting on ' + (${activeEvent.eventDates.get(0).date})">
+    </h1>
+
+    <label>
+        <input
+                type="search"
+                name="search"
+                placeholder="Search for Customers..."
+                id="searchInput"
+                aria-label="Search"
+        >
+    </label>
+
+    <table class="striped" id="resultsContainer">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Name</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Secret</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <form th:action="@{/active-events/{id}/booking(id=${activeEvent.id})}"
+          th:object="${createBooking}"
+          method="POST"
+          novalidate>
+        <fieldset>
+            <label>
+                Selected Customer ID
+                <input
+                        type="text"
+                        name="financerId"
+                        th:value="${customerId}"
+                />
+            </label>
+
+            <label>
+                Number of Places *
+                <input
+                        type="number"
+                        name="bookedPlaces"
+                        th:field="*{bookedPlaces}"
+                        placeholder="Enter number of places"
+                        th:attr="aria-invalid=${#fields.hasErrors('bookedPlaces')} ? 'true'"
+                />
+            <small th:errors="*{bookedPlaces}"></small>
+        </label>
+        </fieldset>
+        <div th:include="~{fragments/invoice-options :: paymentOption(${createBooking.paymentOption})}"></div>
+        <input
+                type="submit"
+                value="Submit Booking"
+        />
+    </form>
+</div>
+</body>
+</html>

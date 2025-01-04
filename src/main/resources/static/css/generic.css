@@ -1,0 +1,66 @@
+.align-items-right {
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.input-error {
+    border: 1px solid red;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.align-bottom {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 100%;
+}
+
+.align-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.text-inline {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    transition: box-shadow 0.3s ease;
+    box-shadow: none;
+}
+
+header.scrolled {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-bottom: 1px solid var(--pico-border-color, #e0e0e0);
+}
+
+@media (min-width: 1024px) {
+    body>header.is-fixed-above-lg {
+        z-index: 2;
+        position: sticky;
+        top: 0;
+        backdrop-filter: blur(21px);
+        transition: border-top-color .4s ease-in-out, box-shadow .4s ease-in-out;
+        left: 0;
+        right: 0;
+        width: 100%;
+        margin: 0;
+    }
+}
+
+@media (min-width: 1024px) {
+    body>header.is-fixed-above-lg.is-fixed {
+        border-bottom: 1px solid #2D3138;
+        box-shadow: var(--pico-card-box-shadow);
+    }
+}

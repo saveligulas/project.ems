@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{base}"
+      th:with="title='Login'">
+<body>
+  <div layout:fragment="top">
+    <div class="text-center">
+      <h2>Login to Eventastic!</h2>
+    </div>
+  </div>
+  <div layout:fragment="mid">
+    <form th:action="@{/authenticate}" method="POST" th:object="${authenticationRequest}" novalidate>
+      <fieldset>
+        <label>
+          Email
+          <input
+            placeholder="Email"
+            name="email"
+            th:field="*{email}"
+            th:attr="aria-invalid=${hasError != null} ? 'true'"
+          />
+        </label>
+      </fieldset>
+      <fieldset>
+        <label>
+          Password
+          <input
+            placeholder="Password"
+            name="password"
+            type="password"
+            th:field="*{password}"
+            th:attr="aria-invalid=${hasError != null} ? 'true'"
+          />
+          <small th:text="${hasError}"></small>
+        </label>
+      </fieldset>
+      <input
+              type="submit"
+              value="Login"
+      />
+    </form>
+    <div >
+      <p class="secondary text-center">Don't have an account? <a th:href="@{/register}">Register here</a></p>
+    </div>
+  </div>
+</body>
+</html>

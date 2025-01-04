@@ -1,0 +1,141 @@
+/* Basic page styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f3f4f6;
+}
+
+/* Header styling */
+.site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Keeps space between logo, navigation, and buttons */
+    background-color: #333;
+    padding: 0.75rem 2rem;
+    color: white;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+/* Add some padding at the top of the body to prevent content from hiding under the header */
+body {
+    padding-top: 70px; /* Adjust this based on the height of your header */
+    background-color: #f3f4f6;
+}
+
+.logo h1 {
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+/* Navigation styling */
+.navigation {
+    flex-grow: 1; /* Allows the navigation to take up flexible space */
+    display: flex;
+    justify-content: center; /* Centers the navigation items horizontally */
+}
+
+.navigation ul {
+    list-style-type: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.navigation li {
+    margin-right: 1.5rem;
+}
+
+.navigation a {
+    text-decoration: none;
+    color: white;
+    font-size: 1rem;
+}
+
+.navigation a:hover {
+    color: #ddd;
+    background-color: #555;
+    padding: 0.5rem;
+    border-radius: 5px;
+}
+
+/* Auth buttons styling */
+.auth-buttons {
+    display: flex;
+    gap: 0.5rem;
+    padding-right: 30px; /* Adjust padding to create space from the right */
+}
+
+.auth-buttons .btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    background-color: white;
+    color: #333;
+}
+
+.auth-buttons .btn:hover {
+    background-color: #e0e0e0;
+}
+
+/* Main container for the event list */
+.event-list {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Individual event card styling */
+.event-card {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+/* Event title */
+.event-card h2 {
+    margin-top: 0;
+    color: #333;
+}
+
+.view-event-btn {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    color: white;
+    background-color: #0047AB;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+.view-event-btn:hover {
+    background-color: #003580;
+}
+
+/* Event details */
+.event-card p {
+    margin: 0.3rem 0;
+}
+
+/* Organizer, date, price, and other labels styling */
+.event-card .organizer, .event-card .appointments, .event-card .price,
+.event-card .participants, .event-card .requirements,
+.event-card .equipment, .event-card .location {
+    color: #555;
+}
+
+.event-card p strong {
+    color: #222;
+}

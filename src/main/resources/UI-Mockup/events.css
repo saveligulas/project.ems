@@ -1,0 +1,140 @@
+/* Basic page styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f3f4f6;
+}
+
+/* Header styling */
+.site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #333;
+    padding: 0.75rem 2rem;
+    color: white;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.auth-buttons {
+    display: flex;
+    gap: 0.5rem;
+    padding-right: 30px; /* Adjust padding to create space from the right */
+}
+
+.auth-buttons .btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    background-color: white;
+    color: #333;
+}
+
+.auth-buttons .btn:hover {
+    background-color: #e0e0e0;
+}
+
+/* Logo styling */
+.logo h1 {
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+/* Navigation styling */
+.navigation {
+    flex-grow: 1; /* Allows the navigation to take up flexible space */
+    display: flex;
+    justify-content: center; /* Centers the navigation items horizontally */
+}
+
+.navigation ul {
+    list-style-type: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.navigation li {
+    margin-right: 1.5rem;
+}
+
+.navigation a {
+    text-decoration: none;
+    color: white;
+    font-size: 1rem;
+}
+
+.navigation a:hover {
+    color: #ddd;
+    background-color: #555;
+    padding: 0.5rem;
+    border-radius: 5px;
+}
+
+/* Main container for event list */
+#event-list, #event-details {
+    padding: 2rem;
+    max-width: 800px;
+    margin: 80px auto 0; /* Margin adjusted to account for fixed header */
+}
+
+/* Individual event card styling */
+.event-card {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+}
+
+/* Event title */
+.event-card h2, #event-details h2 {
+    margin-top: 0;
+    color: #333;
+}
+
+/* View Event and Back button styling */
+.view-event-btn, .btn.back-btn {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    color: white;
+    background-color: #0047AB;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+.view-event-btn:hover, .btn.back-btn:hover {
+    background-color: #003580;
+}
+
+/* Book Event button styling */
+.book-btn {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    color: white;
+    background-color: #28a745; /* Green color for Book Event button */
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+.book-btn:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+/* Event details styling */
+#event-details p {
+    margin: 1rem 0;
+}
+

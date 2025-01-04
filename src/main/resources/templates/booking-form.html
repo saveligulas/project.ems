@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base}"
+      th:with="title='Booking'" xmlns:th="http://www.thymeleaf.org">
+<!--@thymesVar id="user" type="fhv.team11.project.ems.commons.controller.base.attribute.user.UserAttributes"-->
+<div layout:fragment="center" class="container">
+    <div class="event-details">
+        <h1 class="text-center mb-4"
+            th:text="'Booking for ' + (${activeEvent?.eventTemplateView.name} ?: 'Unnamed Event') + ' starting on ' + (${activeEvent.eventDates.get(0).date})">
+        </h1>
+
+        <div th:if="${!user.hasCustomerProfile()}">
+            <dialog open>
+                <article>
+                    <h2>Create Customer Profile</h2>
+                    <p>You don't have a customer profile yet. Do you want to create one?</p>
+                    <footer>
+                        <a href="/home" class="secondary" role="button">Cancel</a>
+                        <a href="/profiles/customer/create" role="button">Proceed</a>
+                    </footer>
+                </article>
+            </dialog>
+        </div>
+
+        <form th:if="${user?.hasCustomerProfile()}"
+              th:action="@{/active-events/{id}/booking(id=${activeEvent.id})}"
+              th:object="${createBooking}"
+              method="POST"
+              novalidate>
+
+            <input type="hidden" name="financerId" th:value="${user?.getCustomerProfileId()}">
+
+            <div class="grid">
+                <div>
+                    <h4 class="text-center">Customer Information</h4>
+                    <article>
+                        <fieldset>
+                            <label>
+                                First Name
+                                <input
+                                        type="text"
+                                        name="firstName"
+                                        disabled
+                                        th:value="${user?.getCustomerProfileDTO().firstName}"
+                                />
+                            </label>
+
+                            <label>
+                                Last Name
+                                <input
+                                        type="text"
+                                        name="lastName"
+                                        disabled
+                                        th:value="${user?.getCustomerProfileDTO().lastName}"
+                                />
+                            </label>
+
+                            <label>
+                                Phone Number
+                                <input
+                                        type="text"
+                                        name="phoneNumber"
+                                        disabled
+                                        th:value="${user?.getCustomerProfileDTO().phoneNumber}"
+                                />
+                            </label>
+                        </fieldset>
+                    </article>
+                </div>
+
+                <div>
+                    <h4 class="text-center">Booking Details</h4>
+                    <article>
+                        <fieldset>
+                            <label>
+                                Number of Places *
+                                <input
+                                        type="number"
+                                        name="bookedPlaces"
+                                        th:field="*{bookedPlaces}"
+                                        placeholder="Enter number of places"
+                                        th:attr="aria-invalid=${#fields.hasErrors('bookedPlaces')} ? 'true'"
+                                />
+                                <small th:errors="*{bookedPlaces}"></small>
+                            </label>
+                            <div th:include="~{fragments/invoice-options :: paymentOption(${createBooking.paymentOption})}"></div>
+                        </fieldset>
+                    </article>
+                </div>
+            </div>
+            <input
+                    type="submit"
+                    value="Submit Booking"
+            />
+        </form>
+    </div>
+</div>
+</html>

@@ -1,8 +1,10 @@
 package fhv.team11.project.ems.commons.database;
 
+import fhv.team11.project.ems.commons.error.DatabaseException;
+
+import java.util.Optional;
+
 public interface IRepository<E, ID> {
-    E save(E entity);
+    E persist(E entity);
     E update(E entity);
-    E findById(ID id);
-    E deleteById(ID id);
 }

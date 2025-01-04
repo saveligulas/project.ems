@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{base}"
+      th:with="title='Plan Schedule'">
+<body>
+<div layout:fragment="top">
+    <div class="text-center">
+        <h2 th:utext="'Plan the Schedule for ' + ${eventDateTitle}"></h2>
+    </div>
+</div>
+<div layout:fragment="center">
+    <form
+            th:action="@{/event/manage/{id}/plan/{eventDateIndex}/appointment(id=${eventTemplateList.id}, eventDateIndex=${eventDateIndex})}"
+            method="POST"
+            th:object="${appointment}"
+            novalidate>
+        <article>
+            <fieldset>
+                <label>
+                    Start Time *
+                    <input
+                            type="time"
+                            name="startTime"
+                            th:field="*{startTime}"
+                            th:attr="aria-invalid=${#fields.hasErrors('startTime')} ? 'true'"
+                    />
+                    <small th:errors="*{startTime}"></small>
+                </label>
+            </fieldset>
+
+            <fieldset>
+                <label>
+                    End Time *
+                    <input
+                            type="time"
+                            name="endTime"
+                            th:field="*{endTime}"
+                            th:attr="aria-invalid=${#fields.hasErrors('endTime')} ? 'true'"
+                    />
+                    <small th:errors="*{endTime}"></small>
+                </label>
+            </fieldset>
+
+            <fieldset>
+                <label>
+                    Title *
+                    <input
+                        type="text"
+                        name="title"
+                        th:field="*{title}"
+                        th:attr="aria-invalid=${#fields.hasErrors('title')} ? 'true'"
+                    />
+                    <small th:errors="*{title}"></small>
+                </label>
+            </fieldset>
+            <fieldset>
+                <label>
+                    Description
+                    <textarea
+                            name="description"
+                            rows="2"
+                            th:field="*{description}">
+                    </textarea>
+                    <small th:errors="*{description}"></small>
+                </label>
+            </fieldset>
+        </article>
+        <input
+                type="submit"
+                value="Add Appointment to Schedule"
+        />
+        <div th:include="~{fragments/errors :: display-errors}"></div>
+    </form>
+    <div>
+        <article>
+            <div th:if="${#lists.isEmpty(eventSchedule.appointments)}">
+                <h4 class="text-center">Schedule is empty</h4>
+            </div>
+
+            <div th:if="${!#lists.isEmpty(eventSchedule.appointments)}">
+                <table class="striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Start Time</th>
+                        <th scope="col">End Time</th>
+                        <th scope="col">Title</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="appointmentFromList : ${eventSchedule.getAppointments()}">
+                        <td th:text="${appointmentFromList.startTime}"></td>
+                        <td th:text="${appointmentFromList.endTime}"></td>
+                        <td th:text="${appointmentFromList.title}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div th:if="${nextEventDateIndex}">
+                    <a role="button"
+                       th:href="@{/event/manage/{id}/plan/{nextEventDateIndex}(id=${eventTemplateList.id}, nextEventDateIndex=${nextEventDateIndex})}"
+                       data-tooltip="Go to next Date to plan appointments"
+                       data-placement="bottom">
+                        Next Event Date
+                    </a>
+                </div>
+
+                <div th:if="${nextEventDateIndex == null}">
+                    <a role="button"
+                       th:href="@{/event/manage/{id}/plan/finish(id=${eventTemplateList.id})}"
+                       data-tooltip="Will create und publicize your event"
+                       data-placement="bottom">
+                        Publish Event
+                    </a>
+                </div>
+            </div>
+        </article>
+    </div>
+</div>
+</body>
+</html>

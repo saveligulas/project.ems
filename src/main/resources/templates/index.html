@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{base}"
+      th:with="title='Home'">
+<body>
+<!--<main layout:fragment="content">
+    <div class="hero-section">
+        <div class="container-fluid d-flex flex-column align-items-center">
+            <h1>Find Your Nature</h1>
+            <p>Search for a city, park, or trail name</p>
+            <form action="/search" method="get" class="search-bar mt-4">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search by city, park, or trail name" name="query">
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </div>
+                <div class="additional-filters mt-4">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="number" class="form-control" placeholder="Price From" name="priceFrom">
+                                    <input type="number" class="form-control" placeholder="Price To" name="priceTo">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <select class="form-control" name="category">
+                                    <option value="">Select Category</option>
+                                    <option th:each="category : ${categories}" th:value="${category}" th:text="${category}"></option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <input type="number" class="form-control" placeholder="Number of participants" name="participants">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+&lt;!&ndash; Events Section &ndash;&gt;
+<div class="events-section">
+    <div class="container-fluid">
+        <h2>These are some events for you...</h2>
+        <div class="event-card-container">
+            <a th:each="event, iterStat : ${activeEvents}"
+               th:if="${iterStat.index < 4}"
+               th:href="@{/active-events/{id}(id=${event.getTemplateId()})}"
+               class="event-card"
+               th:style="${iterStat.index % 2 == 0} ? 'background: #f1f8e9;' : ''">
+                <h3 th:text="${event.getEventTemplateDTO().getName()}">Event Name</h3>
+                <p th:text="'Category: ' + ${event.getEventTemplateDTO().getCategory()}">Category</p>
+                <p th:each="date : ${event.getActiveEventDates()}" th:text="'Date: ' + ${date.date}">Date</p>
+                <p th:text="'Price: $' + ${event.getEventTemplateDTO().getPrice()}">Price</p>
+                <p th:text="'Location: ' + ${event.getEventTemplateDTO().getAddress().getCity()}">Location</p>
+                <p th:text="'Location: ' + ${event.getEventTemplateDTO().getAddress().getRegion()}">Region</p>
+                <p th:text="'Location: ' + ${event.getEventTemplateDTO().getAddress().getStreet()}">Street</p>
+            </a>
+
+        </div>
+    </div>
+    <div class="show-all-button">
+        <a class="btn btn-primary" th:href="@{/active-events}">Show All Events</a>
+    </div>
+
+</div>-->
+</main>
+</body>
+</html>

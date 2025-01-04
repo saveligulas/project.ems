@@ -1,84 +1,66 @@
 package fhv.team11.project.ems.security.jwt;
 
-import com.auth0.jwt.algorithms.Algorithm;
+import fhv.team11.project.ems.commons.validation.domain.DomainValidatorFactory;
+import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
+import fhv.team11.project.ems.domain.user.User;
+import fhv.team11.project.ems.security.error.UserNotFoundException;
+import fhv.team11.project.ems.security.transfer.domain.error.AuthenticationRequestValidationException;
+import fhv.team11.project.ems.security.permission.role.Role;
+import fhv.team11.project.ems.user.UserDomainDatabaseFactory;
+import fhv.team11.project.ems.user.entity.UserEntityRepository;
+import fhv.team11.project.ems.user.repo.UserJDBCRepository;
 import fhv.team11.project.ems.security.error.*;
-import fhv.team11.project.ems.security.json.AuthenticationRequest;
-import fhv.team11.project.ems.security.json.AuthenticationResponse;
-import fhv.team11.project.ems.security.json.RegisterRequest;
-import fhv.team11.project.ems.commons.user.Authority;
-import fhv.team11.project.ems.commons.user.UserEntity;
-import fhv.team11.project.ems.commons.user.UserRepository;
+import fhv.team11.project.ems.security.transfer.AuthenticationRequest;
+import fhv.team11.project.ems.security.transfer.AuthenticationResponse;
+import fhv.team11.project.ems.user.entity.UserJDBC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class AuthenticationService {
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final UserJDBCRepository userJDBCRepository;
     private final AuthenticationManager authenticationManager;
-    private final Algorithm algorithm;
     private final JwtTokenService jwtTokenService;
+    private final UserDomainDatabaseFactory userDomainDatabaseFactory;
 
     @Autowired
-    public AuthenticationService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, Algorithm algorithm, JwtTokenService jwtTokenService) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
+    public AuthenticationService(UserJDBCRepository userJDBCRepository, AuthenticationManager authenticationManager, JwtTokenService jwtTokenService, DomainValidatorFactory domainValidatorFactory, UserEntityRepository userEntityRepository, UserDomainDatabaseFactory userDomainDatabaseFactory) {
+        this.userJDBCRepository = userJDBCRepository;
         this.authenticationManager = authenticationManager;
-        this.algorithm = algorithm;
         this.jwtTokenService = jwtTokenService;
-
+        this.userDomainDatabaseFactory = userDomainDatabaseFactory;
     }
 
-    public AuthenticationResponse register(RegisterRequest request) {
-        String email = request.getEmail();
-        String password = request.getPassword();
-
-        if (isEmailInvalid(email)) {
-            throw new RegistrationInvalidEmailException();
+    //!ALERT - do not encode the password here
+    public AuthenticationResponse register(String email, String password) throws DomainValidationException, RegistrationException {
+        if (userJDBCRepository.findByEmail(email).isPresent()) {
+            throw new RegistrationException("email", "Email is already taken");
         }
 
-        if (userRepository.findByEmail(email).isPresent()) {
-            throw new RegistrationEmailAlreadyRegisteredException();
-        }
+        User user = new User(
+                null,
+                email,
+                password,
+                email,
+                List.of(Role.CUSTOMER, Role.ADMIN, Role.EMPLOYEE),
+                List.of(),
+                null,
+                null,
+                null,
+                null
+        );
 
-        checkForWeakPassword(password);
-
-        UserEntity user = new UserEntity();
-        user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(password));
-        user.setAuthority(Authority.USER);
-
-        userRepository.save(user);
+        userDomainDatabaseFactory.persist(user);
 
         return new AuthenticationResponse("User registration was successful");
     }
 
-    private boolean isEmailInvalid(String email) {
-        return false; //TODO implement Logic
-    }
-
-    private void checkForWeakPassword(String password) {
-        if (password.length() < 8) {
-            throw new RegistrationWeakPasswordException("Password must be at least 8 characters long");
-        }
-
-        if (password.contains(" ")) {
-            throw new RegistrationWeakPasswordException("Password cannot contain whitespaces");
-        }
-
-        if (!password.matches(".*[0-9].*")) {
-            throw new RegistrationWeakPasswordException("Password must contain at least one digit");
-        }
-
-        if (!password.matches(".*[A-Z].*")) {
-            throw new RegistrationWeakPasswordException("Password must contain at least one uppercase letter");
-        }
-    }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         try {
@@ -91,7 +73,7 @@ public class AuthenticationService {
             );
 
             // Find the user by email
-            UserEntity user = userRepository.findByEmail(request.getEmail())
+            UserJDBC user = userJDBCRepository.findByEmail(request.getEmail())
                     .orElseThrow(() -> new UserNotFoundException(request.getEmail()));
 
             // Generate JWT token for authenticated user
@@ -100,11 +82,11 @@ public class AuthenticationService {
             return new AuthenticationResponse(authToken, "User login was successful");
 
         } catch (BadCredentialsException e) {
-            throw new AuthenticationErrorException("Invalid email or password");
+            throw new AuthenticationRequestValidationException("Invalid email or password");
         } catch (UsernameNotFoundException e) {
-            throw new AuthenticationErrorException(e.getMessage());
+            throw new AuthenticationRequestValidationException(e.getMessage());
         } catch (Exception e) {
-            throw new AuthenticationErrorException();
+            throw new AuthenticationRequestValidationException();
         }
     }
 

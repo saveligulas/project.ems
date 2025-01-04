@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{base}"
+      th:with="title='Plan Event'">
+<body>
+
+<div layout:fragment="content">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Username</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}" th:onclick="|location.href='@{/user/details/{id}(id=${user.id})}'|">
+            <td th:text="${user.username}">Username</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+</body>
+</html>

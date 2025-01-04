@@ -10,6 +10,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,12 +35,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
         System.out.println("In the Jwt Authentication Filter");
         Cookie[] cookies = request.getCookies();
         String authHeader = request.getHeader("Authorization");
 
         if (cookies == null && authHeader == null) {
+            clearSession(request);
             filterChain.doFilter(request, response);
             return;
         }
@@ -56,6 +60,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
             if(token == null) {
+                clearSession(request);
                 filterChain.doFilter(request,response);
                 return;
             }
@@ -68,6 +73,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     .build()
                     .verify(token);
         } catch (JWTVerificationException e) {
+            clearSession(request);
             filterChain.doFilter(request, response);
             return;
         }
@@ -91,5 +97,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(request, response);
+    }
+
+    private void clearSession(HttpServletRequest request) {
+        //HttpSession session = request.getSession(false);
+        //if (session != null) {
+        //    session.invalidate();
+        //}
+        //Empty for now because SecurityConfig was updated
+        return;
     }
 }
