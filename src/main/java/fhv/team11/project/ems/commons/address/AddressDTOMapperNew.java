@@ -1,15 +1,24 @@
 package fhv.team11.project.ems.commons.address;
 
 import fhv.team11.project.ems.commons.mapper.IBiPresentationDomainMapper;
+import fhv.team11.project.ems.commons.validation.ValidationExceptionDecorator;
 import fhv.team11.project.ems.domain.adress.Address;
 import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
-import fhv.team11.project.ems.events.mapper.AddressDTOMapper;
 
 public class AddressDTOMapperNew implements IBiPresentationDomainMapper<AddressDTO, Address> {
     public static final AddressDTOMapperNew INSTANCE = new AddressDTOMapperNew();
 
     private AddressDTOMapperNew() {
 
+    }
+
+    public Address getDomainDecorated(AddressDTO presentationObject) throws DomainValidationException {
+        try {
+            return getDomain(presentationObject);
+        } catch (DomainValidationException e) {
+            ValidationExceptionDecorator.encapsulateFieldErrorsTo("address", e);
+        }
+        throw new RuntimeException("Unexpected Logic occurred");
     }
 
     @Override

@@ -12,13 +12,11 @@ import java.util.UUID;
 @Setter
 public class BookingIdentifier {
 
+    //TODO: Remove auto generated and generate in domain
     @Id
-    @GeneratedValue
     private UUID token;
-
-    private BookingStatus status;
 
     @OneToOne
     @JoinColumn(name = "booking_id")
-    private Booking booking;
+    private BookingEntity booking;
 }

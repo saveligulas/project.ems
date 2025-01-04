@@ -1,13 +1,12 @@
 package fhv.team11.project.ems.security.jwt;
 
-import fhv.team11.project.ems.commons.validation.domain.BeanPropertyBindingResultBuilder;
 import fhv.team11.project.ems.commons.validation.domain.DomainValidatorFactory;
 import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
 import fhv.team11.project.ems.domain.user.User;
 import fhv.team11.project.ems.security.error.UserNotFoundException;
 import fhv.team11.project.ems.security.transfer.domain.error.AuthenticationRequestValidationException;
 import fhv.team11.project.ems.security.permission.role.Role;
-import fhv.team11.project.ems.user.domain.UserDomainDatabaseFactory;
+import fhv.team11.project.ems.user.UserDomainDatabaseFactory;
 import fhv.team11.project.ems.user.entity.UserEntityRepository;
 import fhv.team11.project.ems.user.repo.UserJDBCRepository;
 import fhv.team11.project.ems.security.error.*;
@@ -20,7 +19,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BeanPropertyBindingResult;
 
 import java.util.List;
 
@@ -29,8 +27,6 @@ public class AuthenticationService {
     private final UserJDBCRepository userJDBCRepository;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenService jwtTokenService;
-    private final DomainValidatorFactory factory;
-    private final UserEntityRepository userEntityRepository;
     private final UserDomainDatabaseFactory userDomainDatabaseFactory;
 
     @Autowired
@@ -38,8 +34,6 @@ public class AuthenticationService {
         this.userJDBCRepository = userJDBCRepository;
         this.authenticationManager = authenticationManager;
         this.jwtTokenService = jwtTokenService;
-        this.factory = domainValidatorFactory;
-        this.userEntityRepository = userEntityRepository;
         this.userDomainDatabaseFactory = userDomainDatabaseFactory;
     }
 

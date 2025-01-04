@@ -2,6 +2,7 @@ package fhv.team11.project.ems.commons.controller.base.attribute.user;
 
 import fhv.team11.project.ems.backoffice.transfer.BackOfficeProfileDTOMapper;
 import fhv.team11.project.ems.customer.transfer.CustomerProfileDTO;
+import fhv.team11.project.ems.customer.transfer.CustomerProfileDTODatabaseMapper;
 import fhv.team11.project.ems.customer.transfer.CustomerProfileDTOMapper;
 import fhv.team11.project.ems.security.error.SecuredEndpointAccessException;
 import fhv.team11.project.ems.security.jwt.JwtSecurityContextHolder;
@@ -44,9 +45,10 @@ public class UserAttributeDTO {
                 if (user.getUserEntityDetails().getCustomerProfileEntity() != null) {
                     customerProfileId = user.getUserEntityDetails().getCustomerProfileEntity().getId();
                 }
-                // TODO FIX
-                //customerProfile = CustomerProfileDTOMapper.INSTANCE.getDomain(user.getUserEntityDetails().getCustomerProfileEntity());
-                backOfficeProfile = BackOfficeProfileDTOMapper.INSTANCE.getDomain(user.getUserEntityDetails().getBackOfficeProfile());
+
+                customerProfile = CustomerProfileDTODatabaseMapper.INSTANCE.getView(user.getUserEntityDetails().getCustomerProfileEntity());
+                //TODO: other mapper
+                //backOfficeProfile = BackOfficeProfileDTOMapper.INSTANCE.getDomain(user.getUserEntityDetails().getBackOfficeProfile());
             }
         } catch (SecuredEndpointAccessException e) {
             log.info("User is not logged in");

@@ -1,8 +1,8 @@
 package fhv.team11.project.ems.domain.user;
 
 import fhv.team11.project.ems.domain.adress.Address;
-import fhv.team11.project.ems.domain.commons.DomainObjectConstructorHelper;
-import fhv.team11.project.ems.domain.commons.IdValidator;
+import fhv.team11.project.ems.domain.commons.exception.error.DomainObjectConstructorHelper;
+import fhv.team11.project.ems.domain.commons.validation.IdValidator;
 import fhv.team11.project.ems.domain.commons.exception.DomainFieldException;
 import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
 import lombok.Getter;

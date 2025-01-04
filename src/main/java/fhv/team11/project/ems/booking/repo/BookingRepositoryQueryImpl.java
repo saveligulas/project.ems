@@ -16,9 +16,10 @@ public class BookingRepositoryQueryImpl implements BookingRepositoryQuery {
 
     @Transactional
     @Override
-    public Booking persist(Booking entity) {
+    //TODO: rework
+    public BookingEntity persist(BookingEntity entity) {
         BookingIdentifier bookingIdentifier = new BookingIdentifier();
-        bookingIdentifier.setStatus(BookingStatus.Valid);
+
         bookingIdentifier.setBooking(entity);
         entity.setBookingIdentifier(bookingIdentifier);
 
@@ -28,12 +29,12 @@ public class BookingRepositoryQueryImpl implements BookingRepositoryQuery {
     }
 
     @Override
-    public Booking update(Booking entity) {
+    public BookingEntity update(BookingEntity entity) {
         return null;
     }
 
 
-    public List<Booking> findAll() {
-        return entityManager.createQuery("SELECT b FROM Booking b", Booking.class).getResultList();
+    public List<BookingEntity> findAll() {
+        return entityManager.createQuery("SELECT b FROM BookingEntity b", BookingEntity.class).getResultList();
     }
 }

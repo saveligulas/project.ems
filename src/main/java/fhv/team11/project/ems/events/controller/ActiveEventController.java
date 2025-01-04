@@ -83,7 +83,7 @@ public class ActiveEventController implements IHandleEventWizard {
     }
 
     @GetMapping("/active-events/{id}")
-    public String showEventDetails(@PathVariable("id") Long id, Model model) {
+    public String showEventDetails(@PathVariable("id") Long id, Model model) throws DomainValidationException {
         ActiveEventView activeEvent = activeEventService.getActiveEventById(id);
         model.addAttribute("activeEvent", activeEvent);
         return "event-details";

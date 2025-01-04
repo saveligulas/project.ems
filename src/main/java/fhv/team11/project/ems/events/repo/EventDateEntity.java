@@ -21,11 +21,7 @@ public class EventDateEntity {
     private LocalDate date;
     private String  name;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name="active_event_id")
-    private ActiveEvent activeEvent;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="schedule_id")
     private Schedule schedule;
 }

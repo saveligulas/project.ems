@@ -5,6 +5,9 @@ import fhv.team11.project.ems.domain.adress.Address;
 
 import fhv.team11.project.ems.domain.commons.*;
 import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
+import fhv.team11.project.ems.domain.commons.exception.error.DomainObjectConstructorHelper;
+import fhv.team11.project.ems.domain.commons.interfaces.IDomainObject;
+import fhv.team11.project.ems.domain.commons.validation.StringValidator;
 import fhv.team11.project.ems.events.repo.EventCategory;
 
 import lombok.Getter;
@@ -66,10 +69,11 @@ public class EventTemplate implements IDomainObject {
 
         if (!StringValidator.isValid(name, 5)) {
             fieldName = "name";
-            errorMessage = "Name has to be minimum 5 characters";
+            errorMessage = "Name has to be minimum 5 characters long";
 
             handleError(fieldName,errorMessage,constructorHelper);
         }
+
         this.name = name;
     }
 
@@ -107,7 +111,7 @@ public class EventTemplate implements IDomainObject {
 
     public void setPrice(double price) throws DomainValidationException {
 
-        if (!PriceValidation.isValid(maxParticipants)) {
+        if (!IntegerValidator.isValid((int) price, 0)) {
             String fieldName = "price";
             String errorMessage = "Price must be greater than 0";
 

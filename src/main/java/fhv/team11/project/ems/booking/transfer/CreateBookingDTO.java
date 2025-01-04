@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class CreateBookingDTO implements IModelAttribute {
-    private Long financerId;
+    private Long financer;
     private Integer bookedPlaces;
+    private PaymentOptionDTO paymentOption = new PaymentOptionDTO();
 }

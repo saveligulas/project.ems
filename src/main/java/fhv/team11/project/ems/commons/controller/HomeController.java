@@ -38,11 +38,11 @@ public class HomeController {
         ModelAndView modelAndView = new ModelAndView("index");
 
 
-        EventCategory[] categories = EventCategory.values();
-        modelAndView.addObject("categories", categories);
-
-        List<ActiveEventView> activeEvents = activeEventService.getAllActiveEvents();
-        modelAndView.addObject("activeEvents", activeEvents);
+//        EventCategory[] categories = EventCategory.values();
+//        modelAndView.addObject("categories", categories);
+//
+//        List<ActiveEventView> activeEvents = activeEventService.getAllActiveEvents();
+//        modelAndView.addObject("activeEvents", activeEvents);
 
         return modelAndView;
     }

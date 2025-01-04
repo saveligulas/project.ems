@@ -3,7 +3,10 @@ package fhv.team11.project.ems.domain.events;
 
 import fhv.team11.project.ems.domain.commons.*;
 import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
-import fhv.team11.project.ems.events.transfer.EventDateDTO;
+import fhv.team11.project.ems.domain.commons.exception.error.DomainObjectConstructorHelper;
+import fhv.team11.project.ems.domain.commons.interfaces.IDomainObject;
+import fhv.team11.project.ems.domain.commons.validation.DateTimeValidator;
+import fhv.team11.project.ems.domain.commons.validation.StringValidator;
 import lombok.Getter;
 import org.jspecify.annotations.Nullable;
 
@@ -34,7 +37,11 @@ public class EventDate implements IDomainObject, Comparable<EventDate> {
 
         setId(id);
         setDate(date);
-        setName(name);
+        if (Validator.isBlank(name)) {
+            setName(date.toString());
+        } else {
+            setName(name);
+        }
         setSchedule(eventSchedule);
 
         this.constructorHelper.finish();

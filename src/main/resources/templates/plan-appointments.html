@@ -52,6 +52,7 @@
                         th:field="*{title}"
                         th:attr="aria-invalid=${#fields.hasErrors('title')} ? 'true'"
                     />
+                    <small th:errors="*{title}"></small>
                 </label>
             </fieldset>
             <fieldset>
@@ -70,6 +71,7 @@
                 type="submit"
                 value="Add Appointment to Schedule"
         />
+        <div th:include="~{fragments/errors :: display-errors}"></div>
     </form>
     <div>
         <article>
@@ -106,7 +108,7 @@
 
                 <div th:if="${nextEventDateIndex == null}">
                     <a role="button"
-                       th:href="@{/event/manage/{id}/plan/{nextEventDateIndex}(id=${eventTemplateList.id}, nextEventDateIndex=${nextEventDateIndex})}"
+                       th:href="@{/event/manage/{id}/plan/finish(id=${eventTemplateList.id})}"
                        data-tooltip="Will create und publicize your event"
                        data-placement="bottom">
                         Publish Event

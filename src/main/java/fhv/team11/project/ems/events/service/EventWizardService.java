@@ -4,11 +4,10 @@ package fhv.team11.project.ems.events.service;
 import fhv.team11.project.ems.domain.adress.Appointment;
 import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
 import fhv.team11.project.ems.domain.events.Event;
-import fhv.team11.project.ems.domain.events.EventSchedule;
-import fhv.team11.project.ems.events.mapper.persistence.EventDateDomainMapper;
+import fhv.team11.project.ems.events.EventDomainDatabaseFactory;
+import fhv.team11.project.ems.events.EventTemplateDomainDatabaseFactory;
 import fhv.team11.project.ems.events.mapper.presentation.AppointmentDTOMapper;
 import fhv.team11.project.ems.events.mapper.presentation.EventDateDTOMapper;
-import fhv.team11.project.ems.events.mapper.presentation.EventScheduleDTOMapper;
 import fhv.team11.project.ems.events.mapper.presentation.EventWizardMapper;
 import fhv.team11.project.ems.events.repo.*;
 import fhv.team11.project.ems.events.transfer.AppointmentDTO;
@@ -30,19 +29,23 @@ public class EventWizardService {
     private final AppointmentRepository appointmentRepository;
     private final ScheduleRepository scheduleRepository;
     private final EventDateRepository eventDateRepository;
-    private final EventTemplateRepository eventTemplateRepository;
+    private final EventTemplateEntityRepository eventTemplateEntityRepository;
+    private final EventDomainDatabaseFactory eventDomainDatabaseFactory;
+    private final EventTemplateDomainDatabaseFactory eventTemplateDomainDatabaseFactory;
 
     @Autowired
     public EventWizardService(ActiveEventRepository activeEventRepository,
                               AppointmentRepository appointmentRepository,
                               ScheduleRepository scheduleRepository,
                               EventDateRepository eventDateRepository,
-                              EventTemplateRepository eventTemplateRepository) {
+                              EventTemplateEntityRepository eventTemplateEntityRepository, EventDomainDatabaseFactory eventDomainDatabaseFactory, EventTemplateDomainDatabaseFactory eventTemplateDomainDatabaseFactory) {
         this.activeEventRepository = activeEventRepository;
         this.appointmentRepository = appointmentRepository;
         this.scheduleRepository = scheduleRepository;
         this.eventDateRepository = eventDateRepository;
-        this.eventTemplateRepository = eventTemplateRepository;
+        this.eventTemplateEntityRepository = eventTemplateEntityRepository;
+        this.eventDomainDatabaseFactory = eventDomainDatabaseFactory;
+        this.eventTemplateDomainDatabaseFactory = eventTemplateDomainDatabaseFactory;
     }
 
     public void updateWizard(HttpSession session, EventWizard eventWizardDTO) {
@@ -54,7 +57,10 @@ public class EventWizardService {
     }
 
     @Transactional
-    public void createActiveEvent(EventWizard eventWizard, Long templateId) {
+    public void createActiveEvent(EventWizard eventWizard, Long templateId) throws DomainValidationException {
+        Event event = EventWizardMapper.INSTANCE.getDomain(eventWizard);
+        event.setEventTemplate(eventTemplateDomainDatabaseFactory.getDomainById(templateId));
+        eventDomainDatabaseFactory.persist(event);
     }
 
     public EventWizard addAppointmentToScheduleForDate(EventWizard wizard, Integer eventDateIndex, AppointmentDTO appointmentDTO) throws DomainValidationException {

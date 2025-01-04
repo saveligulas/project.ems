@@ -11,19 +11,16 @@ import org.thymeleaf.model.IModel;
 @Data
 public class CustomerProfileDTO implements IModelAttribute {
 
-    @NotBlank
+    private Long id;
+
     private String firstName;
 
-    @NotBlank
     private String lastName;
 
-    @Valid
     private AddressDTO address;
 
-    @NotBlank
     private String phoneNumber;
 
-    @NotNull
     private Integer secret;
 
 }

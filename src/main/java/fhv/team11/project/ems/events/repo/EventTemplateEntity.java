@@ -15,6 +15,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@Table(name="event_template")
 public class EventTemplateEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,13 +29,13 @@ public class EventTemplateEntity {
     private int maxParticipants;
     private int overbookingPlaces;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
-    private AddressEntity addressEntity;
+    private AddressEntity address;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
-    private UserEntity userEntity;
+    private UserEntity user;
 
     @CreationTimestamp
     private Instant createdAt;

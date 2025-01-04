@@ -14,6 +14,5 @@ public class EventTemplateDTO implements IModelAttribute {
     private double price;
     private int maxParticipants;
     private int minParticipants;
-    @Valid
     private AddressDTO address;
 }

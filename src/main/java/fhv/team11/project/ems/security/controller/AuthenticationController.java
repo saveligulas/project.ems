@@ -48,7 +48,7 @@ public class AuthenticationController {
 
     @PostMapping("/register/user")
     public String register(
-            @Valid @ModelAttribute("registerRequest") RegisterRequest registerRequest,
+            @ModelAttribute("registerRequest") RegisterRequest registerRequest,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes) {
 
@@ -75,7 +75,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/authenticate")
-    public String authenticate(@Valid @ModelAttribute("authenticationRequest") AuthenticationRequest request,
+    public String authenticate(@ModelAttribute("authenticationRequest") AuthenticationRequest request,
                                     BindingResult bindingResult,
                                     HttpServletResponse servlet,
                                     HttpSession session,
@@ -96,7 +96,6 @@ public class AuthenticationController {
             AuthenticationResponse response = authenticationService.authenticate(request);
             servlet.addCookie(new Cookie("authToken", response.getAuthToken()));
             session.setAttribute("authenticatedEmail", request.getEmail());
-
         } catch (AuthenticationRequestValidationException e) {
             redirectAttributes.addFlashAttribute("hasError", "Authentication failed! Please check your credentials");
             return "redirect:/login";

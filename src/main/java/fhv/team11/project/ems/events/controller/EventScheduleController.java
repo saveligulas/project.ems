@@ -43,7 +43,7 @@ public class EventScheduleController implements IHandleEventWizard {
         EventWizard wizard = getWizard(session);
 
         wizard.addToView(modelAndView);
-        modelAndView.addObject("eventSchedule", wizard.getEventDates().get(eventDateIndex).getEventScheduleDTO());
+        wizard.getEventDates().get(eventDateIndex).getEventScheduleDTO().addToView(modelAndView);
         eventTemplateService.getTemplateListByID(templateId).addToView(modelAndView);
         modelAndView.addObject("eventDateIndex", eventDateIndex);
         modelAndView.addObject("eventDateTitle", wizard.getEventDates().get(eventDateIndex).getName());
@@ -68,24 +68,18 @@ public class EventScheduleController implements IHandleEventWizard {
         return "redirect:/event/manage/" + templateId + "/plan/" + eventDateIndex;
     }
 
-
-
-    @PostMapping("/event/manage/{id}/plan/finish")
+    @GetMapping("/event/manage/{id}/plan/finish")
     public String createEvent(@PathVariable("id") Long templateId,
-                              HttpSession session,
-                              RedirectAttributes redirectAttributes,
-                              SessionStatus sessionStatus) {
+                              HttpSession session) {
         //TODO: handle session cleanup and cleanup if user leaves boundaries of wizard with interceptors
-        EventWizard wizardDTO = (EventWizard) session.getAttribute("wizard");
-        if (wizardDTO != null) {
-            eventWizardService.createActiveEvent(wizardDTO, templateId);
-            session.removeAttribute("wizard");
-            session.removeAttribute("listTemplate");
-            sessionStatus.setComplete();
-        } else {
-            redirectAttributes.addFlashAttribute("error", "Session expired. Please start over.");
-            return "redirect:/event/manage/" + templateId + "/plan";
+        EventWizard eventWizard = getWizard(session);
+
+        try {
+            eventWizardService.createActiveEvent(eventWizard, templateId);
+        } catch (DomainValidationException e) {
+            // TODO: handle domain validation exceptions
         }
+
         return "redirect:/event";
     }
 }

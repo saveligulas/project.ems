@@ -11,14 +11,14 @@ public class AppointmentRepositoryQueryImpl implements AppointmentRepositoryQuer
 
     @Transactional
     @Override
-    public Appointment persist(Appointment entity) {
+    public AppointmentEntity persist(AppointmentEntity entity) {
         entityManager.persist(entity);
         return entity;
     }
 
     @Transactional
     @Override
-    public Appointment update(Appointment entity) {
+    public AppointmentEntity update(AppointmentEntity entity) {
         return entityManager.merge(entity);
     }
 }

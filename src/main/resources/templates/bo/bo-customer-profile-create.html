@@ -5,39 +5,75 @@
       layout:decorate="~{base}"
       th:with="title='Customer Profile'">
 <body>
-<!--@thymesVar id="user" type="fhv.team11.project.ems.commons.controller.base.attribute.user.UserAttributes"-->
-<div layout:fragment="content">
-  <form th:action="@{/profiles/customer/create}" th:object="${customerProfileEntity}" method="post"
-        novalidate>
-    <div class="card mt-4">
-      <div class="card-header bg-primary text-white">
-        Customer Profile
-      </div>
-      <div class="card-body">
-        <div class="mb-3">
-          <label for="firstName" class="form-label">First Name</label>
-          <input type="text" class="form-control" id="firstName" name="firstName" th:field="*{firstName}">
-        </div>
+<div layout:fragment="top">
+  <div class="text-center">
+    <h2>Create Customer Profile</h2>
+  </div>
+</div>
+<div layout:fragment="center" class="container">
+  <form th:action="@{/profiles/customer/create/new}" method="POST" th:object="${customerProfile}" novalidate>
+    <div class="grid">
+      <div>
+        <h4 class="text-center">Personal Information</h4>
+        <article>
+          <fieldset>
+            <label>
+              First Name *
+              <input
+                      placeholder="e.g. John"
+                      type="text"
+                      name="firstName"
+                      th:field="*{firstName}"
+                      th:attr="aria-invalid=${#fields.hasErrors('firstName')} ? 'true'"
+              />
+              <small th:errors="*{firstName}"></small>
+            </label>
 
-        <div class="mb-3">
-          <label for="lastName" class="form-label">Last Name</label>
-          <input type="text" class="form-control" id="lastName" name="lastName" th:field="*{lastName}">
-        </div>
+            <label>
+              Last Name *
+              <input
+                      placeholder="e.g. Doe"
+                      type="text"
+                      name="lastName"
+                      th:field="*{lastName}"
+                      th:attr="aria-invalid=${#fields.hasErrors('lastName')} ? 'true'"
+              />
+              <small th:errors="*{lastName}"></small>
+            </label>
 
-        <div class="mb-3">
-          <label for="phoneNumber" class="form-label">Phone Number</label>
-          <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" th:field="*{phoneNumber}">
-        </div>
+            <label>
+              Phone Number *
+              <input
+                      placeholder="e.g. +43 123 456789"
+                      type="text"
+                      name="phoneNumber"
+                      th:field="*{phoneNumber}"
+                      th:attr="aria-invalid=${#fields.hasErrors('phoneNumber')} ? 'true'"
+              />
+              <small th:errors="*{phoneNumber}"></small>
+            </label>
 
-        <div class="mb-3">
-          <label for="secret" class="form-label">Secret</label>
-          <input type="number" class="form-control" id="secret" name="secret" th:field="*{secret}">
-        </div>
-
-        <div th:include="~{fragments/addressEntity-form :: addressEntity(${customerProfileEntity.addressEntity})}"></div>
+            <label>
+              Secret *
+              <input
+                      type="number"
+                      name="secret"
+                      th:field="*{secret}"
+                      th:attr="aria-invalid=${#fields.hasErrors('secret')} ? 'true'"
+              />
+              <small th:errors="*{secret}"></small>
+            </label>
+          </fieldset>
+        </article>
       </div>
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <hr/>
+    <div th:include="~{fragments/address-form :: address(${customerProfile.address})}"></div>
+
+    <input
+            type="submit"
+            value="Create Profile"
+    />
   </form>
 </div>
 </body>

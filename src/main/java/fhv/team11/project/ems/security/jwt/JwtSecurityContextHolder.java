@@ -1,6 +1,7 @@
 package fhv.team11.project.ems.security.jwt;
 
 import fhv.team11.project.ems.security.error.SecuredEndpointAccessException;
+import fhv.team11.project.ems.security.permission.role.Role;
 import fhv.team11.project.ems.user.entity.UserEntity;
 import fhv.team11.project.ems.user.entity.UserEntityRepository;
 import fhv.team11.project.ems.user.entity.UserJDBC;
@@ -41,5 +42,9 @@ public class JwtSecurityContextHolder {
             }
         }
         throw new SecuredEndpointAccessException();
+    }
+
+    public static boolean hasRole(Role role) {
+        return getUserJDBC().getRoles().contains(role);
     }
 }

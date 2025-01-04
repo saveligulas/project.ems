@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -16,10 +17,7 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //TODO: OneToOne relationship
-    @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL)
-    private Set<EventDateEntity> eventDates;
-
-    @OneToMany(mappedBy = "schedule")
-    private Set<Appointment> appointments;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "schedule_id")
+    private Set<AppointmentEntity> appointments = new HashSet<>();
 }

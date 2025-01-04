@@ -2,15 +2,16 @@ package fhv.team11.project.ems.domain.adress;
 
 import fhv.team11.project.ems.domain.commons.*;
 import fhv.team11.project.ems.domain.commons.exception.DomainFieldException;
-import fhv.team11.project.ems.domain.commons.exception.DomainInstantiationException;
 import fhv.team11.project.ems.domain.commons.exception.DomainStateException;
 import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
-import fhv.team11.project.ems.events.transfer.AppointmentDTO;
+import fhv.team11.project.ems.domain.commons.exception.error.DomainObjectConstructorHelper;
+import fhv.team11.project.ems.domain.commons.exception.error.DomainStateError;
+import fhv.team11.project.ems.domain.commons.interfaces.IDomainObject;
+import fhv.team11.project.ems.domain.commons.validation.StringValidator;
 import lombok.Getter;
 import org.jspecify.annotations.Nullable;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -36,7 +37,7 @@ public class Appointment implements IDomainObject, Comparable<Appointment> {
     }
 
     private void setDescription(String description) throws DomainFieldException {
-        if (description != null && StringValidator.isValid(description, 0, 2000)) {
+        if (Validator.isNotBlank(description) && !StringValidator.isValid(description, 0, 2000)) {
             String fieldName = "description";
             String errorMessage = "Description must be between 0 and 2000 characters";
             handleError(fieldName, errorMessage, constructorHelper);
@@ -73,7 +74,7 @@ public class Appointment implements IDomainObject, Comparable<Appointment> {
             handleError(endFieldName, errorMessage, constructorHelper);
         }
 
-        if (!StartEndTimeValidator.isValid(startTime,endTime)) {
+        if (Validator.isNotNull(startTime) && Validator.isNotNull(endTime) && !StartEndTimeValidator.isValid(startTime,endTime)) {
             errorMessage = "Start time must be before end time";
             if (constructorHelper.isBeingConstructed()) {
                 constructorHelper.add(new DomainStateError(errorMessage));

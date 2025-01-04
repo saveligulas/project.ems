@@ -14,7 +14,7 @@ public class AddressEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(mappedBy = "addressEntity")
+    @OneToOne(mappedBy = "address")
     private EventTemplateEntity eventTemplate;
 
     @NotNull

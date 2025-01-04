@@ -1,12 +1,16 @@
 package fhv.team11.project.ems.domain.adress;
 
 
-import fhv.team11.project.ems.domain.commons.*;
+import fhv.team11.project.ems.domain.commons.Validator;
 import fhv.team11.project.ems.domain.commons.exception.DomainFieldException;
 import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
+import fhv.team11.project.ems.domain.commons.exception.error.DomainObjectConstructorHelper;
+import fhv.team11.project.ems.domain.commons.interfaces.IDomainObject;
+import fhv.team11.project.ems.domain.commons.validation.IdValidator;
+import fhv.team11.project.ems.domain.commons.validation.StringValidator;
 import lombok.Getter;
+import org.jspecify.annotations.Nullable;
 
-import javax.annotation.Nullable;
 
 @Getter
 public class Address implements IDomainObject {
@@ -17,6 +21,7 @@ public class Address implements IDomainObject {
     private Long id;
 
     private String country;
+    @Nullable
     private String region;
     private String city;
     private Integer zip;
@@ -42,11 +47,9 @@ public class Address implements IDomainObject {
 
     public void setRegion(String region) throws DomainFieldException {
         String fieldName = "region";
-        String errorMessage = "Region can not be empty";
 
-
-        if(!StringValidator.isValid(country)){
-            handleError(fieldName,errorMessage,constructorHelper);
+        if (!Validator.isBlank(region)) {
+            region = null;
         }
 
         this.region = region;
@@ -65,7 +68,7 @@ public class Address implements IDomainObject {
 
     public void setHouseNumber(String houseNumber) throws DomainFieldException {
         String fieldName = "houseNumber";
-        String errorMessage = "HouseNumber can not be empty";
+        String errorMessage = "House Number can not be empty";
 
 
         if(!StringValidator.isValid(country)){

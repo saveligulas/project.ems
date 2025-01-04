@@ -15,13 +15,12 @@ public class EventDateDomainMapper implements ISimpleDomainDatabaseMapper<EventD
     private EventDateDomainMapper() {}
 
     @Override
-    public EventDateEntity toNotPersistedEntity(EventDate domain) {
+    public EventDateEntity toEntity(EventDate domain) {
         return new EventDateEntity(
                 domain.getId(),
                 domain.getDate(),
                 domain.getName(),
-                null,
-                null);
+                EventScheduleDomainMapper.INSTANCE.toEntity(domain.getSchedule()));
     }
 
     @Override
