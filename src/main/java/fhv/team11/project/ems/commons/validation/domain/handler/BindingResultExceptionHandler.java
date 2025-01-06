@@ -9,7 +9,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @ControllerAdvice
 @Slf4j
-public class BindingResultExceptionHandler implements HandleRedirectException, HandleBindingResultException {
+public class BindingResultExceptionHandler implements HandleRedirectException, IHandleBindingResultException {
 
     @ExceptionHandler(BindingResultException.class)
     public String handleBindingResult(fhv.team11.project.ems.commons.validation.domain.error.BindingResultException ex, RedirectAttributes redirectAttributes) {

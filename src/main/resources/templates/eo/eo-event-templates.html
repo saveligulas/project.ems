@@ -11,6 +11,7 @@
     <h2>Your Event Templates</h2>
     <p>Select an event to see your planned Events</p>
   </hgroup>
+  <a role="button" th:href="@{/event/manage}">Create Event Template</a>
   <div th:each="row : ${templateRows}">
     <div class="grid">
       <article class="secondary" th:each="event : ${row}">

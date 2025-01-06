@@ -119,8 +119,11 @@ public class CustomerProfileService {
                 String pattern = "%" + term.toLowerCase().trim() + "%";
 
                 // Search in CustomerProfileEntity fields
-                singleTermPredicates.add(criteriaBuilder.like(
-                        criteriaBuilder.lower(root.get("id")), pattern));
+                Long idValue = tryParseLong(term.trim()); // Try to parse the raw term, not the pattern
+                if (idValue != null) {
+                    singleTermPredicates.add(criteriaBuilder.equal(root.get("id"), idValue));
+                }
+
                 singleTermPredicates.add(criteriaBuilder.like(
                         criteriaBuilder.lower(root.get("firstName")), pattern));
                 singleTermPredicates.add(criteriaBuilder.like(
@@ -144,8 +147,11 @@ public class CustomerProfileService {
                         criteriaBuilder.lower(addressJoin.get("optionalText")), pattern));
 
                 // Add zip code search with conversion
-                singleTermPredicates.add(criteriaBuilder.equal(
-                        addressJoin.get("zip"), tryParseInt(term)));
+                Integer zipValue = tryParseInt(term.trim()); // Similarly for zip, use the raw term
+                if (zipValue != null) {
+                    singleTermPredicates.add(criteriaBuilder.equal(
+                            addressJoin.get("zip"), zipValue));
+                }
 
                 predicates.add(criteriaBuilder.or(
                         singleTermPredicates.toArray(new Predicate[0])));
@@ -155,9 +161,18 @@ public class CustomerProfileService {
         };
     }
 
+    //TODO: Move these to interface for search queries
     private Integer tryParseInt(String value) {
         try {
             return Integer.parseInt(value.trim());
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    private Long tryParseLong(String value) {
+        try {
+            return Long.parseLong(value.trim());
         } catch (NumberFormatException e) {
             return null;
         }

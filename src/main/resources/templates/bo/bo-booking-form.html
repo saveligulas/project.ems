@@ -36,17 +36,21 @@
         <tbody></tbody>
     </table>
 
-    <form th:action="@{/active-events/{id}/booking(id=${activeEvent.id})}"
+    <form th:action="@{/event/{templateId}/active/{id}/booking/create(templateId=${templateId}, id=${activeEventId})}"
           th:object="${createBooking}"
           method="POST"
           novalidate>
         <fieldset>
             <label>
-                Selected Customer ID
+                Selected Customer ID *
                 <input
-                        type="text"
+                        type="number"
                         name="financerId"
+                        step="1"
+                        placeholder="Enter Customer ID or select from search table"
                         th:value="${customerId}"
+                        th:field="*{financer}"
+                        th:attr="aria-invalid=${#fields.hasErrors('financer')} ? 'true'"
                 />
             </label>
 
@@ -59,7 +63,6 @@
                         placeholder="Enter number of places"
                         th:attr="aria-invalid=${#fields.hasErrors('bookedPlaces')} ? 'true'"
                 />
-            <small th:errors="*{bookedPlaces}"></small>
         </label>
         </fieldset>
         <div th:include="~{fragments/invoice-options :: paymentOption(${createBooking.paymentOption})}"></div>

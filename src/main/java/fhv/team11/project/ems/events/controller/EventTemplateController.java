@@ -3,12 +3,11 @@ package fhv.team11.project.ems.events.controller;
 import fhv.team11.project.ems.commons.controller.IHandlePaginatedRequests;
 import fhv.team11.project.ems.commons.controller.IHandleRowPresentation;
 import fhv.team11.project.ems.commons.validation.ValidationExceptionToBindingResultFactory;
-import fhv.team11.project.ems.commons.validation.domain.handler.HandleBindingResultException;
+import fhv.team11.project.ems.commons.validation.domain.handler.IHandleBindingResultException;
 import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
 import fhv.team11.project.ems.events.repo.EventCategory;
 import fhv.team11.project.ems.events.service.EventTemplateService;
 import fhv.team11.project.ems.events.transfer.EventTemplateDTO;
-import fhv.team11.project.ems.events.transfer.EventTemplateListDTO;
 import fhv.team11.project.ems.events.transfer.EventTemplateListView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,7 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Controller
-public class EventTemplateController implements HandleBindingResultException, IHandlePaginatedRequests, IHandleRowPresentation {
+public class EventTemplateController implements IHandleBindingResultException, IHandlePaginatedRequests, IHandleRowPresentation {
 
     private final EventTemplateService eventTemplateService;
 
@@ -58,7 +57,7 @@ public class EventTemplateController implements HandleBindingResultException, IH
             ValidationExceptionToBindingResultFactory.handle(e, eventTemplateDTO, "event/manage");
         }
 
-        return "redirect:/event";
+        return "redirect:/event/templates";
     }
 
 

@@ -30,6 +30,10 @@ public class SimpleValidationException extends Exception implements IValidationE
 
     @Override
     public List<String> getErrorMessages() {
-        return List.of(errorMessage);
+        if (errorMessage == null) {
+            return List.of();
+        } else {
+            return List.of(errorMessage);
+        }
     }
 }

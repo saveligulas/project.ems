@@ -6,9 +6,15 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-public interface HandleBindingResultException extends HandleRedirectException {
+public interface IHandleBindingResultException extends HandleRedirectException {
     default String getBindingResultKey(String modelAttributeName) {
         return "org.springframework.validation.BindingResult." + modelAttributeName;
+    }
+
+    default void ifHasErrorsAddToRedirect(String modelAttributeName, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            addBindingResultToRedirect(modelAttributeName, bindingResult, redirectAttributes);
+        }
     }
 
     default void addBindingResultToRedirect(BindingResultException ex, RedirectAttributes redirectAttributes) {
