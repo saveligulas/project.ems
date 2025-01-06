@@ -13,10 +13,11 @@
     </hgroup>
     <div th:each="row : ${templateRows}">
         <div class="grid">
-            <article class="secondary" th:each="event : ${row}">
-                <h4 th:text="${event.name}"></h4>
-                <table>
-                    <tbody>
+            <a th:each="event : ${row}" th:href="@{/event/{id}(id=${event.id})}" class="link-wrapper">
+                <article>
+                    <h4 th:text="${event.name}"></h4>
+                    <table>
+                        <tbody>
                         <tr>
                             <td>Category</td>
                             <td dir="rtl" th:text="${event.category.getName()}"></td>
@@ -25,10 +26,10 @@
                             <td>Planned Events</td>
                             <td dir="rtl" th:text="${event.plannedEventCount}"></td>
                         </tr>
-                    </tbody>
-                </table>
-                <button>TODO: View Active Events and Details</button>
-            </article>
+                        </tbody>
+                    </table>
+                </article>
+            </a>
             <th:block th:replace="~{fragments/fill-row-with-empty-divs :: fill}"></th:block>
         </div>
     </div>

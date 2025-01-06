@@ -13,6 +13,7 @@ import fhv.team11.project.ems.events.repo.ActiveEvent;
 import fhv.team11.project.ems.events.repo.ActiveEventRepository;
 import fhv.team11.project.ems.events.repo.EventDateEntity;
 import jakarta.persistence.PersistenceException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@Slf4j
 public class EventDomainDatabaseFactory extends DomainDatabaseFactory implements IHandleDomainPersistenceShallow<Event>, IFindByIdDomainDatabaseMapper<Event, Long>, ISimpleDomainDatabaseMapper<Event, ActiveEvent> {
 
     private final ActiveEventRepository activeEventRepository;
@@ -75,5 +77,18 @@ public class EventDomainDatabaseFactory extends DomainDatabaseFactory implements
                 eventDates,
                 eventTemplateDomainDatabaseFactory.toDomain(entity.getEventTemplate())
         );
+    }
+
+    public List<Event> findAllByTemplateId(Long templateId) {
+        List<ActiveEvent> activeEvents = activeEventRepository.findAllByTemplateIdWithDates(templateId);
+        List<Event> events = new ArrayList<>();
+        for (ActiveEvent activeEvent : activeEvents) {
+            try {
+                events.add(toDomain(activeEvent));
+            } catch (DomainValidationException e) {
+                log.error("Domain validation exception from database occurred: " + e.getFieldErrors() + " | " + e.getErrorMessages());
+            }
+        }
+        return events;
     }
 }

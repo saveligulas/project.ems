@@ -1,6 +1,7 @@
 package fhv.team11.project.ems.domain.events;
 
 
+import fhv.team11.project.ems.domain.commons.exception.DomainStateException;
 import fhv.team11.project.ems.domain.commons.exception.error.DomainObjectConstructorHelper;
 import fhv.team11.project.ems.domain.commons.interfaces.IDomainObject;
 import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
@@ -9,6 +10,7 @@ import lombok.Setter;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
@@ -37,7 +39,7 @@ public class Event implements IDomainObject {
         setId(id);
         Collections.sort(eventDates);
         setEventDates(eventDates);
-        setEventTemplate(eventTemplate);
+        this.eventTemplate = eventTemplate;
 
         this.constructorHelper.finish();
     }
@@ -47,7 +49,7 @@ public class Event implements IDomainObject {
         this.id = id;
     }
 
-    public void setEventTemplate(@Nullable EventTemplate eventTemplate) {
+    public void setEventTemplate(EventTemplate eventTemplate) {
         this.eventTemplate = eventTemplate;
     }
 
@@ -57,5 +59,30 @@ public class Event implements IDomainObject {
         }
         eventDates.add(eventDate);
         Collections.sort(eventDates);
+    }
+
+    public LocalDate getFirstEventDate() throws DomainStateException {
+        if (isDatesEmpty()) {
+            throw new DomainStateException(List.of("No event dates to access"));
+        }
+
+        return eventDates.get(0).getDate();
+    }
+
+    //Returns null if first and last are the same
+    public @Nullable LocalDate getLastEventDate() throws DomainStateException {
+        if (isDatesEmpty()) {
+            throw new DomainStateException(List.of("No event dates to access"));
+        }
+
+        if (eventDates.size() == 1) {
+            return null;
+        }
+
+        return eventDates.get(eventDates.size() - 1).getDate();
+    }
+
+    public boolean isDatesEmpty() {
+        return eventDates.isEmpty();
     }
 }

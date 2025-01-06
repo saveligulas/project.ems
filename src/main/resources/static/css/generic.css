@@ -64,3 +64,21 @@ header.scrolled {
         box-shadow: var(--pico-card-box-shadow);
     }
 }
+
+/* Custom class to reset anchor styling and make the entire element clickable */
+.link-wrapper {
+    display: inline-block; /* Ensures block-level children fit properly */
+    text-decoration: none; /* Removes underline */
+    color: inherit; /* Ensures text inherits the parent's color */
+    cursor: pointer; /* Makes it clear the area is clickable */
+}
+
+/* Optional: Remove focus outline for anchors while keeping it accessible */
+.link-wrapper:focus {
+    outline: none;
+}
+
+/* Restore outline for accessibility if needed */
+.link-wrapper:focus-visible {
+    outline: 2px solid #005fcc; /* Adjust to your preferred focus color */
+}

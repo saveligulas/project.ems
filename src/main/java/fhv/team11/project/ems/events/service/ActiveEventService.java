@@ -3,9 +3,11 @@ package fhv.team11.project.ems.events.service;
 import fhv.team11.project.ems.commons.validation.domain.DomainValidatorFactory;
 import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
 import fhv.team11.project.ems.events.EventDomainDatabaseFactory;
+import fhv.team11.project.ems.events.mapper.presentation.ActiveEventListViewMapper;
 import fhv.team11.project.ems.events.mapper.presentation.ActiveEventViewMapper;
 import fhv.team11.project.ems.events.mapper.presentation.ActiveEventViewShallowDatabaseMapper;
 import fhv.team11.project.ems.events.repo.*;
+import fhv.team11.project.ems.events.transfer.ActiveEventListView;
 import fhv.team11.project.ems.events.transfer.ActiveEventView;
 import fhv.team11.project.ems.events.transfer.ActiveEventViewShallow;
 import jakarta.transaction.Transactional;
@@ -42,6 +44,13 @@ public class ActiveEventService {
         return activeEventRepository.findAllByTemplateIdWithDates(id)
                 .stream()
                 .map(ActiveEventViewShallowDatabaseMapper.INSTANCE::getView)
+                .toList();
+    }
+
+    public List<ActiveEventListView> getActiveEventListViewsForTemplateWithId(Long id) {
+        return eventDomainDatabaseFactory.findAllByTemplateId(id)
+                .stream()
+                .map(ActiveEventListViewMapper.INSTANCE::getView)
                 .toList();
     }
 

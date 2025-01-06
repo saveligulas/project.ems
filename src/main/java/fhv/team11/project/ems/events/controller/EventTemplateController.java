@@ -78,14 +78,7 @@ public class EventTemplateController implements HandleBindingResultException, IH
         return model;
     }
 
-    @GetMapping("/event/manage/{id}")
-    public ModelAndView viewEventTemplate(@PathVariable("id") Long templateId) {
-        ModelAndView model = new ModelAndView("view-eventTemplate");
-        model.addObject("Template", eventTemplateService.getTemplateById(templateId));
-        EventTemplateListDTO eventList = eventTemplateService.getTemplateListByID(templateId);
-        model.addObject("listTemplate", eventList);
-        return model;
-    }
+
 
     @GetMapping("/event/manage/{id}/redirect")
     public String planEventRedirect(@PathVariable("id") Long templateId) {

@@ -6,7 +6,94 @@
       th:with="title='Template'">
 <body>
 <!--@thymesVar id="user" type="fhv.team11.project.ems.commons.controller.base.attribute.user.UserAttributes"-->
-<div layout:fragment="content">
+<div layout:fragment="top">
+  <hgroup>
+    <h2 th:text="${eventTemplateView.name}"></h2>
+  </hgroup>
+</div>
+<div layout:fragment="center" class="container">
+  <form th:object="${eventTemplateView}">
+    <h4 class="text-center">General Information</h4>
+    <div class="grid">
+      <div>
+        <article>
+          <fieldset>
+            <label>
+              Name
+              <input
+                      placeholder="e.g. Potato Festival"
+                      type="text"
+                      name="name"
+                      th:field="*{name}"
+                      readonly
+              />
+            </label>
+
+            <label>
+              Category
+              <input
+                      type="text"
+                      name="category"
+                      th:value="*{category.getName()}"
+                      readonly
+              />
+            </label>
+          </fieldset>
+        </article>
+      </div>
+
+      <div>
+        <article>
+          <fieldset>
+            <label>
+              Participants
+              <input
+                      type="text"
+                      name="minParticipants"
+                      th:value="${eventTemplateView.minParticipants + ' - ' + eventTemplateView.maxParticipants}"
+                      readonly
+              />
+            </label>
+            <label>
+              Price
+              <input
+                      placeholder="e.g., 11.11"
+                      type="number"
+                      name="price"
+                      step="0.01"
+                      th:field="*{price}"
+                      readonly
+              />
+            </label>
+          </fieldset>
+        </article>
+      </div>
+    </div>
+  </form>
+
+
+
+  <div th:each="row : ${rows}">
+    <div class="grid">
+      <th:block th:each="activeEventListView : ${row}">
+        <a th:href="@{{templateId}/active/{id}(templateId=${templateId}, id=${activeEventListView.id})}" class="link-wrapper">
+          <article>
+            <hgroup>
+              <th:block th:if="${activeEventListView.end == null}">
+                <h4 th:text="${activeEventListView.start}"></h4>
+              </th:block>
+              <th:block th:if="${activeEventListView.end != null}">
+                <h4 th:text="${activeEventListView.start + ' - ' + activeEventListView.end}"></h4>
+              </th:block>
+            </hgroup>
+          </article>
+        </a>
+      </th:block>
+
+
+    </div>
+    <hr/>
+  </div>
 </div>
 </body>
 </html>

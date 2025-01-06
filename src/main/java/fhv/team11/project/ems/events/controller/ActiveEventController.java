@@ -78,9 +78,10 @@ public class ActiveEventController implements IHandleEventWizard, IHandleRowPres
     public ModelAndView showEventTemplateDetails(@PathVariable("templateId") Long templateId) {
         ModelAndView modelAndView = new ModelAndView("event-template-with-events");
         EventTemplateView eventTemplateView = eventTemplateService.getEventTemplateViewById(templateId);
-        List<ActiveEventViewShallow> activeEventViewsShallow = activeEventService.getActiveEventViewsShallowForTemplateWithId(templateId);
+        List<ActiveEventListView> activeEventViewsShallow = activeEventService.getActiveEventListViewsForTemplateWithId(templateId);
         modelAndView.addObject("rows", listToRows(activeEventViewsShallow, 3, modelAndView));
         modelAndView.addObject("eventTemplateView", eventTemplateView);
+        modelAndView.addObject("templateId", templateId);
         return modelAndView;
     }
 
