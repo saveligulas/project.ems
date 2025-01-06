@@ -17,22 +17,16 @@ public class AddressEntity {
     @OneToOne(mappedBy = "address")
     private EventTemplateEntity eventTemplate;
 
-    @NotNull
     private String country;
 
-    @NotNull
     private String region;
 
-    @NotNull
     private String city;
 
-    @NotNull
     private Integer zip;
 
-    @NotNull
     private String street;
 
-    @NotNull
     private String houseNumber;
     private String optionalText;
 }

@@ -11,7 +11,7 @@ import java.util.TreeSet;
 
 @Data
 public class EventScheduleDTO implements IModelAttribute {
-    private final List<AppointmentDTO> appointments = new ArrayList<>();
+    private List<AppointmentDTO> appointments = new ArrayList<>();
 
     public void addAppointment(AppointmentDTO appointment) {
         this.appointments.add(appointment);

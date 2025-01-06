@@ -3,86 +3,63 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{base}"
       th:with="title='Event Details'">
-
 <head>
-    <title th:text="${title}">Event Details</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(to bottom right, #e8f5e9, #b2dfdb);
-            background-attachment: fixed;
-            background-size: cover;
-            margin: 0;
-            padding: 0;
-            margin: 0 auto;
-            height: 100%;
-            width: 100%
-
+        .time-cell {
+            white-space: nowrap;
+            width: 150px;
         }
-
-        .event-details {
-            margin: 2rem auto;
-            padding: 2rem;
-            background: #ffffff;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            width:100%;
+        details[role="list"] {
+            margin-bottom: 0;
         }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .btn-book {
-            margin-top: 1.5rem;
+        .grid article:empty {
+            visibility: hidden;
         }
     </style>
 </head>
-
 <body>
-<div layout:fragment="content" class="container-fluid mt-5">
-    <div class="event-details">
-        <h1 th:text="${activeEvent.getEventTemplateDTO().name}">Event Name</h1>
-        <p><strong>Category:</strong> <span th:text="${activeEvent.getEventTemplateDTO().getCategory()}">Category</span></p>
-        <p><strong>Price:</strong> $<span th:text="${activeEvent.getEventTemplateDTO().getPrice()}">Price</span></p>
-        <p><strong>Location:</strong> <span th:text="${activeEvent.getEventTemplateDTO().getAddress().getCountry()}">Country</span></p>
-        <p><strong>Location:</strong> <span th:text="${activeEvent.getEventTemplateDTO().getAddress().getRegion()}">Region</span></p>
-        <p><strong>Location:</strong> <span th:text="${activeEvent.getEventTemplateDTO().getAddress().getCity()}">City</span></p>
-        <p><strong>Location:</strong> <span th:text="${activeEvent.getEventTemplateDTO().getAddress().getStreet()}">Street</span></p>
-        <p><strong>Location:</strong> <span th:text="${activeEvent.getEventTemplateDTO().getAddress().getHouseNumber()}">House Number</span></p>
-
-
-
-
-        <div class="form-group">
-            <label class="form-label"><strong>Event Dates:</strong></label>
-            <ul>
-                <!-- Iterate through the list of dates and display them -->
-                <li th:each="date : ${activeEvent.getActiveEventDates()}"
-                    th:text="${date.date}">
-                    Event Date
-                </li>
-            </ul>
+<div layout:fragment="top">
+    <hgroup>
+        <h2 th:text="${activeEvent.eventTemplateView.name}"></h2>
+        <p th:text="${'Starting on ' + #temporals.format(activeEvent.eventDates.get(0).date, 'EEEE, MMMM d, yyyy')}"></p>
+    </hgroup>
+</div>
+<div layout:fragment="center" class="container">
+    <div th:each="row : ${rows}">
+        <div class="grid">
+            <article th:each="eventDate : ${row}">
+                <hgroup>
+                    <h4 th:text="${eventDate.name}"></h4>
+                    <p th:text="${eventDate.date}"></p>
+                </hgroup>
+                <h5>Schedule</h5>
+                <table role="grid">
+                    <thead>
+                    <tr>
+                        <th scope="col">Time</th>
+                        <th scope="col">Appointment</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="appointment : ${eventDate.eventSchedule.getAppointments()}">
+                        <td class="time-cell">
+                            <span th:text="${#temporals.format(appointment.startTime, 'HH:mm')}"></span>
+                            -
+                            <span th:text="${#temporals.format(appointment.endTime, 'HH:mm')}"></span>
+                        </td>
+                        <td>
+                            <details role="list">
+                                <summary th:text="${appointment.title}"></summary>
+                                <p th:text="${appointment.description}"></p>
+                            </details>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </article>
         </div>
-
-
-
-
-        <div class="d-flex justify-content-between mt-4">
-            <a th:href="@{/active-events}" class="btn btn-primary btn-book">Back to All Events</a>
-
-            <a th:href="@{/active-events/{id}/booking(id=${activeEvent.getActiveEventListDTO().getId()})}" class="btn btn-primary btn-book">Book Event</a>
-        </div>
-
+        <hr/>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 </div>
 </body>
-
 </html>

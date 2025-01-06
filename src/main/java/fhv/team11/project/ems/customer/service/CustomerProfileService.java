@@ -120,6 +120,8 @@ public class CustomerProfileService {
 
                 // Search in CustomerProfileEntity fields
                 singleTermPredicates.add(criteriaBuilder.like(
+                        criteriaBuilder.lower(root.get("id")), pattern));
+                singleTermPredicates.add(criteriaBuilder.like(
                         criteriaBuilder.lower(root.get("firstName")), pattern));
                 singleTermPredicates.add(criteriaBuilder.like(
                         criteriaBuilder.lower(root.get("lastName")), pattern));

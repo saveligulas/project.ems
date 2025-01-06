@@ -8,9 +8,11 @@ import fhv.team11.project.ems.domain.commons.validation.IdValidator;
 import fhv.team11.project.ems.domain.commons.exception.DomainFieldException;
 import fhv.team11.project.ems.domain.commons.exception.DomainStateException;
 import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
+import fhv.team11.project.ems.domain.commons.validation.StringValidator;
 
 import java.util.List;
 
+//TODO: defragment into more interfaces
 public interface IDomainObject {
     default void handleError(String fieldName, String errorMessage, DomainObjectConstructorHelper constructorHelper) throws DomainFieldException {
         if (!constructorHelper.isBeingConstructed()) {
@@ -32,9 +34,25 @@ public interface IDomainObject {
         }
     }
 
-    default void validateNotNullOrBlank(String fieldName, Object value, DomainObjectConstructorHelper constructorHelper) throws DomainFieldException {
+    default void validateNotNull(String fieldName, Object value, DomainObjectConstructorHelper constructorHelper) throws DomainFieldException {
         if (Validator.isNull(value)) {
+            handleError(fieldName, constructMessageMissing(fieldName), constructorHelper);
+        }
+    }
 
+    default void nullableNotBlank(String fieldName, String value, DomainObjectConstructorHelper constructorHelper) throws DomainFieldException {
+        if (Validator.isNotNull(value) && Validator.isBlank(value)) {
+            handleError(fieldName, constructMessageInvalid(fieldName), constructorHelper);
+        }
+    }
+
+    default void nullableNotBlankWithMinLength(String fieldName, String value, DomainObjectConstructorHelper constructorHelper) throws DomainFieldException {
+        nullableNotBlankWithMinLength(fieldName, value, constructorHelper, 5);
+    }
+
+    default void nullableNotBlankWithMinLength(String fieldName, String value, DomainObjectConstructorHelper constructorHelper, int minLength) throws DomainFieldException {
+        if (Validator.isNotNull(value) && StringValidator.isValid(value, minLength)) {
+            handleError(fieldName, constructMessageInvalid(fieldName), constructorHelper);
         }
     }
 

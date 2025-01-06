@@ -28,6 +28,7 @@ public class EventDateDomainMapper implements ISimpleDomainDatabaseMapper<EventD
         return new EventDate(
                 entity.getId(),
                 entity.getDate(),
-                entity.getName());
+                entity.getName(),
+                EventScheduleDomainMapper.INSTANCE.toDomain(entity.getSchedule()));
     }
 }

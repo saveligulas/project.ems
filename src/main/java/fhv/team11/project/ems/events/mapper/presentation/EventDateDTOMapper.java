@@ -1,11 +1,9 @@
 package fhv.team11.project.ems.events.mapper.presentation;
 
 import fhv.team11.project.ems.commons.mapper.IBiPresentationDomainMapper;
-import fhv.team11.project.ems.commons.mapper.IPresentationDomainMapper;
 import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
 import fhv.team11.project.ems.domain.events.EventDate;
 import fhv.team11.project.ems.events.transfer.EventDateDTO;
-import fhv.team11.project.ems.events.transfer.EventScheduleDTO;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
@@ -21,7 +19,7 @@ public class EventDateDTOMapper implements IBiPresentationDomainMapper<EventDate
                 null,
                 presentationObject.getDate(),
                 presentationObject.getName(),
-                EventScheduleDTOMapper.INSTANCE.getDomain(presentationObject.getEventScheduleDTO()));
+                EventScheduleDTOMapper.INSTANCE.getDomain(presentationObject.getEventSchedule()));
     }
 
     @Override
@@ -29,7 +27,7 @@ public class EventDateDTOMapper implements IBiPresentationDomainMapper<EventDate
         EventDateDTO dto = new EventDateDTO();
         dto.setDate(domain.getDate());
         dto.setName(domain.getName());
-        dto.setEventScheduleDTO(EventScheduleDTOMapper.INSTANCE.getView(domain.getSchedule()));
+        dto.setEventSchedule(EventScheduleDTOMapper.INSTANCE.getView(domain.getSchedule()));
         return dto;
     }
 }

@@ -18,4 +18,9 @@ public interface ActiveEventRepository extends JpaRepository<ActiveEvent, Long>,
             "WHERE a.id = :id")
     Optional<ActiveEvent> findByIdWithTemplateAndDate(@Param("id") Long id);
 
+    @Query("SELECT a FROM ActiveEvent a " +
+            "JOIN FETCH a.eventTemplate t " +
+            "JOIN FETCH a.eventDates d " +
+            "WHERE t.id = :templateId")
+    List<ActiveEvent> findAllByTemplateIdWithDates(@Param("templateId") Long templateId);
 }

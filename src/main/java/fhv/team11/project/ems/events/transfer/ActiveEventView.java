@@ -13,7 +13,6 @@ import java.util.TreeSet;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ActiveEventView implements IModelAttribute {
-    private Long id;
     private EventTemplateView eventTemplateView;
     private List<EventDateDTO> eventDates;
 }

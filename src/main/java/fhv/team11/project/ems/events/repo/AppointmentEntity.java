@@ -18,4 +18,7 @@ public class AppointmentEntity {
 
     private LocalTime startTime;
     private LocalTime endTime;
+    private String title;
+    @Column(length = 1024)
+    private String description;
 }

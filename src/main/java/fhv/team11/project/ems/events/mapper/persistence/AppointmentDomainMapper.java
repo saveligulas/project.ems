@@ -18,11 +18,19 @@ public class AppointmentDomainMapper implements ISimpleDomainDatabaseMapper<Appo
         entity.setId(null);
         entity.setStartTime(domain.getStartTime());
         entity.setEndTime(domain.getEndTime());
+        entity.setTitle(domain.getTitle());
+        entity.setDescription(domain.getDescription());
         return entity;
     }
 
     @Override
     public Appointment toDomain(AppointmentEntity entity) throws DomainValidationException {
-        return null;
+        return new Appointment(
+                entity.getId(),
+                entity.getStartTime(),
+                entity.getEndTime(),
+                entity.getTitle(),
+                entity.getDescription()
+        );
     }
 }

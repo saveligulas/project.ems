@@ -1,18 +1,17 @@
 package fhv.team11.project.ems.events.controller;
 
+import fhv.team11.project.ems.commons.controller.IHandlePaginatedRequests;
+import fhv.team11.project.ems.commons.controller.IHandleRowPresentation;
 import fhv.team11.project.ems.commons.validation.ValidationExceptionToBindingResultFactory;
 import fhv.team11.project.ems.commons.validation.domain.handler.HandleBindingResultException;
 import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
-import fhv.team11.project.ems.events.error.EventTemplateDTOValidationException;
 import fhv.team11.project.ems.events.repo.EventCategory;
 import fhv.team11.project.ems.events.service.EventTemplateService;
 import fhv.team11.project.ems.events.transfer.EventTemplateDTO;
 import fhv.team11.project.ems.events.transfer.EventTemplateListDTO;
-import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
+import fhv.team11.project.ems.events.transfer.EventTemplateListView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,7 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Controller
-public class EventTemplateController implements HandleBindingResultException {
+public class EventTemplateController implements HandleBindingResultException, IHandlePaginatedRequests, IHandleRowPresentation {
 
     private final EventTemplateService eventTemplateService;
 
@@ -64,10 +63,18 @@ public class EventTemplateController implements HandleBindingResultException {
 
 
     @GetMapping("/event")
-    public ModelAndView viewEventOrganizer() {
-        List<EventTemplateListDTO> templates = eventTemplateService.getListOfTemplates(0, 25);
-        ModelAndView model = new ModelAndView("event-organizer");
-        model.addObject("templates", templates);
+    public ModelAndView viewEventTemplatesWithAvailableEvents() {
+        List<EventTemplateListView> templates = eventTemplateService.getTemplateListViewsPaginated(0, 25);
+        ModelAndView model = new ModelAndView("cu/cu-event-search");
+        model.addObject("templateRows", listToRows(templates, 3, model));
+        return model;
+    }
+
+    @GetMapping("/event/templates")
+    public ModelAndView viewEventTemplatesOfEventOrganizer() {
+        List<EventTemplateListView> templates = eventTemplateService.getListOfTemplatesFromUser(0, 25);
+        ModelAndView model = new ModelAndView("eo/eo-event-templates");
+        model.addObject("templateRows", listToRows(templates, 3, model));
         return model;
     }
 

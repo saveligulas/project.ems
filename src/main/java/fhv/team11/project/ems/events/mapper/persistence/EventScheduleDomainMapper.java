@@ -1,10 +1,14 @@
 package fhv.team11.project.ems.events.mapper.persistence;
 
 import fhv.team11.project.ems.commons.domain.ISimpleDomainDatabaseMapper;
+import fhv.team11.project.ems.domain.adress.Appointment;
 import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
 import fhv.team11.project.ems.domain.events.EventSchedule;
+import fhv.team11.project.ems.events.repo.AppointmentEntity;
 import fhv.team11.project.ems.events.repo.Schedule;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class EventScheduleDomainMapper implements ISimpleDomainDatabaseMapper<EventSchedule, Schedule> {
@@ -26,6 +30,15 @@ public class EventScheduleDomainMapper implements ISimpleDomainDatabaseMapper<Ev
 
     @Override
     public EventSchedule toDomain(Schedule entity) throws DomainValidationException {
-        return null;
+        List<Appointment> appointments = new ArrayList<>();
+
+        for (AppointmentEntity app : entity.getAppointments()) {
+            appointments.add(AppointmentDomainMapper.INSTANCE.toDomain(app));
+        }
+
+        return new EventSchedule(
+                entity.getId(),
+                appointments
+        );
     }
 }

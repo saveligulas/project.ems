@@ -3,19 +3,18 @@ package fhv.team11.project.ems.events.service;
 import fhv.team11.project.ems.commons.validation.domain.DomainValidatorFactory;
 import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
 import fhv.team11.project.ems.events.EventDomainDatabaseFactory;
-import fhv.team11.project.ems.events.mapper.presentation.ActiveEventViewDTOMapper;
+import fhv.team11.project.ems.events.mapper.presentation.ActiveEventViewMapper;
+import fhv.team11.project.ems.events.mapper.presentation.ActiveEventViewShallowDatabaseMapper;
 import fhv.team11.project.ems.events.repo.*;
 import fhv.team11.project.ems.events.transfer.ActiveEventView;
-import jakarta.persistence.EntityNotFoundException;
+import fhv.team11.project.ems.events.transfer.ActiveEventViewShallow;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -39,14 +38,16 @@ public class ActiveEventService {
 
 
 
-    public List<ActiveEventView> getAllActiveEvents() {
-        //TODO add database direct mapper
-        return null;
+    public List<ActiveEventViewShallow> getActiveEventViewsShallowForTemplateWithId(Long id) {
+        return activeEventRepository.findAllByTemplateIdWithDates(id)
+                .stream()
+                .map(ActiveEventViewShallowDatabaseMapper.INSTANCE::getView)
+                .toList();
     }
 
     @Transactional
     public ActiveEventView getActiveEventById(Long id) throws DomainValidationException {
         //TODO: direct mapper from database to view
-        return ActiveEventViewDTOMapper.INSTANCE.getView(eventDomainDatabaseFactory.getDomainById(id));
+        return ActiveEventViewMapper.INSTANCE.getView(eventDomainDatabaseFactory.getDomainById(id));
     }
 }

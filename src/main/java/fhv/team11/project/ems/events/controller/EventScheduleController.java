@@ -3,20 +3,14 @@ package fhv.team11.project.ems.events.controller;
 import fhv.team11.project.ems.commons.validation.ValidationExceptionToBindingResultFactory;
 import fhv.team11.project.ems.commons.validation.domain.DomainValidatorFactory;
 import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
-import fhv.team11.project.ems.events.error.ScheduleEventDTOValidationException;
 import fhv.team11.project.ems.events.service.EventWizardService;
 import fhv.team11.project.ems.events.service.EventTemplateService;
 import fhv.team11.project.ems.events.transfer.*;
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class EventScheduleController implements IHandleEventWizard {
@@ -43,7 +37,7 @@ public class EventScheduleController implements IHandleEventWizard {
         EventWizard wizard = getWizard(session);
 
         wizard.addToView(modelAndView);
-        wizard.getEventDates().get(eventDateIndex).getEventScheduleDTO().addToView(modelAndView);
+        wizard.getEventDates().get(eventDateIndex).getEventSchedule().addToView(modelAndView);
         eventTemplateService.getTemplateListByID(templateId).addToView(modelAndView);
         modelAndView.addObject("eventDateIndex", eventDateIndex);
         modelAndView.addObject("eventDateTitle", wizard.getEventDates().get(eventDateIndex).getName());

@@ -1,14 +1,12 @@
 package fhv.team11.project.ems.events.controller;
 
+import fhv.team11.project.ems.commons.controller.IHandleRowPresentation;
 import fhv.team11.project.ems.commons.validation.ValidationExceptionToBindingResultFactory;
 import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
 import fhv.team11.project.ems.events.service.ActiveEventService;
 import fhv.team11.project.ems.events.service.EventWizardService;
 import fhv.team11.project.ems.events.service.EventTemplateService;
-import fhv.team11.project.ems.events.transfer.EventDateDTO;
-import fhv.team11.project.ems.events.transfer.ActiveEventView;
-import fhv.team11.project.ems.events.transfer.EventWizard;
-import fhv.team11.project.ems.events.transfer.EventTemplateListDTO;
+import fhv.team11.project.ems.events.transfer.*;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -19,11 +17,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 @Slf4j
-public class ActiveEventController implements IHandleEventWizard {
+public class ActiveEventController implements IHandleEventWizard, IHandleRowPresentation {
 
     private final EventTemplateService eventTemplateService;
     private final EventWizardService eventWizardService;
@@ -75,17 +74,24 @@ public class ActiveEventController implements IHandleEventWizard {
         return "redirect:/event/manage/" + templateId + "/plan/0";
     }
 
-    @GetMapping("/active-events")
-    public String showAllEvents(Model model) {
-        List<ActiveEventView> activeEvents = activeEventService.getAllActiveEvents();
-        model.addAttribute("activeEvents", activeEvents);
-        return "all-events";
+    @GetMapping("/event/{templateId}")
+    public ModelAndView showEventTemplateDetails(@PathVariable("templateId") Long templateId) {
+        ModelAndView modelAndView = new ModelAndView("event-template-with-events");
+        EventTemplateView eventTemplateView = eventTemplateService.getEventTemplateViewById(templateId);
+        List<ActiveEventViewShallow> activeEventViewsShallow = activeEventService.getActiveEventViewsShallowForTemplateWithId(templateId);
+        modelAndView.addObject("rows", listToRows(activeEventViewsShallow, 3, modelAndView));
+        modelAndView.addObject("eventTemplateView", eventTemplateView);
+        return modelAndView;
     }
 
-    @GetMapping("/active-events/{id}")
-    public String showEventDetails(@PathVariable("id") Long id, Model model) throws DomainValidationException {
+    @GetMapping("/event/{templateId}/active/{id}")
+    public ModelAndView showEventDetails(@PathVariable("id") Long id,
+                                   @PathVariable("templateId") Long templateId) throws DomainValidationException {
+        ModelAndView modelAndView = new ModelAndView("event-details");
         ActiveEventView activeEvent = activeEventService.getActiveEventById(id);
-        model.addAttribute("activeEvent", activeEvent);
-        return "event-details";
+        List<EventDateDTO> dates = activeEvent.getEventDates();
+        modelAndView.addObject("rows", listToRows(dates, 2, modelAndView));
+        modelAndView.addObject("activeEvent", activeEvent);
+        return modelAndView;
     }
 }
