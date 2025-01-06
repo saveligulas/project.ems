@@ -1,7 +1,11 @@
 package fhv.team11.project.ems.security.controller;
 
-import fhv.team11.project.ems.security.error.SecuredEndpointAccessException;
-import fhv.team11.project.ems.security.error.RegistrationError;
+import fhv.team11.project.ems.commons.domain.DomainToBindingResultException;
+import fhv.team11.project.ems.commons.validation.ValidationExceptionToBindingResultFactory;
+import fhv.team11.project.ems.commons.validation.domain.IValidationException;
+import fhv.team11.project.ems.commons.validation.error.SimpleValidationException;
+import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
+import fhv.team11.project.ems.security.error.RegistrationException;
 import fhv.team11.project.ems.security.transfer.AuthenticationRequest;
 import fhv.team11.project.ems.security.transfer.AuthenticationResponse;
 import fhv.team11.project.ems.security.transfer.RegisterRequest;
@@ -44,39 +48,34 @@ public class AuthenticationController {
 
     @PostMapping("/register/user")
     public String register(
-            @Valid @ModelAttribute("registerRequest") RegisterRequest registerRequest,
+            @ModelAttribute("registerRequest") RegisterRequest registerRequest,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes) {
-        ModelAndView errorModel = new ModelAndView("register");
 
         if (bindingResult.hasErrors()) {
-            if (bindingResult.hasFieldErrors("email")) {
-                redirectAttributes.addFlashAttribute("hasEmailError", true);
-            }
             redirectAttributes.addFlashAttribute("registerRequest", registerRequest);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.registerRequest", bindingResult);
             return "redirect:/register";
         }
 
         try {
-            AuthenticationResponse response = authenticationService.register(registerRequest);
+            AuthenticationResponse response = authenticationService.register(registerRequest.getEmail(), registerRequest.getPassword());
             return "redirect:/login";
-        } catch (RegistrationError e) {
-            redirectAttributes.addFlashAttribute("hasEmailError", true);
-            redirectAttributes.addFlashAttribute("emailError", e.getMessage());
-            return "redirect:/register";
+        } catch (SimpleValidationException | DomainValidationException e) {
+            ValidationExceptionToBindingResultFactory.handle(e, registerRequest, "register");
         }
+        return "redirect:/error";
     }
 
     @GetMapping("/login")
     public ModelAndView loginPage() {
         ModelAndView modelAndView = new ModelAndView("login");
-        modelAndView.addObject("hideHeader", true);
+        modelAndView.addObject("hideHeader", false);
         return modelAndView;
     }
 
     @PostMapping("/authenticate")
-    public String authenticate(@Valid @ModelAttribute("authenticationRequest") AuthenticationRequest request,
+    public String authenticate(@ModelAttribute("authenticationRequest") AuthenticationRequest request,
                                     BindingResult bindingResult,
                                     HttpServletResponse servlet,
                                     HttpSession session,
@@ -97,7 +96,6 @@ public class AuthenticationController {
             AuthenticationResponse response = authenticationService.authenticate(request);
             servlet.addCookie(new Cookie("authToken", response.getAuthToken()));
             session.setAttribute("authenticatedEmail", request.getEmail());
-
         } catch (AuthenticationRequestValidationException e) {
             redirectAttributes.addFlashAttribute("hasError", "Authentication failed! Please check your credentials");
             return "redirect:/login";

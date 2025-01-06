@@ -19,7 +19,6 @@ import lombok.NoArgsConstructor;
 @GroupSequence({FirstValidation.class, SecondValidation.class, ThirdValidation.class, RegisterRequest.class})
 public class RegisterRequest implements IModelAttribute {
     @NotBlank(message = "Please enter an email address", groups = FirstValidation.class)
-    @Email(message = "Please enter a valid email address", groups = FirstValidation.class)
     private String email;
 
     @NotBlank(message = "Please enter a password", groups = SecondValidation.class)

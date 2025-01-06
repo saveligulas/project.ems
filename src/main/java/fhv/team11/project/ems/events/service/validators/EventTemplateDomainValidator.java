@@ -2,11 +2,8 @@ package fhv.team11.project.ems.events.service.validators;
 
 import fhv.team11.project.ems.commons.validation.domain.IDomainValidator;
 import fhv.team11.project.ems.commons.validation.domain.ValidatorFor;
-import fhv.team11.project.ems.events.error.EventTemplateDTOValidationException;
-import fhv.team11.project.ems.events.repo.EventTemplate;
 import fhv.team11.project.ems.events.transfer.EventTemplateDTO;
 import fhv.team11.project.ems.events.validation.MaxMinParticipants;
-import groovyjarjarantlr4.v4.runtime.misc.NotNull;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

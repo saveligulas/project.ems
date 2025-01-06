@@ -1,0 +1,13 @@
+<div th:fragment="display-errors">
+    <label>
+        <input
+                type="text"
+                style="display: none;"
+                th:attr="aria-invalid=${errorMessages} ? 'true'"
+                disabled
+        />
+        <th:block th:each="errorMessage : ${errorMessages}">
+            <small th:text="${errorMessage}"></small>
+        </th:block>
+    </label>
+</div>

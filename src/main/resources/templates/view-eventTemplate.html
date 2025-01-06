@@ -50,37 +50,37 @@
                 <!-- Location -->
                 <div class="info-group mb-3">
                     <label for="location" class="form-label"><strong>Location:</strong></label>
-                    <p id="location" class="border rounded p-2" th:text="${Template.address.region}">Region</p>
+                    <p id="location" class="border rounded p-2" th:text="${Template.addressEntity.region}">Region</p>
                 </div>
 
                 <!-- County -->
                 <div class="info-group mb-3">
                     <label for="county" class="form-label"><strong>County:</strong></label>
-                    <p id="county" class="border rounded p-2" th:text="${Template.address.country}">Country</p>
+                    <p id="county" class="border rounded p-2" th:text="${Template.addressEntity.country}">Country</p>
                 </div>
 
                 <!-- ZIP Code -->
                 <div class="info-group mb-3">
                     <label for="zip" class="form-label"><strong>ZIP Code:</strong></label>
-                    <p id="zip" class="border rounded p-2" th:text="${Template.address.zip}">ZIP Code</p>
+                    <p id="zip" class="border rounded p-2" th:text="${Template.addressEntity.zip}">ZIP Code</p>
                 </div>
 
                 <!-- Street -->
                 <div class="info-group mb-3">
                     <label for="street" class="form-label"><strong>Street:</strong></label>
-                    <p id="street" class="border rounded p-2" th:text="${Template.address.street}">Street</p>
+                    <p id="street" class="border rounded p-2" th:text="${Template.addressEntity.street}">Street</p>
                 </div>
 
                 <!-- House Number -->
                 <div class="info-group mb-3">
                     <label for="houseNumber" class="form-label"><strong>House Number:</strong></label>
-                    <p id="houseNumber" class="border rounded p-2" th:text="${Template.address.houseNumber}">House Number</p>
+                    <p id="houseNumber" class="border rounded p-2" th:text="${Template.addressEntity.houseNumber}">House Number</p>
                 </div>
 
                 <!-- Optional Line -->
                 <div class="info-group mb-3">
                     <label for="optionalLine" class="form-label"><strong>Optional Line:</strong></label>
-                    <p id="optionalLine" class="border rounded p-2" th:text="${Template.address.optionalText}">Optional Text</p>
+                    <p id="optionalLine" class="border rounded p-2" th:text="${Template.addressEntity.optionalText}">Optional Text</p>
                 </div>
             </div>
         </div>

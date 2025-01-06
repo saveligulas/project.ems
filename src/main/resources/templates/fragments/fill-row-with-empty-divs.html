@@ -1,0 +1,8 @@
+<th:block th:fragment="fill">
+    <th:block th:if="${row.size()} < ${rowSize}">
+        <th:block th:each="i : ${#numbers.sequence(1, rowSize - row.size())}">
+            <div></div>
+        </th:block>
+    </th:block>
+</th:block>
+

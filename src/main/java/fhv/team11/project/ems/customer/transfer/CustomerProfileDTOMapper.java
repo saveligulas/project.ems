@@ -1,41 +1,52 @@
 package fhv.team11.project.ems.customer.transfer;
 
+import fhv.team11.project.ems.commons.address.AddressDTOMapper;
 import fhv.team11.project.ems.commons.address.AddressDTOMapperImpl;
-import fhv.team11.project.ems.commons.database.IDTOEntityBiMapper;
-import fhv.team11.project.ems.customer.CustomerProfile;
-import jakarta.validation.constraints.Null;
+import fhv.team11.project.ems.commons.address.AddressDTOMapperNew;
+import fhv.team11.project.ems.commons.mapper.IBiPresentationDomainMapper;
+import fhv.team11.project.ems.customer.CustomerProfileEntity;
+import fhv.team11.project.ems.domain.adress.Address;
+import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
+import fhv.team11.project.ems.domain.user.CustomerProfile;
 import org.jspecify.annotations.Nullable;
 
-public class CustomerProfileDTOMapper implements IDTOEntityBiMapper<CustomerProfile, CustomerProfileDTO> {
-
+public class CustomerProfileDTOMapper implements IBiPresentationDomainMapper<CustomerProfileDTO, CustomerProfile> {
     public static final CustomerProfileDTOMapper INSTANCE = new CustomerProfileDTOMapper();
 
+    private CustomerProfileDTOMapper() {
+    }
+
+
     @Override
-    public CustomerProfile getEntity(CustomerProfileDTO dto) {
-        CustomerProfile customerProfile = new CustomerProfile();
+    public CustomerProfileDTO getView(CustomerProfile domain) {
+        if (domain == null) {
+            return null;
+        }
 
-        customerProfile.setAddress(AddressDTOMapperImpl.INSTANCE.toEntity(dto.getAddress()));
-        customerProfile.setFirstName(dto.getFirstName());
-        customerProfile.setLastName(dto.getLastName());
-        customerProfile.setPhoneNumber(dto.getPhoneNumber());
-        customerProfile.setSecret(dto.getSecret());
+        CustomerProfileDTO dto = new CustomerProfileDTO();
+        dto.setId(domain.getId());
+        dto.setFirstName(domain.getFirstName());
+        dto.setLastName(domain.getLastName());
+        dto.setPhoneNumber(domain.getPhoneNumber());
+        dto.setSecret(domain.getSecret());
+        dto.setAddress(AddressDTOMapperNew.INSTANCE.getView(domain.getAddress()));
 
-        return customerProfile;
+        return dto;
     }
 
     @Override
-    public @Nullable CustomerProfileDTO getDTO(@Nullable CustomerProfile entity) {
-        if (entity == null) {
+    public CustomerProfile getDomain(CustomerProfileDTO presentationObject) throws DomainValidationException {
+        if (presentationObject == null) {
             return null;
         }
-        CustomerProfileDTO customerProfileDTO = new CustomerProfileDTO();
 
-        customerProfileDTO.setAddress(AddressDTOMapperImpl.INSTANCE.toDTO(entity.getAddress()));
-        customerProfileDTO.setFirstName(entity.getFirstName());
-        customerProfileDTO.setLastName(entity.getLastName());
-        customerProfileDTO.setPhoneNumber(entity.getPhoneNumber());
-        customerProfileDTO.setSecret(entity.getSecret());
-
-        return customerProfileDTO;
+        return new CustomerProfile(
+                presentationObject.getId(),
+                presentationObject.getSecret(),
+                presentationObject.getPhoneNumber(),
+                AddressDTOMapperNew.INSTANCE.getDomainDecorated(presentationObject.getAddress()),
+                presentationObject.getLastName(),
+                presentationObject.getFirstName()
+        );
     }
 }

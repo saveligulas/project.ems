@@ -1,17 +1,31 @@
 package fhv.team11.project.ems.booking.service;
 
+import fhv.team11.project.ems.booking.BookingDomainDatabaseFactory;
 import fhv.team11.project.ems.booking.repo.*;
 import fhv.team11.project.ems.booking.transfer.BookingListDTO;
 import fhv.team11.project.ems.booking.transfer.CreateBookingDTO;
+import fhv.team11.project.ems.commons.error.BackEndError;
+import fhv.team11.project.ems.commons.error.EntityNotFoundException;
+import fhv.team11.project.ems.commons.validation.domain.IValidationException;
+import fhv.team11.project.ems.commons.validation.error.SimpleValidationException;
+import fhv.team11.project.ems.customer.CustomerProfileDomainDatabaseFactory;
 import fhv.team11.project.ems.customer.CustomerProfileRepository;
+import fhv.team11.project.ems.customer.transfer.CustomerProfileDTOMapper;
+import fhv.team11.project.ems.domain.booking.Booking;
+import fhv.team11.project.ems.domain.booking.CancellationDates;
+import fhv.team11.project.ems.domain.booking.Invoice;
+import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
+import fhv.team11.project.ems.domain.events.Event;
+import fhv.team11.project.ems.domain.user.CustomerProfile;
+import fhv.team11.project.ems.events.EventDomainDatabaseFactory;
 import fhv.team11.project.ems.events.repo.ActiveEventRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,47 +34,68 @@ import java.util.stream.Collectors;
 public class BookingService {
 
     private final BookingRepository bookingRepository;
-    private final ActiveEventRepository activeEventRepository;
-    private final CustomerProfileRepository customerProfileRepository;
     private final BookingIdentifierRepository bookingIdentifierRepository;
-
+    private final CustomerProfileDomainDatabaseFactory customerProfileDomainDatabaseFactory;
+    private final EventDomainDatabaseFactory eventDomainDatabaseFactory;
+    private final BookingDomainDatabaseFactory bookingDomainDatabaseFactory;
 
     @Autowired
-    public BookingService(BookingRepository bookingRepository, ActiveEventRepository activeEventRepository, CustomerProfileRepository customerProfileRepository, BookingIdentifierRepository bookingIdentifierRepository) {
+    public BookingService(BookingRepository bookingRepository, ActiveEventRepository activeEventRepository, CustomerProfileRepository customerProfileRepository, BookingIdentifierRepository bookingIdentifierRepository, CustomerProfileDomainDatabaseFactory customerProfileDomainDatabaseFactory, EventDomainDatabaseFactory eventDomainDatabaseFactory, BookingDomainDatabaseFactory bookingDomainDatabaseFactory) {
         this.bookingRepository = bookingRepository;
-        this.activeEventRepository = activeEventRepository;
-        this.customerProfileRepository = customerProfileRepository;
         this.bookingIdentifierRepository = bookingIdentifierRepository;
+        this.customerProfileDomainDatabaseFactory = customerProfileDomainDatabaseFactory;
+        this.eventDomainDatabaseFactory = eventDomainDatabaseFactory;
+        this.bookingDomainDatabaseFactory = bookingDomainDatabaseFactory;
     }
 
 
 
-    public void createBooking(CreateBookingDTO createBookingDTO, Long eventId) {
-        Booking booking = CreateBookingDTOMapper.INSTANCE.getEntity(createBookingDTO);
+    public void createBooking(CreateBookingDTO createBookingDTO, Long eventId) throws SimpleValidationException, DomainValidationException {
+        CustomerProfile financer;
+        Event event;
 
-        // Fetch the ActiveEvent from the repository
-        booking.setBookedEvent(
-                activeEventRepository.findById(eventId)
-                        .orElseThrow(() -> new EntityNotFoundException("ActiveEvent not found"))
+        try {
+            financer = customerProfileDomainDatabaseFactory.getDomainById(eventId);
+        } catch (EntityNotFoundException e) {
+            throw new SimpleValidationException("financer", "Customer does not exist");
+        }
+        try {
+            event = eventDomainDatabaseFactory.getDomainById(eventId);
+        } catch (EntityNotFoundException e) {
+            throw new SimpleValidationException("Event does not exist anymore");
+        }
+
+        //TODO: Implement this in event template
+        CancellationDates cancellationDates = new CancellationDates();
+        if (event.getEventTemplate() == null) {
+            throw new BackEndError("Active Event without Template exists id: " + event.getId());
+        }
+        double price = event.getEventTemplate().getPrice() * createBookingDTO.getBookedPlaces();
+        //TODO: implement invoices
+        Invoice invoiceDeposit = new Invoice();
+        UUID uuid = UUID.randomUUID();
+
+        Booking booking = new Booking(
+                null,
+                financer,
+                event,
+                createBookingDTO.getBookedPlaces(),
+                price,
+                BookingStatus.VALID,
+                invoiceDeposit,
+                null,
+                uuid
         );
 
-        booking.setFinancer(
-                customerProfileRepository.findById(createBookingDTO.getFinancerId())
-                        .orElseThrow(() -> new EntityNotFoundException("Customer Profile not found"))
-        );
-        bookingRepository.persist(booking);
+        bookingDomainDatabaseFactory.persist(booking);
     }
 
     public List<BookingListDTO> getAllBooking() {
-        List<Booking> bookings = bookingRepository.findAll();
-
-        return bookings.stream()
-                .map(BookingListDTOMapper.INSTANCE::getDTO)
-                .collect(Collectors.toList());
+        return null;
     }
 
     public void checkInBooking(String identifierId) {
-        bookingIdentifierRepository.updateUUIDStatus(identifierId, BookingStatus.Checked_In);
+        bookingIdentifierRepository.updateUUIDStatus(identifierId, BookingStatus.CHECKED_IN);
     }
 }
 

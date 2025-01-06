@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{base}"
+      th:with="title='Template'">
+<body>
+<!--@thymesVar id="user" type="fhv.team11.project.ems.commons.controller.base.attribute.user.UserAttributes"-->
+<div layout:fragment="center" class="container">
+  <hgroup>
+    <h2>Your Event Templates</h2>
+    <p>Select an event to see your planned Events</p>
+  </hgroup>
+  <div th:each="row : ${templateRows}">
+    <div class="grid">
+      <article class="secondary" th:each="event : ${row}">
+        <h4 th:text="${event.name}"></h4>
+        <table>
+          <tbody>
+          <tr>
+            <td>Category</td>
+            <td dir="rtl" th:text="${event.category.getName()}"></td>
+          </tr>
+          <tr>
+            <td>Planned Events</td>
+            <td dir="rtl" th:text="${event.plannedEventCount}"></td>
+          </tr>
+          </tbody>
+        </table>
+        <button onclick="location.href='/target-url'">TODO: View Active Events and Details</button>
+      </article>
+      <th:block th:replace="~{fragments/fill-row-with-empty-divs :: fill}"></th:block>
+    </div>
+  </div>
+</div>
+</body>
+</html>

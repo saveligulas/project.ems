@@ -1,16 +1,15 @@
 package fhv.team11.project.ems.events.controller;
 
-import fhv.team11.project.ems.commons.validation.domain.DomainValidatorFactory;
-import fhv.team11.project.ems.events.error.ScheduleEventDTOValidationException;
+import fhv.team11.project.ems.commons.controller.IHandleRowPresentation;
+import fhv.team11.project.ems.commons.validation.ValidationExceptionToBindingResultFactory;
+import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
 import fhv.team11.project.ems.events.service.ActiveEventService;
-import fhv.team11.project.ems.events.service.ActiveEventWizardService;
+import fhv.team11.project.ems.events.service.EventWizardService;
 import fhv.team11.project.ems.events.service.EventTemplateService;
-import fhv.team11.project.ems.events.transfer.ActiveEventDateDTO;
-import fhv.team11.project.ems.events.transfer.ActiveEventView;
-import fhv.team11.project.ems.events.transfer.ActiveEventWizardDTO;
-import fhv.team11.project.ems.events.transfer.EventTemplateListDTO;
+import fhv.team11.project.ems.events.transfer.*;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,90 +17,82 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-public class ActiveEventController {
+@Slf4j
+public class ActiveEventController implements IHandleEventWizard, IHandleRowPresentation {
 
     private final EventTemplateService eventTemplateService;
-    private final ActiveEventWizardService activeEventWizardService;
+    private final EventWizardService eventWizardService;
     private final ActiveEventService activeEventService;
-    private final DomainValidatorFactory domainValidatorFactory;
+
     @Autowired
-    public ActiveEventController(ActiveEventWizardService activeEventWizardService, EventTemplateService eventTemplateService, ActiveEventService activeEventService, DomainValidatorFactory domainValidatorFactory) {
-        this.activeEventWizardService = activeEventWizardService;
+    public ActiveEventController(EventWizardService eventWizardService, EventTemplateService eventTemplateService, ActiveEventService activeEventService) {
+        this.eventWizardService = eventWizardService;
         this.eventTemplateService = eventTemplateService;
         this.activeEventService = activeEventService;
-        this.domainValidatorFactory = domainValidatorFactory;
+    }
+
+    @ModelAttribute("eventDate")
+    public EventDateDTO eventDateDTO() {
+        return new EventDateDTO();
     }
 
     @GetMapping("/event/manage/{id}/plan")
-    public ModelAndView viewEventTemplate(@PathVariable("id") Long templateId, HttpSession session) {
+    public ModelAndView planEventDates(@PathVariable("id") Long templateId, HttpSession session) {
         ModelAndView modelAndView = new ModelAndView("plan-event");
+        //TODO: Move this to redis
         EventTemplateListDTO eventTemplateListDTO = eventTemplateService.getTemplateListByID(templateId);
-        modelAndView.addObject("listTemplate", eventTemplateListDTO);
+        modelAndView.addObject("eventTemplateList", eventTemplateListDTO);
 
-        ActiveEventWizardDTO wizard = (ActiveEventWizardDTO) session.getAttribute("wizard");
-        if (wizard == null) {
-            wizard = new ActiveEventWizardDTO(domainValidatorFactory);
-            session.setAttribute("wizard", wizard);
-        }
+        EventWizard wizard = initOrGetWizard(session);
         modelAndView.addObject("wizard", wizard);
-        modelAndView.addObject("eventDate", new ActiveEventDateDTO());
         return modelAndView;
     }
 
     @PostMapping("/event/manage/{id}/plan")
-    public String addEventDate(@Valid @ModelAttribute("eventDate") ActiveEventDateDTO activeEventDateDTO,
+    public String addEventDate(@ModelAttribute("eventDate") EventDateDTO eventDateDTO,
                                HttpSession session,
                                @PathVariable("id") Long templateId,
                                BindingResult result,
                                Model model) {
-        // Retrieve the wizard from the session
-        ActiveEventWizardDTO wizard = (ActiveEventWizardDTO) session.getAttribute("wizard");
-        if (wizard == null) {
-            wizard = new ActiveEventWizardDTO(domainValidatorFactory);
-        }
-
+        EventWizard wizard = getWizard(session);
         try {
-            wizard.addActiveEvent(activeEventDateDTO);
-            session.setAttribute("wizard", wizard);
-        } catch (ScheduleEventDTOValidationException ex) {
-            ex.getBindingResult().getAllErrors().forEach(error -> {
-                System.out.println("Validation Error: " + error.getDefaultMessage()); // Logging
-                result.addError(error);
-            });
+            updateWizard(session, eventWizardService.addEventDateToEvent(wizard, eventDateDTO));
+        } catch (DomainValidationException e) {
+            ValidationExceptionToBindingResultFactory.handle(e, eventDateDTO, "event/manage/" + templateId + "/plan");
         }
 
-        if (result.hasErrors()) {
-            model.addAttribute("eventDate", activeEventDateDTO);
-            model.addAttribute("wizard", wizard);
-            model.addAttribute("eventTemplate", eventTemplateService.getTemplateById(templateId));
-            model.addAttribute("listTemplate", eventTemplateService.getTemplateListByID(templateId));
-            return "plan-event";
-        }
         return "redirect:/event/manage/" + templateId + "/plan";
     }
 
-
     @GetMapping("/event/manage/{id}/plan/redirect")
     public String planAppointmentsRedirect(@PathVariable("id") Long templateId) {
-        return "redirect:/event/manage/" + templateId + "/plan/appointments";
+        //TODO: validate if dates are not too far apart with domain
+        return "redirect:/event/manage/" + templateId + "/plan/0";
     }
 
-    @GetMapping("/active-events")
-    public String showAllEvents(Model model) {
-        List<ActiveEventView> activeEvents = activeEventService.getAllActiveEvents();
-        model.addAttribute("activeEvents", activeEvents);
-        return "all-events";
+    @GetMapping("/event/{templateId}")
+    public ModelAndView showEventTemplateDetails(@PathVariable("templateId") Long templateId) {
+        ModelAndView modelAndView = new ModelAndView("event-template-with-events");
+        EventTemplateView eventTemplateView = eventTemplateService.getEventTemplateViewById(templateId);
+        List<ActiveEventListView> activeEventViewsShallow = activeEventService.getActiveEventListViewsForTemplateWithId(templateId);
+        modelAndView.addObject("rows", listToRows(activeEventViewsShallow, 3, modelAndView));
+        modelAndView.addObject("eventTemplateView", eventTemplateView);
+        modelAndView.addObject("templateId", templateId);
+        return modelAndView;
     }
 
-    @GetMapping("/active-events/{id}")
-    public String showEventDetails(@PathVariable("id") Long id, Model model) {
+    @GetMapping("/event/{templateId}/active/{id}")
+    public ModelAndView showEventDetails(@PathVariable("id") Long id,
+                                   @PathVariable("templateId") Long templateId) throws DomainValidationException {
+        ModelAndView modelAndView = new ModelAndView("event-details");
         ActiveEventView activeEvent = activeEventService.getActiveEventById(id);
-        model.addAttribute("activeEvent", activeEvent);
-        return "event-details";
+        List<EventDateDTO> dates = activeEvent.getEventDates();
+        modelAndView.addObject("rows", listToRows(dates, 2, modelAndView));
+        modelAndView.addObject("activeEvent", activeEvent);
+        return modelAndView;
     }
-
-
 }

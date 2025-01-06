@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{base}"
+      th:with="title='Create Event'">
+<body>
+<div layout:fragment="top">
+    <div class="text-center">
+        <h2>Create an Event Blueprint</h2>
+    </div>
+</div>
+<div layout:fragment="center" class="container">
+    <form th:action="@{/event/create}" method="POST" th:object="${eventTemplate}" novalidate>
+        <div class="grid">
+            <div>
+                <h4 class="text-center">General Information</h4>
+                <article>
+                    <fieldset>
+                        <label>
+                            Name *
+                            <input
+                                    placeholder="e.g. Potato Festival"
+                                    type="text"
+                                    name="name"
+                                    th:field="*{name}"
+                                    th:attr="aria-invalid=${#fields.hasErrors('name')} ? 'true'"
+                            />
+                            <small th:errors="*{name}"></small>
+                        </label>
+
+                        <label>
+                            Category *
+                            <select th:field="*{category}">
+                                <option selected disabled value="">
+                                    Select the category of your event...
+                                </option>
+                                <option
+                                        th:each="categoryOption : ${categories}"
+                                        th:text="${categoryOption.getName()}"
+                                        th:value="${categoryOption}">
+                                </option>
+                            </select>
+                            <small th:errors="*{category}"></small>
+                        </label>
+
+                        <label>
+                            Price *
+                            <input
+                                    placeholder="e.g., 11.11"
+                                    type="number"
+                                    name="price"
+                                    step="0.01"
+                                    th:field="*{price}"
+                                    th:attr="aria-invalid=${#fields.hasErrors('price')} ? 'true'"
+                            />
+                            <small class="secondary">
+                                <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Error message</span>
+                                <span th:unless="${#fields.hasErrors('price')}">All Prices on this site are in €</span>
+                            </small>
+                        </label>
+                    </fieldset>
+                </article>
+            </div>
+
+            <div>
+                <h4 class="text-center">Participants</h4>
+                <article>
+                    <fieldset class="grid">
+                        <label>
+                            Minimum
+                            <input
+                                    type="number"
+                                    name="minParticipants"
+                                    step="1"
+                                    th:field="*{minParticipants}"
+                                    th:attr="aria-invalid=${#fields.hasErrors('minParticipants')} ? 'true'"
+                            />
+                            <small class="secondary">
+                                <span th:if="${#fields.hasErrors('minParticipants')}" th:errors="*{minParticipants}">Error message</span>
+                                <span th:unless="${#fields.hasErrors('minParticipants')}">We will notify you before your event if this is not reached</span>
+                            </small>
+                        </label>
+                        <label>
+                            Maximum *
+                            <input
+                                    type="number"
+                                    name="maxParticipants"
+                                    step="1"
+                                    th:field="*{maxParticipants}"
+                                    th:attr="aria-invalid=${#fields.hasErrors('maxParticipants')} ? 'true'"
+                            />
+                            <small th:errors="*{maxParticipants}"></small>
+                        </label>
+                    </fieldset>
+                </article>
+            </div>
+        </div>
+        <hr/>
+        <div th:include="~{fragments/address-form :: address(${eventTemplate.address})}"></div>
+
+        <input
+                type="submit"
+                value="Save Template"
+        />
+    </form>
+</div>
+</body>
+</html>
+

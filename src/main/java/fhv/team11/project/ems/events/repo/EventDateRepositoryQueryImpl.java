@@ -13,13 +13,13 @@ public class EventDateRepositoryQueryImpl implements EventDateRepositoryQuery {
 
     @Transactional
     @Override
-    public EventDate persist(EventDate entity) {
+    public EventDateEntity persist(EventDateEntity entity) {
         entityManager.persist(entity);
         return entity;
     }
 
     @Transactional
-    public EventDate plsPersist(EventDate entity, Schedule schedule, ActiveEvent activeEvent) {
+    public EventDateEntity plsPersist(EventDateEntity entity, Schedule schedule, ActiveEvent activeEvent) {
         entityManager.persist(schedule);
         entityManager.persist(activeEvent);
         entityManager.persist(entity);
@@ -28,16 +28,16 @@ public class EventDateRepositoryQueryImpl implements EventDateRepositoryQuery {
 
     @Transactional
     @Override
-    public EventDate update(EventDate entity) {
+    public EventDateEntity update(EventDateEntity entity) {
         return entityManager.merge(entity);
     }
 
-    public EventDate findById(Long id) {
-        return entityManager.find(EventDate.class, id);
+    public EventDateEntity findById(Long id) {
+        return entityManager.find(EventDateEntity.class, id);
     }
 
     @SuppressWarnings("unchecked")
-    public List<EventDate> findAll() {
-        return entityManager.createQuery("SELECT e FROM EventDate e", EventDate.class).getResultList();
+    public List<EventDateEntity> findAll() {
+        return entityManager.createQuery("SELECT e FROM EventDateEntity e", EventDateEntity.class).getResultList();
     }
 }

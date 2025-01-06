@@ -1,47 +1,104 @@
 <!--
-    TODO: Make the fields errors dynamic with the basePath to allow multiple addresses
+    TODO: Make the fields errors dynamic with the basePath to allow multiple addresses. Now it only works with one field called address
 -->
 <div th:fragment="address(address)">
-    <div class="form-group mb-4">
-        <label for="country"><strong>Country *</strong></label>
-        <input type="text" id="country" name="location" th:field="*{address.country}"
-               th:classappend="${#fields.hasErrors('address.country') ? 'input-error' : ''}" placeholder="e.g., Austria" class="form-control">
-    </div>
+    <h4 class="text-center">Address</h4>
+    <article>
+        <fieldset class="grid">
+            <label>
+                Country *
+                <!--<select th:field="*{address.country}">
+                    <option selected disabled value="">
+                        Select your Country...
+                    </option>
+                    <option
+                            th:each="countryOption : ${countries}"
+                            th:text="${countryOption.getName()}"
+                            th:value="${countryOption}">
+                    </option>
+                </select>-->
+                <input
+                        placeholder="Country"
+                        type="text"
+                        name="country"
+                        th:field="*{address.country}"
+                        th:attr="aria-invalid=${#fields.hasErrors('address.country')} ? 'true'"
+                />
+                <small th:errors="*{address.country}"></small>
+            </label>
+            <label>
+                Region
+                <input
+                        placeholder="Region"
+                        type="text"
+                        name="region"
+                        th:field="*{address.region}"
+                        th:attr="aria-invalid=${#fields.hasErrors('address.region')} ? 'true'"
+                />
+                <small th:errors="*{address.region}"></small>
+            </label>
 
-    <div class="form-group mb-4">
-        <label for="county"><strong>Region</strong></label>
-        <input type="text" id="county" name="county" th:field="*{address.region}"
-               th:classappend="${#fields.hasErrors('address.region') ? 'input-error' : ''}" placeholder="e.g., Vorarlberg" class="form-control">
-    </div>
+        </fieldset>
+        <fieldset class="grid">
+            <label>
+                City *
+                <input
+                        placeholder="City"
+                        type="text"
+                        name="city"
+                        th:field="*{address.city}"
+                        th:attr="aria-invalid=${#fields.hasErrors('address.city')} ? 'true'"
+                />
+                <small th:errors="*{address.city}"></small>
+            </label>
 
-    <div class="form-group mb-4">
-        <label for="city"><strong>City</strong></label>
-        <input type="text" id="city" name="zip" th:field="*{address.city}"
-               th:classappend="${#fields.hasErrors('address.city') ? 'input-error' : ''}" placeholder="e.g., Musterstadt" class="form-control">
-    </div>
+            <label>
+                Postal Code *
+                <input
+                        type="number"
+                        step="1"
+                        name="zip"
+                        th:field="*{address.zip}"
+                        th:attr="aria-invalid=${#fields.hasErrors('address.zip')} ? 'true'"
+                />
+                <small th:errors="*{address.zip}"></small>
+            </label>
 
-    <div class="form-group mb-4">
-        <label for="zip"><strong>ZIP</strong></label>
-        <input type="number" id="zip" name="zip" th:field="*{address.zip}"
-               th:classappend="${#fields.hasErrors('address.zip') ? 'input-error' : ''}" placeholder="e.g., 11111" class="form-control">
-    </div>
+        </fieldset>
+        <fieldset class="grid">
+            <label>
+                Street *
+                <input
+                        placeholder="e.g. Eventastic Street"
+                        type="text"
+                        name="street"
+                        th:field="*{address.street}"
+                        th:attr="aria-invalid=${#fields.hasErrors('address.street')} ? 'true'"
+                />
+                <small th:errors="*{address.street}"></small>
+            </label>
 
-    <div class="form-group mb-4">
-        <label for="street"><strong>Street</strong></label>
-        <input type="text" id="street" name="street" th:field="*{address.street}"
-               th:classappend="${#fields.hasErrors('address.street') ? 'input-error' : ''}" placeholder="e.g., Musterstrasse" class="form-control">
-    </div>
-
-    <div class="form-group mb-4">
-        <label for="house-number"><strong>House Number</strong></label>
-        <input type="text" id="house-number" name="house-number" th:field="*{address.houseNumber}"
-               th:classappend="${#fields.hasErrors('address.houseNumber') ? 'input-error' : ''}" placeholder="e.g., 11" class="form-control">
-    </div>
-
-    <div class="form-group mb-4">
-        <label for="optionalLine"><strong>Optional Line</strong></label>
-        <textarea id="optionalLine" name="optionalLine" th:field="*{address.optionalText}" maxlength="150"
-                  th:classappend="${#fields.hasErrors('address.optionalText') ? 'input-error' : ''}"
-                  placeholder="max 150 characters" rows="4" class="form-control"></textarea>
-    </div>
+            <label>
+                House Number
+                <input
+                        placeholder="e.g. 3a Top 9"
+                        type="text"
+                        name="houseNumber"
+                        th:field="*{address.houseNumber}"
+                        th:attr="aria-invalid=${#fields.hasErrors('address.houseNumber')} ? 'true'"
+                />
+                <small th:errors="*{address.houseNumber}"></small>
+            </label>
+        </fieldset>
+        <fieldset>
+            <textarea
+                    name="optionalText"
+                    placeholder="Please provide additional information if necessary..."
+                    aria-label="Professional short bio"
+                    th:field="*{address.optionalText}"
+                    th:attr="aria-invalid=${#fields.hasErrors('address.optionalText')} ? 'true'"
+                    maxlength="150">
+            </textarea>
+        </fieldset>
+    </article>
 </div>

@@ -1,9 +1,11 @@
 package fhv.team11.project.ems.customer.controller;
 
+import fhv.team11.project.ems.commons.validation.ValidationExceptionToBindingResultFactory;
 import fhv.team11.project.ems.commons.validation.domain.handler.HandleBindingResultException;
 import fhv.team11.project.ems.commons.validation.model.IModelAttributeName;
 import fhv.team11.project.ems.customer.service.CustomerProfileService;
 import fhv.team11.project.ems.customer.transfer.CustomerProfileDTO;
+import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,17 +45,17 @@ public class CustomerProfileController implements HandleBindingResultException {
         return new ModelAndView("bo/bo-customer-profile-create");
     }
 
-    @PostMapping("profiles/customer/create")
-    public String createCustomerProfile(@Valid @ModelAttribute(CUSTOMER_PROFILE_MODEL_ATTRIBUTE_NAME) CustomerProfileDTO customerProfileDTO,
+    @PostMapping("profiles/customer/create/new")
+    public String createCustomerProfile(@ModelAttribute(CUSTOMER_PROFILE_MODEL_ATTRIBUTE_NAME) CustomerProfileDTO customerProfileDTO,
                                         BindingResult bindingResult,
                                         RedirectAttributes redirectAttributes,
                                         HttpSession httpSession) {
-        if (bindingResult.hasErrors()) {
-            addBindingResultToRedirect(CUSTOMER_PROFILE_MODEL_ATTRIBUTE_NAME, bindingResult, redirectAttributes);
-            return "redirect:/profiles/customer/create";
+        try {
+            customerProfileService.createNewCustomerProfile(customerProfileDTO);
+        } catch (DomainValidationException e) {
+            ValidationExceptionToBindingResultFactory.handle(e, customerProfileDTO, "profiles/customer/create");
         }
 
-        customerProfileService.createNewCustomerProfile(customerProfileDTO);
         return "redirect:/profiles/customer";
     }
 }

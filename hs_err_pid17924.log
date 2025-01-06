@@ -13,9 +13,9 @@
 #   Decrease Java thread stack sizes (-Xss)
 #   Set larger code cache with -XX:ReservedCodeCacheSize=
 #   JVM is running with Zero Based Compressed Oops mode in which the Java heap is
-#     placed in the first 32GB address space. The Java Heap base address is the
+#     placed in the first 32GB addressEntity space. The Java Heap base addressEntity is the
 #     maximum limit for the native heap growth. Please use -XX:HeapBaseMinAddress
-#     to set the Java Heap base and to place the Java Heap above 32GB virtual address.
+#     to set the Java Heap base and to place the Java Heap above 32GB virtual addressEntity.
 # This output file may be truncated or incomplete.
 #
 #  Out of Memory Error (os_windows.cpp:3631), pid=17924, tid=11932
@@ -82,7 +82,7 @@ VM state: not at safepoint (not fully initialized)
 VM Mutex/Monitor currently owned by a thread:  ([mutex/lock_event])
 [0x00007ffb739cbcb8] Heap_lock - owner thread: 0x00000275552d18c0
 
-Heap address: 0x000000070a000000, size: 3936 MB, Compressed Oops mode: Zero based, Oop shift amount: 3
+Heap addressEntity: 0x000000070a000000, size: 3936 MB, Compressed Oops mode: Zero based, Oop shift amount: 3
 
 CDS archive(s) mapped at: [0x0000000000000000-0x0000000000000000-0x0000000000000000), size 0, SharedBaseAddress: 0x0000000800000000, ArchiveRelocationMode: 1.
 Narrow klass base: 0x0000000000000000, Narrow klass shift: 0, Narrow klass range: 0x0

@@ -7,6 +7,6 @@ import org.mapstruct.factory.Mappers;
 public interface AddressDTOMapper {
     AddressDTOMapper INSTANCE = Mappers.getMapper(AddressDTOMapper.class);
 
-    Address toEntity(AddressDTO addressDTO);
-    AddressDTO toDTO(Address address);
+    AddressEntity toEntity(AddressDTO addressDTO);
+    AddressDTO toDTO(AddressEntity addressEntity);
 }

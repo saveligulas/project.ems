@@ -10,12 +10,17 @@ import java.util.Optional;
 
 @Repository
 public interface ActiveEventRepository extends JpaRepository<ActiveEvent, Long>, ActiveEventRepositoryQuery {
-    @Query("SELECT a FROM ActiveEvent a JOIN FETCH a.eventTemplate t JOIN FETCH a.eventDate d")
+    @Query("SELECT a FROM ActiveEvent a JOIN FETCH a.eventTemplate t JOIN FETCH a.eventDates d")
     List<ActiveEvent> findAllWithTemplatesAndDates();
     @Query("SELECT a FROM ActiveEvent a " +
             "JOIN FETCH a.eventTemplate t " +
-            "JOIN FETCH a.eventDate d " +
+            "JOIN FETCH a.eventDates d " +
             "WHERE a.id = :id")
     Optional<ActiveEvent> findByIdWithTemplateAndDate(@Param("id") Long id);
 
+    @Query("SELECT a FROM ActiveEvent a " +
+            "JOIN FETCH a.eventTemplate t " +
+            "JOIN FETCH a.eventDates d " +
+            "WHERE t.id = :templateId")
+    List<ActiveEvent> findAllByTemplateIdWithDates(@Param("templateId") Long templateId);
 }

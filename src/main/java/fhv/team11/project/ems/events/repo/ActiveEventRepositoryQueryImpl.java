@@ -10,12 +10,12 @@ import java.util.List;
 @Repository
 public class ActiveEventRepositoryQueryImpl implements ActiveEventRepositoryQuery {
 
-    private final EventTemplateRepository eventTemplateRepository;
+    private final EventTemplateEntityRepository eventTemplateEntityRepository;
     @PersistenceContext
     private EntityManager entityManager;
 
-    public ActiveEventRepositoryQueryImpl(EventTemplateRepository eventTemplateRepository) {
-        this.eventTemplateRepository = eventTemplateRepository;
+    public ActiveEventRepositoryQueryImpl(EventTemplateEntityRepository eventTemplateEntityRepository) {
+        this.eventTemplateEntityRepository = eventTemplateEntityRepository;
     }
 
     @Transactional

@@ -2,7 +2,7 @@ package fhv.team11.project.ems.events.service.validators;
 
 import fhv.team11.project.ems.commons.validation.domain.IDomainValidator;
 import fhv.team11.project.ems.commons.validation.domain.ValidatorFor;
-import fhv.team11.project.ems.events.transfer.ActiveEventDateDTO;
+import fhv.team11.project.ems.events.transfer.EventDateDTO;
 import fhv.team11.project.ems.events.validation.MaxDate;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
@@ -16,8 +16,8 @@ import org.springframework.validation.Validator;
 import java.time.LocalDate;
 
 @Component
-@ValidatorFor(ActiveEventDateDTO.class)
-public class ActiveEventDateDTOValidator implements IDomainValidator<ActiveEventDateDTO> {
+@ValidatorFor(EventDateDTO.class)
+public class ActiveEventDateDTOValidator implements IDomainValidator<EventDateDTO> {
     private final Validator validator;
 
     @Autowired
@@ -37,10 +37,10 @@ public class ActiveEventDateDTOValidator implements IDomainValidator<ActiveEvent
 
     }
     @Override
-    public BindingResult validate(ActiveEventDateDTO activeEventDateDTO) {
-        BindingResult bindingResult = buildBindingResult(activeEventDateDTO);
-        validator.validate(new ActiveEventDateValidation(activeEventDateDTO.getDate(),
-                activeEventDateDTO.getName()),bindingResult);
+    public BindingResult validate(EventDateDTO eventDateDTO) {
+        BindingResult bindingResult = buildBindingResult(eventDateDTO);
+        validator.validate(new ActiveEventDateValidation(eventDateDTO.getDate(),
+                eventDateDTO.getName()),bindingResult);
         return bindingResult;
     }
 }

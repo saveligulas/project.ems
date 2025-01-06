@@ -4,68 +4,82 @@
       xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{base}"
       th:with="title='Plan Event'">
-<body class="bg-light">
+<body>
 
-<main class="container mt-5">
-    <div layout:fragment="content">
-        <div class="card p-4 shadow-sm">
-            <h2 class="text-center mb-4" th:text="${listTemplate.name}">Plan Your Event</h2>
-
-            <!-- Form to Plan Event -->
-            <form th:action="@{/event/manage/{id}/plan(id=${listTemplate.id})}" method="post" th:object="${eventDate}" novalidate>
-                <div class="form-group mb-3">
-                    <label for="name" class="form-label"><strong>Name *</strong></label>
-                    <input type="text" id="name" name="name" required th:field="*{name}" class="form-control">
-                </div>
-
-                <div class="form-group mb-3">
-                    <label for="date" class="form-label"><strong>Date *</strong></label>
-                    <input type="date" id="date" name="date" required th:field="*{date}" class="form-control">
-                    <div class="invalid-feedback" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></div>
-                </div>
-
-                <!-- Plan Event Button -->
-                <div class="form-group text-center mb-4">
-                    <button type="submit" class="btn btn-primary me-2">Plan Event</button>
-                    <a class="btn btn-secondary" th:href="@{/event/manage/{id}/plan/redirect(id=${listTemplate.id})}">Plan Appointment</a>
-                </div>
-                <div th:if="${#fields.hasErrors()}" class="alert alert-danger">
-                    <ul>
-                        <li th:each="error : ${#fields.errors()}" th:text="${error}"></li>
-                    </ul>
-                </div>
-
-
-            </form>
-
-            <!-- Listing of Event Dates -->
-            <div class="mt-4">
-                <h4 class="text-center">Scheduled Event Dates</h4>
-                <div th:if="${#lists.isEmpty(wizard.activeEventDates)}" class="text-center text-muted">
-                    <p>No dates available.</p>
-                </div>
-
-                <ul class="list-group" th:if="${!#lists.isEmpty(wizard.activeEventDates)}">
-                    <li th:each="eventDate : ${wizard.activeEventDates}" class="list-group-item d-flex justify-content-between align-items-center">
-                        <span>
-                            <strong th:text="${eventDate.name}"></strong>:
-                            <span th:if="${eventDate.date != null}" th:text="${eventDate.date}"></span>
-                            <span th:if="${eventDate.date == null}">No Date Provided</span>
-                        </span>
-                    </li>
-                </ul>
-            </div>
-            <div th:if="${validationErrors != null}" class="alert alert-danger">
-                <ul>
-                    <li th:each="error : ${validationErrors}" th:text="${error.defaultMessage}"></li>
-                </ul>
-            </div>
-
-        </div>
+<div layout:fragment="top">
+    <div class="text-center">
+        <h2>Plan the Dates for your Event</h2>
     </div>
+</div>
+<div layout:fragment="center">
+    <form th:action="@{/event/manage/{id}/plan(id=${eventTemplateList.id})}" method="POST" th:object="${eventDate}" novalidate>
+        <article>
+            <fieldset>
+                <label>
+                    Date *
+                    <input
+                            type="date"
+                            name="date"
+                            aria-label="Date"
+                            th:field="*{date}"
+                            th:attr="aria-invalid=${#fields.hasErrors('date')} ? 'true'"
+                    />
+                    <small th:errors="*{date}"></small>
+                </label>
+            </fieldset>
 
+            <fieldset>
+                <label>
+                    Name
+                    <input
+                          placeholder="Will use Date if not specified"
+                          type="text"
+                          name="name"
+                          th:field="*{name}"
+                          th:attr="aria-invalid=${#fields.hasErrors('name')} ? 'true'"
+                    />
+                    <small th:errors="*{name}"></small>
+                </label>
+            </fieldset>
+        </article>
+        <input
+                type="submit"
+                value="Add Date to Event"
+        />
+        <div th:include="~{fragments/errors :: display-errors}"></div>
+    </form>
+    <div>
+        <article>
+            <div th:if="${#lists.isEmpty(wizard.eventDates)}">
+                <h4 class="text-center">No Dates added</h4>
+            </div>
 
-</main>
+            <div th:if="${!#lists.isEmpty(wizard.eventDates)}">
+                <table class="striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Name</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="eventDate : ${wizard.eventDates}">
+                            <td th:text="${eventDate.date}"></td>
+                            <td th:text="${eventDate.name}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <a role="button"
+                   th:href="@{/event/manage/{id}/plan/redirect(id=${eventTemplateList.id})}"
+                   data-tooltip="You cannot return once you proceed"
+                   data-placement="bottom">
+                    Proceed to Schedules
+                </a>
+            </div>
+        </article>
+    </div>
+</div>
 </body>
 </html>
 

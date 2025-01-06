@@ -4,59 +4,61 @@
       xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{base}"
       th:with="title='Register'">
-<head>
-  <style>
-    body {
-      background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/nature-background.jpg');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-    }
-  </style>
-</head>
-<body class="bg-light d-flex align-items-start justify-content-center min-vh-100 pt-5">
-<div layout:fragment="content">
-<div class="container d-flex justify-content-center">
-  <div class="card p-4 shadow-sm" style="max-width: 500px; width: 100%; margin-top: 50px;">
-    <!-- Registration Form -->
-    <div class="card-body">
-      <h2 class="text-center mb-4">Create an Account</h2>
-      <p class="text-center text-muted mb-4">Sign up to start discovering and joining exciting events.</p>
-
-      <form th:action="@{/register/user}" method="POST" th:object="${registerRequest}" novalidate>
-        <div class="mb-3">
-          <label for="email" class="form-label"><strong>Email *</strong></label>
-          <input type="email" id="email" name="email" placeholder="Email"
-                 th:field="*{email}" th:classappend="${hasEmailError} ? 'is-invalid'" class="form-control" required>
-          <div class="invalid-feedback" th:if="${emailError}" th:text="${emailError}"></div>
-        </div>
-
-        <div class="mb-3">
-          <label for="password" class="form-label"><strong>Password *</strong></label>
-          <input type="password" id="password" name="password" placeholder="Password"
-                 th:field="*{password}" th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'" class="form-control" required>
-          <div class="invalid-feedback" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
-        </div>
-
-        <div class="mb-3">
-          <label for="confirmPassword" class="form-label"><strong>Confirm Password *</strong></label>
-          <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password"
-                 th:field="*{confirmPassword}" th:classappend="${#fields.hasErrors('confirmPassword')} ? 'is-invalid'" class="form-control" required>
-          <div class="invalid-feedback" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></div>
-        </div>
-
-        <!-- Registration Button -->
-        <button type="submit" class="btn w-100 mt-4" style="background-color: #2C3E50; color: white;">Register</button>
-      </form>
-
-      <!-- Login Link -->
-      <div class="mt-4 text-center">
-        <p class="text-muted">Already have an account? <a th:href="@{/login}" class="fw-bold text-primary">Login here</a></p>
-      </div>
-    </div>
+<body>
+<div layout:fragment="top">
+  <div class="text-center">
+    <h2>Register to Eventastic!</h2>
+    <p>Create an account to access our innovative Event platform.</p>
   </div>
 </div>
+<div layout:fragment="mid">
+  <form th:action="@{/register/user}" method="POST" th:object="${registerRequest}" novalidate>
+    <fieldset>
+      <label>
+        Email
+        <input
+          placeholder="Email"
+          name="email"
+          th:field="*{email}"
+          th:attr="aria-invalid=${#fields.hasErrors('email')} ? 'true'"
+        />
+        <small th:errors="*{email}"></small>
+      </label>
+    </fieldset>
+    <fieldset>
+      <label>
+        Password
+        <input
+          placeholder="Password"
+          name="password"
+          type="password"
+          th:field="*{password}"
+          th:attr="aria-invalid=${#fields.hasErrors('password')} ? 'true'"
+        />
+        <small th:errors="*{password}"></small>
+      </label>
+    </fieldset>
+    <fieldset>
+      <label>
+        Confirm Password
+        <input
+          placeholder="Confirm Password"
+          name="confirmPassword"
+          type="password"
+          th:field="*{confirmPassword}"
+          th:attr="aria-invalid=${#fields.hasErrors('confirmPassword')} ? 'true'"
+        />
+        <small th:errors="*{confirmPassword}"></small>
+      </label>
+    </fieldset>
+    <input
+            type="submit"
+            value="Register"
+    />
+  </form>
+  <div>
+    <p class="secondary text-center">Already have an account? <a th:href="@{/login}">Login here</a></p>
+  </div>
 </div>
 </body>
 </html>
