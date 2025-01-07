@@ -2,9 +2,7 @@ package fhv.team11.project.ems.commons.domain;
 
 import fhv.team11.project.ems.commons.controller.error.handler.HandleRedirectException;
 import fhv.team11.project.ems.commons.validation.domain.BeanPropertyBindingResultBuilder;
-import fhv.team11.project.ems.commons.validation.domain.error.BindingResultException;
-import fhv.team11.project.ems.commons.validation.domain.handler.HandleBindingResultException;
-import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
+import fhv.team11.project.ems.commons.validation.domain.handler.IHandleBindingResultException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -13,7 +11,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @ControllerAdvice
 @Slf4j
-public class DomainValidationExceptionHandler implements HandleRedirectException, HandleBindingResultException {
+public class DomainValidationExceptionHandler implements HandleRedirectException, IHandleBindingResultException {
 
     @ExceptionHandler(DomainToBindingResultException.class)
     public String handleDomainValidationException(DomainToBindingResultException e, RedirectAttributes redirectAttributes) {

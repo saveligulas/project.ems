@@ -24,7 +24,7 @@
         </div>
 
         <form th:if="${user?.hasCustomerProfile()}"
-              th:action="@{/active-events/{id}/booking(id=${activeEvent.id})}"
+              th:action="@{/event/{templateId}/active/{id}/booking/create(templateId=${templateId}, id=${activeEventId})}"
               th:object="${createBooking}"
               method="POST"
               novalidate>

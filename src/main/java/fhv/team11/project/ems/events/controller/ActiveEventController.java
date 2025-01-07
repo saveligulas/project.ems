@@ -93,6 +93,8 @@ public class ActiveEventController implements IHandleEventWizard, IHandleRowPres
         List<EventDateDTO> dates = activeEvent.getEventDates();
         modelAndView.addObject("rows", listToRows(dates, 2, modelAndView));
         modelAndView.addObject("activeEvent", activeEvent);
+        modelAndView.addObject("templateId", templateId);
+        modelAndView.addObject("activeEventId", id);
         return modelAndView;
     }
 }

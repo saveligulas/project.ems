@@ -55,7 +55,7 @@ public class BookingService {
         Event event;
 
         try {
-            financer = customerProfileDomainDatabaseFactory.getDomainById(eventId);
+            financer = customerProfileDomainDatabaseFactory.getDomainById(createBookingDTO.getFinancer());
         } catch (EntityNotFoundException e) {
             throw new SimpleValidationException("financer", "Customer does not exist");
         }

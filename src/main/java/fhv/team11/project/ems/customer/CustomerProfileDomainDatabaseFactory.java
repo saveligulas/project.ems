@@ -6,7 +6,7 @@ import fhv.team11.project.ems.commons.domain.IFindByIdDomainDatabaseMapper;
 import fhv.team11.project.ems.commons.domain.IHandleDomainPersistence;
 import fhv.team11.project.ems.commons.domain.ISimpleDomainDatabaseMapper;
 import fhv.team11.project.ems.commons.error.EntityNotFoundException;
-import fhv.team11.project.ems.commons.validation.domain.handler.HandleBindingResultException;
+import fhv.team11.project.ems.commons.validation.domain.handler.IHandleBindingResultException;
 import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
 import fhv.team11.project.ems.domain.user.CustomerProfile;
 import org.jspecify.annotations.Nullable;
@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CustomerProfileDomainDatabaseFactory extends DomainDatabaseFactory implements HandleBindingResultException, ISimpleDomainDatabaseMapper<CustomerProfile, CustomerProfileEntity>, IHandleDomainPersistence<CustomerProfile>, IFindByIdDomainDatabaseMapper<CustomerProfile, Long> {
+public class CustomerProfileDomainDatabaseFactory extends DomainDatabaseFactory implements IHandleBindingResultException, ISimpleDomainDatabaseMapper<CustomerProfile, CustomerProfileEntity>, IHandleDomainPersistence<CustomerProfile>, IFindByIdDomainDatabaseMapper<CustomerProfile, Long> {
 
     private final AddressDomainDatabaseFactory addressDomainDatabaseFactory;
     private final CustomerProfileRepository customerProfileRepository;
