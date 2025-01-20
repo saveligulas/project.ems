@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{base}"
+      th:with="title='Bookings'">
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script th:src="@{/js/show-qr-code.js}"></script>
+</head>
+<body>
+<!--@thymesVar id="user" type="fhv.team11.project.ems.commons.controller.base.attribute.user.UserAttributes"-->
+<div layout:fragment="top">
+    <h2>Your Bookings</h2>
+
+</div>
+<div layout:fragment="center">
+    <th:block th:replace="~{fragments/qr-modal :: modal}"></th:block>
+
+    <th:block th:replace="~{fragments/booking-list-view :: table}"></th:block>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,12 @@
+<th:block th:fragment="modal">
+    <dialog id="qr-modal">
+        <article>
+            <header>
+                <button aria-label="Close" rel="prev" onclick="closeQRModal()"></button>
+                <p><strong>Booking QR Code</strong></p>
+            </header>
+            <div id="qr-code-container"></div>
+            <p id="modal-event-details"></p>
+        </article>
+    </dialog>
+</th:block>

@@ -1,0 +1,29 @@
+<th:block th:fragment="table">
+  <table class="striped">
+    <thead>
+    <tr>
+      <th>Event Name</th>
+      <th>Date</th>
+      <th>Booked Places</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="booking : ${bookings}">
+      <td th:text="${booking.eventName}"></td>
+      <td th:text="${booking.startDate}"></td>
+      <td th:text="${booking.bookedPlaces}"></td>
+      <td th:attr="data-tooltip=${booking.status.getDescription()}" th:text="${booking.status.getTitle()}"></td>
+      <td>
+        <button
+                class="show-qr-btn"
+                th:data-booking-id="${booking.id}"
+                th:onclick="showQRCode(this.getAttribute('data-booking-id'))">
+          Show QR
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</th:block>
