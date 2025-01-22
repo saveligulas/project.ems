@@ -50,8 +50,6 @@ public class BookingService {
         this.bookingDomainDatabaseFactory = bookingDomainDatabaseFactory;
     }
 
-
-
     public void createBooking(CreateBookingDTO createBookingDTO, Long eventId) throws SimpleValidationException, DomainValidationException {
         CustomerProfile financer;
         Event event;
@@ -108,16 +106,27 @@ public class BookingService {
         bookingIdentifierRepository.updateUUIDStatus(identifierId, BookingStatus.CHECKED_IN);
     }
 
-    public void checkInParticipant(String identifier) throws CheckInException, DomainValidationException {
+    public BookingListDTO checkInParticipant(String identifier) throws CheckInException, DomainValidationException {
         UUID uuid = UUID.fromString(identifier);
         Booking booking = bookingDomainDatabaseFactory.toDomain(bookingRepository.findByBookingIdentifierToken(uuid)
                 .orElseThrow(() -> new BookingIdentifierNotFoundException(uuid)));
         if (booking.getStatus() == BookingStatus.VALID) {
             booking.setStatus(BookingStatus.CHECKED_IN);
             bookingDomainDatabaseFactory.persist(booking);
+            return BookingListDTODatabaseMapper.INSTANCE.getView(bookingRepository.findByBookingIdentifierToken(uuid)
+                    .orElseThrow(() -> new BookingIdentifierNotFoundException(uuid)));
         } else {
             throw new CheckInException(List.of("Invalid Booking status"));
         }
+    }
+
+    //TODO: change this to invoice identifier that the bank uses
+    public void depositPaid(Long id) throws DomainValidationException {
+        //TODO: check for correct status else illegal state
+        Booking booking = bookingDomainDatabaseFactory.toDomain(bookingRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(BookingEntity.class, id)));
+        booking.setStatus(BookingStatus.VALID);
+        bookingDomainDatabaseFactory.persist(booking);
     }
 
     public String getIdentifier(Long bookingId) {

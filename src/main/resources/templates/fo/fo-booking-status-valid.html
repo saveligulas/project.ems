@@ -1,10 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{base}"
+      th:with="title='Check-In'">
 <body>
-<p>valid</p>
+<!--@thymesVar id="user" type="fhv.team11.project.ems.commons.controller.base.attribute.user.UserAttributes"-->
+<div layout:fragment="center" class="container text-center">
+    <h1><ins>Valid!</ins></h1>
+    <hgroup>
+        <h2>Booking for <span th:text="${booking.eventName}"></span><span th:text="${booking.id}"> with ID: </span></h2>
+        <p>Starting on <span th:text="${booking.startDate}"></span></p>
+        <p>Includes <span th:text="${booking.bookedPlaces}"></span> Participants</p>
+    </hgroup>
+</div>
 </body>
 </html>

@@ -22,6 +22,7 @@ import fhv.team11.project.ems.security.permission.role.Role;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -111,13 +112,16 @@ public class BookingController implements IHandleBindingResultException {
 
     //TODO: implement global handler for domain validation if backend error occurs without user input
     @GetMapping("/bookings/checkin")
-    public String checkinBooking(@RequestParam("token")String token) throws DomainValidationException {
+    public String checkinBooking(@RequestParam("token")String token, Model model) throws DomainValidationException {
+        BookingListDTO bookingListDTO;
         try {
-            bookingService.checkInParticipant(token);
+            bookingListDTO = bookingService.checkInParticipant(token);
         } catch (CheckInException e) {
+            model.addAttribute("errors", e.getErrorMessages());
             return "fo/fo-booking-status-invalid";
         }
 
+        model.addAttribute("booking", bookingListDTO);
         return "fo/fo-booking-status-valid";
         //TODO: redirect to Dashboard for active event
     }

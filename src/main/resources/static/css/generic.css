@@ -85,3 +85,7 @@ header.scrolled {
 .no-margin-bottom {
     margin-bottom: 0;
 }
+
+.invalid {
+    color: var(--pico-del-color);
+}
