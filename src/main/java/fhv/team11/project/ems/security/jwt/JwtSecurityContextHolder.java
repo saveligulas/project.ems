@@ -47,4 +47,8 @@ public class JwtSecurityContextHolder {
     public static boolean hasRole(Role role) {
         return getUserJDBC().getRoles().contains(role);
     }
+
+    public static boolean hasCustomerProfile() {
+        return getUser().getUserEntityDetails().getCustomerProfileEntity() != null;
+    }
 }

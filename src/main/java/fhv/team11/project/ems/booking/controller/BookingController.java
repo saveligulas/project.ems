@@ -1,6 +1,7 @@
 package fhv.team11.project.ems.booking.controller;
 
 import fhv.team11.project.ems.booking.service.BookingService;
+import fhv.team11.project.ems.booking.service.CheckInException;
 import fhv.team11.project.ems.booking.transfer.BookingListDTO;
 import fhv.team11.project.ems.booking.transfer.CreateBookingDTO;
 import fhv.team11.project.ems.commons.qrcode.QRCodeGenerator;
@@ -10,6 +11,7 @@ import fhv.team11.project.ems.commons.validation.error.SimpleValidationException
 import fhv.team11.project.ems.domain.booking.InvoiceDelivery;
 import fhv.team11.project.ems.domain.booking.PaymentMethod;
 import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
+import fhv.team11.project.ems.domain.user.CustomerProfile;
 import fhv.team11.project.ems.events.service.ActiveEventService;
 import fhv.team11.project.ems.events.service.EventWizardService;
 import fhv.team11.project.ems.events.service.EventTemplateService;
@@ -20,6 +22,7 @@ import fhv.team11.project.ems.security.permission.role.Role;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -90,19 +93,36 @@ public class BookingController implements IHandleBindingResultException {
     }
 
     @GetMapping("/bookings")
-    public ModelAndView getAllBooking(){
-        ModelAndView modelAndView = new ModelAndView("all-bookings");
-        modelAndView.addObject("bookings",bookingService.getAllBooking());
-        modelAndView.addObject("qrCodeImage", QRCodeGenerator.generateQRCodeImage("localhost8080","Halllo",100,100));
-        List<BookingListDTO> bookingListDTOS = bookingService.getAllBooking();
-        modelAndView.addObject("bookings",bookingListDTOS);
+    public ModelAndView getBookingsForCustomerProfile(@RequestParam(name = "financerId", required = false) Long financerId){
+        ModelAndView modelAndView;
+        if (JwtSecurityContextHolder.hasRole(Role.CUSTOMER)) {
+            modelAndView = new ModelAndView("cu/cu-booking-list");
+            if (JwtSecurityContextHolder.hasCustomerProfile()) {
+                modelAndView.addObject("bookings", bookingService.getBookingsBySecurityContext());
+            }
+        } else {
+            modelAndView = new ModelAndView("bo/bo-booking-list");
+            if (financerId != null) {
+                modelAndView.addObject("bookings", bookingService.getBookingsByCustomerProfileId(financerId));
+                modelAndView.addObject("financerId", financerId);
+            }
+        }
         return modelAndView;
     }
 
+    //TODO: implement global handler for domain validation if backend error occurs without user input
     @GetMapping("/bookings/checkin")
-    public String checkinBooking(@RequestParam("token")String token){
-        bookingService.checkInBooking(token);
-        return "redirect:/bookings";
+    public String checkinBooking(@RequestParam("token")String token, Model model) throws DomainValidationException {
+        BookingListDTO bookingListDTO;
+        try {
+            bookingListDTO = bookingService.checkInParticipant(token);
+        } catch (CheckInException e) {
+            model.addAttribute("errors", e.getErrorMessages());
+            return "fo/fo-booking-status-invalid";
+        }
+
+        model.addAttribute("booking", bookingListDTO);
+        return "fo/fo-booking-status-valid";
         //TODO: redirect to Dashboard for active event
     }
 }

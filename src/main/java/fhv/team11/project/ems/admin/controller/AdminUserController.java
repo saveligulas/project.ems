@@ -1,5 +1,6 @@
 package fhv.team11.project.ems.admin.controller;
 
+import com.google.zxing.qrcode.decoder.Mode;
 import fhv.team11.project.ems.admin.service.AdminUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,16 +28,17 @@ public class AdminUserController {
         return modelAndView;
     }
 
-    @GetMapping("/user/details/{id}")
-    private ModelAndView getUserDetails(@PathVariable("id") String id) {
-        Long userId = -1L;
-        try {
-            userId = Long.parseLong(id);
-        } catch (NumberFormatException e) {
-            return new ModelAndView("user-not-found");
-        }
+    @GetMapping("/user/details")
+    public ModelAndView getUserContextDetails() {
         ModelAndView modelAndView = new ModelAndView("user-details");
-        modelAndView.addObject("user", adminUserService.getUserDetails(userId));
+        modelAndView.addObject("user", null);
+        return modelAndView;
+    }
+
+    @GetMapping("/user/details/{id}")
+    private ModelAndView getUserDetails(@PathVariable("id") Long id) {
+        ModelAndView modelAndView = new ModelAndView("user-details");
+        modelAndView.addObject("user", adminUserService.getUserDetails(id));
         return modelAndView;
     }
 

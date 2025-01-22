@@ -1,6 +1,7 @@
 package fhv.team11.project.ems.booking.service;
 
 import fhv.team11.project.ems.booking.BookingDomainDatabaseFactory;
+import fhv.team11.project.ems.booking.mapper.BookingListDTODatabaseMapper;
 import fhv.team11.project.ems.booking.repo.*;
 import fhv.team11.project.ems.booking.transfer.BookingListDTO;
 import fhv.team11.project.ems.booking.transfer.CreateBookingDTO;
@@ -19,6 +20,7 @@ import fhv.team11.project.ems.domain.events.Event;
 import fhv.team11.project.ems.domain.user.CustomerProfile;
 import fhv.team11.project.ems.events.EventDomainDatabaseFactory;
 import fhv.team11.project.ems.events.repo.ActiveEventRepository;
+import fhv.team11.project.ems.security.jwt.JwtSecurityContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,8 +50,6 @@ public class BookingService {
         this.bookingDomainDatabaseFactory = bookingDomainDatabaseFactory;
     }
 
-
-
     public void createBooking(CreateBookingDTO createBookingDTO, Long eventId) throws SimpleValidationException, DomainValidationException {
         CustomerProfile financer;
         Event event;
@@ -65,14 +65,12 @@ public class BookingService {
             throw new SimpleValidationException("Event does not exist anymore");
         }
 
-        //TODO: Implement this in event template
-        CancellationDates cancellationDates = new CancellationDates();
         if (event.getEventTemplate() == null) {
             throw new BackEndError("Active Event without Template exists id: " + event.getId());
         }
         double price = event.getEventTemplate().getPrice() * createBookingDTO.getBookedPlaces();
-        //TODO: implement invoices
-        Invoice invoiceDeposit = new Invoice();
+        //TODO: implement invoices with a factory
+        Invoice invoiceDeposit = null;
         UUID uuid = UUID.randomUUID();
 
         Booking booking = new Booking(
@@ -90,12 +88,49 @@ public class BookingService {
         bookingDomainDatabaseFactory.persist(booking);
     }
 
-    public List<BookingListDTO> getAllBooking() {
-        return null;
+    public List<BookingListDTO> getBookingsBySecurityContext() {
+        if (!JwtSecurityContextHolder.hasCustomerProfile()) {
+            throw new BackEndError("User has no Customer Profile set");
+        }
+        return getBookingsByCustomerProfileId(JwtSecurityContextHolder.getUser().getUserEntityDetails().getCustomerProfileEntity().getId());
+    }
+
+    public List<BookingListDTO> getBookingsByCustomerProfileId(Long customerProfileId) {
+        List<BookingEntity> bookings = bookingRepository.findByFinancerId(customerProfileId);
+        return bookings.stream()
+               .map(BookingListDTODatabaseMapper.INSTANCE::getView)
+               .collect(Collectors.toList());
     }
 
     public void checkInBooking(String identifierId) {
         bookingIdentifierRepository.updateUUIDStatus(identifierId, BookingStatus.CHECKED_IN);
+    }
+
+    public BookingListDTO checkInParticipant(String identifier) throws CheckInException, DomainValidationException {
+        UUID uuid = UUID.fromString(identifier);
+        Booking booking = bookingDomainDatabaseFactory.toDomain(bookingRepository.findByBookingIdentifierToken(uuid)
+                .orElseThrow(() -> new BookingIdentifierNotFoundException(uuid)));
+        if (booking.getStatus() == BookingStatus.VALID) {
+            booking.setStatus(BookingStatus.CHECKED_IN);
+            bookingDomainDatabaseFactory.persist(booking);
+            return BookingListDTODatabaseMapper.INSTANCE.getView(bookingRepository.findByBookingIdentifierToken(uuid)
+                    .orElseThrow(() -> new BookingIdentifierNotFoundException(uuid)));
+        } else {
+            throw new CheckInException(List.of("Invalid Booking status"));
+        }
+    }
+
+    //TODO: change this to invoice identifier that the bank uses
+    public void depositPaid(Long id) throws DomainValidationException {
+        //TODO: check for correct status else illegal state
+        Booking booking = bookingDomainDatabaseFactory.toDomain(bookingRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(BookingEntity.class, id)));
+        booking.setStatus(BookingStatus.VALID);
+        bookingDomainDatabaseFactory.persist(booking);
+    }
+
+    public String getIdentifier(Long bookingId) {
+        return bookingRepository.findById(bookingId).orElseThrow(() -> new EntityNotFoundException(BookingEntity.class, bookingId)).getBookingIdentifier().getToken().toString();
     }
 }
 

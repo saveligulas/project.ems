@@ -61,6 +61,16 @@ public class BookingDomainDatabaseFactory extends DomainDatabaseFactory implemen
 
     @Override
     public Booking toDomain(BookingEntity entity) throws DomainValidationException {
-        return null;
+        return new Booking(
+                entity.getId(),
+                customerProfileDomainDatabaseFactory.toDomain(entity.getFinancer()),
+                eventDomainDatabaseFactory.toDomain(entity.getBookedEvent()),
+                entity.getBookedPlaces(),
+                entity.getPrice().doubleValue(),
+                entity.getStatus(),
+                invoiceDomainDatabaseFactory.toDomain(entity.getDeposit()),
+                invoiceDomainDatabaseFactory.toDomain(entity.getBooking()),
+                entity.getBookingIdentifier().getToken()
+        );
     }
 }

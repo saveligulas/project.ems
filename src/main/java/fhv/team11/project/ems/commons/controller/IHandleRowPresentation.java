@@ -11,7 +11,12 @@ public interface IHandleRowPresentation {
         for (int i = 0; i < list.size(); i += itemsInRow) {
             rows.add(list.subList(i, Math.min(i + itemsInRow, list.size())));
         }
-        addRowCountAndSizeToModel(rows.size(), rows.get(0).size(), modelAndView);
+        if (!rows.isEmpty()) {
+            addRowCountAndSizeToModel(rows.size(), rows.get(0).size(), modelAndView);
+        } else {
+            addRowCountAndSizeToModel(0, 0, modelAndView);
+        }
+
         return rows;
     }
 

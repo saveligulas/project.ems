@@ -64,6 +64,8 @@ public class EventDate implements IDomainObject, Comparable<EventDate> {
         this.name = name;
     }
 
+    //TODO: Bug when retrieving older event from database
+    //TODO: Maybe convert event after it happened so this cannot happen (new class needed for historic event archive)
     public void setDate(LocalDate date) throws DomainValidationException {
         String fieldName = "date";
         String errorMessage;

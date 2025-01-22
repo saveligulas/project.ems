@@ -11,7 +11,11 @@
     <h2 th:text="${eventTemplateView.name}"></h2>
   </hgroup>
 </div>
+
 <div layout:fragment="center" class="container">
+  <th:block th:if="${eventTemplateView.belongsToUser}">
+    <button th:onclick="|location.href='@{/event/manage/{id}/redirect(id=${eventTemplateView.id})}'|">Plan Event</button>
+  </th:block>
   <form th:object="${eventTemplateView}">
     <h4 class="text-center">General Information</h4>
     <div class="grid">
@@ -73,26 +77,31 @@
   <hr/>
 
 
-  <div th:each="row : ${rows}">
-    <div class="grid">
-      <th:block th:each="activeEventListView : ${row}">
-        <a th:href="@{{templateId}/active/{id}(templateId=${templateId}, id=${activeEventListView.id})}" class="link-wrapper">
-          <article>
-            <hgroup>
-              <th:block th:if="${activeEventListView.end == null}">
-                <h4 th:text="${activeEventListView.start}"></h4>
-              </th:block>
-              <th:block th:if="${activeEventListView.end != null}">
-                <h4 th:text="${activeEventListView.start + ' - ' + activeEventListView.end}"></h4>
-              </th:block>
-            </hgroup>
-          </article>
-        </a>
-      </th:block>
+  <th:block th:if="${rowCount > 0}">
+    <div th:each="row : ${rows}">
+      <div class="grid">
+        <th:block th:each="activeEventListView : ${row}">
+          <a th:href="@{{templateId}/active/{id}(templateId=${templateId}, id=${activeEventListView.id})}" class="link-wrapper">
+            <article>
+              <hgroup>
+                <th:block th:if="${activeEventListView.end == null}">
+                  <h4 th:text="${activeEventListView.start}"></h4>
+                </th:block>
+                <th:block th:if="${activeEventListView.end != null}">
+                  <h4 th:text="${activeEventListView.start + ' - ' + activeEventListView.end}"></h4>
+                </th:block>
+              </hgroup>
+            </article>
+          </a>
+        </th:block>
 
 
+      </div>
     </div>
-  </div>
+  </th:block>
+  <th:block th:if="${rowCount == 0}">
+    <h4>No Events planned yet</h4>
+  </th:block>
 </div>
 </body>
 </html>

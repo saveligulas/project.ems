@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{base}"
+      th:with="title='Bookings'">
+<head>
+    <script th:src="@{/js/search-customer-bookings.js}"></script>
+</head>
+<body>
+<!--@thymesVar id="user" type="fhv.team11.project.ems.commons.controller.base.attribute.user.UserAttributes"-->
+<div layout:fragment="center" class="container">
+    <label>
+        <input
+                type="search"
+                name="search"
+                placeholder="Search for Customers..."
+                id="searchInput"
+                aria-label="Search"
+        >
+    </label>
+
+    <table class="striped" id="resultsContainer">
+        <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Secret</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    </hr>
+
+    <h2>Bookings for Customer: </h2>
+
+    <th:block th:replace="~{fragments/booking-list-view :: table}"></th:block>
+
+    <th:block th:replace="~{fragments/qr-modal :: modal}"></th:block>
+</div>
+</body>
+</html>

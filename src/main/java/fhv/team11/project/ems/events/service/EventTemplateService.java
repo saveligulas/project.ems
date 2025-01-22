@@ -24,6 +24,7 @@ import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -163,7 +164,9 @@ public class EventTemplateService implements IHandleSearchQueries {
                 .orElseThrow(() -> new EntityNotFoundException(EventTemplateEntity.class, templateId));
 
         try {
-            return EventTemplateViewMapper.INSTANCE.getView(eventTemplateDomainDatabaseFactory.toDomain(eventTemplateEntity));
+            EventTemplateView view = EventTemplateViewMapper.INSTANCE.getView(eventTemplateDomainDatabaseFactory.toDomain(eventTemplateEntity));
+            view.setBelongsToUser(JwtSecurityContextHolder.getUser().getId().equals(eventTemplateEntity.getUser().getId()));
+            return view;
         } catch(DomainValidationException e) {
             throw new BackEndError("Unfinished Event Template in database was accessed");
         }

@@ -28,7 +28,7 @@
           </tr>
           </tbody>
         </table>
-        <button onclick="location.href='/target-url'">TODO: View Active Events and Details</button>
+        <button th:onclick="|location.href='@{/event/{id}(id=${event.id})}'|">Details</button>
       </article>
       <th:block th:replace="~{fragments/fill-row-with-empty-divs :: fill}"></th:block>
     </div>

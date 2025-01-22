@@ -14,4 +14,5 @@ public class EventTemplateView implements IModelAttribute {
     private int maxParticipants;
     private int minParticipants;
     private AddressDTO address;
+    private boolean belongsToUser;
 }

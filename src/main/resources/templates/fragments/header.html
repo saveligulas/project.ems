@@ -16,13 +16,17 @@
                 <h2 class="text-center align-center no-margin-bottom">
                     <a th:href="@{/index}" style="text-decoration: none">
                         <strong>Eventastic</strong>
-                        <small><s>Chaos</s> Edition</small>
                     </a>
                 </h2>
             </li>
         </ul>
         <ul>
-            <li><a th:href="@{/event}"><strong>Events</strong></a></li>
+            <th:block th:if="${!user?.hasRole('ORGANIZER')}">
+                <li><a th:href="@{/event}"><strong>Events</strong></a></li>
+            </th:block>
+            <th:block th:if="${user?.hasRole('ORGANIZER')}">
+                <li><a th:href="@{/event/templates}"><strong>Events</strong></a></li>
+            </th:block>
         </ul>
         <ul>
             <th:block th:if="${user?.isAuthenticated()}">
