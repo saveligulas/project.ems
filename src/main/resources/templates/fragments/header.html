@@ -21,7 +21,12 @@
             </li>
         </ul>
         <ul>
-            <li><a th:href="@{/event}"><strong>Events</strong></a></li>
+            <th:block th:if="${!user?.hasRole('ORGANIZER')}">
+                <li><a th:href="@{/event}"><strong>Events</strong></a></li>
+            </th:block>
+            <th:block th:if="${user?.hasRole('ORGANIZER')}">
+                <li><a th:href="@{/event/templates}"><strong>Events</strong></a></li>
+            </th:block>
         </ul>
         <ul>
             <th:block th:if="${user?.isAuthenticated()}">
