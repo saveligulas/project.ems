@@ -54,6 +54,6 @@ public class CustomerProfileController implements IHandleBindingResultException 
             ValidationExceptionToBindingResultFactory.handle(e, customerProfileDTO, "profiles/customer/create");
         }
 
-        return "redirect:/profiles/customer";
+        return "redirect:/home";
     }
 }

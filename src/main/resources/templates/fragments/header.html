@@ -27,6 +27,12 @@
             <th:block th:if="${user?.hasRole('ORGANIZER')}">
                 <li><a th:href="@{/event/templates}"><strong>Events</strong></a></li>
             </th:block>
+            <th:block th:if="${user != null and (user.hasRole('CUSTOMER') or user.hasRole('EMPLOYEE'))}">
+                <li><a th:href="@{/bookings}"><strong>Bookings</strong></a></li>
+            </th:block>
+            <th:block th:if="${user != null and (user.hasRole('EMPLOYEE'))}">
+                <li><a th:href="@{/profiles/customer/create}"><strong>Add Customer</strong></a></li>
+            </th:block>
         </ul>
         <ul>
             <th:block th:if="${user?.isAuthenticated()}">

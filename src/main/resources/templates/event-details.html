@@ -60,7 +60,9 @@
         </div>
         <hr/>
     </div>
-    <a role="button" th:href="@{/event/{templateId}/active/{id}/booking(templateId=${templateId}, id=${activeEventId})}">Book Event</a>
+    <th:block th:if="${user != null and (user.hasRole('CUSTOMER') or user.hasRole('EMPLOYEE'))}">
+        <a role="button" th:href="@{/event/{templateId}/active/{id}/booking(templateId=${templateId}, id=${activeEventId})}">Book Event</a>
+    </th:block>
 </div>
 </body>
 </html>

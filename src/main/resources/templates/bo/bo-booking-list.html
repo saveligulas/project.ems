@@ -5,7 +5,9 @@
       layout:decorate="~{base}"
       th:with="title='Bookings'">
 <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script th:src="@{/js/search-customer-bookings.js}"></script>
+    <script th:src="@{/js/show-qr-code.js}"></script>
 </head>
 <body>
 <!--@thymesVar id="user" type="fhv.team11.project.ems.commons.controller.base.attribute.user.UserAttributes"-->

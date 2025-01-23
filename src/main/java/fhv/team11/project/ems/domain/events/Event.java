@@ -28,6 +28,7 @@ public class Event implements IDomainObject {
     private EventTemplate eventTemplate;
     @Setter
     private List<EventDate> eventDates;
+    private int placesLeft = 0;
 
     public Event(@Nullable Long id, List<EventDate> eventDates) throws DomainValidationException {
         this(id, eventDates, null);
@@ -84,5 +85,13 @@ public class Event implements IDomainObject {
 
     public boolean isDatesEmpty() {
         return eventDates.isEmpty();
+    }
+
+    public void setPlacesLeft(int placesLeft) {
+        this.placesLeft = placesLeft;
+    }
+
+    public int getPlacesLeft() {
+        return this.placesLeft;
     }
 }
