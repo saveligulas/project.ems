@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('searchInput');
     const resultsContainer = document.getElementById('resultsContainer');
     const tableBody = resultsContainer.querySelector('tbody');
-    const financerIdInput = document.querySelector('input[name="financerId"]');
+    const financerIdInput = document.querySelector('input[name="financer"]');
 
     // Verify elements are found
     if (!searchInput || !resultsContainer || !tableBody || !financerIdInput) {

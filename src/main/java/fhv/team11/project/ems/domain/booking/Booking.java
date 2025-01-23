@@ -17,6 +17,7 @@ import java.util.UUID;
 
 @Getter
 @NullMarked
+//TODO: Validation
 public class Booking implements IDomainObject {
     private final DomainObjectConstructorHelper constructorHelper;
 
@@ -32,7 +33,6 @@ public class Booking implements IDomainObject {
     @Nullable
     private Invoice invoiceBooking;
     private UUID identifier;
-
     @Nullable
     private String cancellationReason;
     @Nullable
