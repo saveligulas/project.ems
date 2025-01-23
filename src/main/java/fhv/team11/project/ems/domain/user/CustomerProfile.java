@@ -2,13 +2,14 @@ package fhv.team11.project.ems.domain.user;
 
 import fhv.team11.project.ems.domain.adress.Address;
 import fhv.team11.project.ems.domain.commons.exception.error.DomainObjectConstructorHelper;
+import fhv.team11.project.ems.domain.commons.interfaces.IDomainObject;
 import fhv.team11.project.ems.domain.commons.validation.IdValidator;
 import fhv.team11.project.ems.domain.commons.exception.DomainFieldException;
 import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
 import lombok.Getter;
 
 @Getter
-public class CustomerProfile {
+public class CustomerProfile implements IDomainObject {
     private final DomainObjectConstructorHelper constructorHelper;
 
     private Long id;
@@ -57,7 +58,8 @@ public class CustomerProfile {
         this.phoneNumber = phoneNumber;
     }
 
-    public void setSecret(Integer secret) {
+    public void setSecret(Integer secret) throws DomainFieldException {
+        validateNotNull("secret", secret, constructorHelper);
         this.secret = secret;
     }
 }
