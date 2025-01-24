@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{base}"
+      th:with="title='Template'">
+<body>
+<!--@thymesVar id="user" type="fhv.team11.project.ems.commons.controller.base.attribute.user.UserAttributes"-->
+    <div layout:fragment="content">
+        <article>
+            <header>
+                <h1>Invoice</h1>
+                <p>Invoice Issuer: <strong th:text="${invoice.seller.getName()}">Organizer Name</strong></p>
+            </header>
+
+            <p><strong>Invoice Date:</strong> <span th:text="${invoice.createdDate}">created date</span></p>
+            <p><strong>Invoice Address:</strong> <span th:text="${invoice.seller.getAddress()}">Address Line (Optional)</span></p>
+            <p><strong>Guest Name:</strong> <span th:text="${invoice.buyer.getName()}">Guest Name (Optional)</span></p>
+
+            <table>
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${invoice.lineItems}">
+                    <td th:text="${item.getId}">event id</td>
+                    <td th:text="${item.getName}">Desciption</td>
+                    <td th:text="${item.getCount}">Quantity</td>
+                    <!-- <td th:text="${item.getTax}">Quantity</td> -->
+                    <td th:text="${item.getPrice + '€'}">$50</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <table>
+                <tfoot>
+                <tr>
+                    <td colspan="4"><strong>Total (Excl. VAT):</strong></td>
+                    <td th:text="${invoice.total + '€'}">$200</td>
+                </tr>
+                <tr>
+                    <td colspan="4"><strong>VAT Total:</strong></td>
+                    <td th:text="${invoice.taxTotal + '€'}">$30</td>
+                </tr>
+                <tr>
+                    <td colspan="4"><strong>Total (Incl. VAT):</strong></td>
+                    <td th:text="${invoice.totalWithTax + '€'}">$230</td>
+                </tr>
+                </tfoot>
+            </table>
+
+            <p><strong>Payment Method:</strong> <span th:text="${invoice.paymentMethod}">Credit Card</span></p>
+            <p><strong>Confirmation of Payment:</strong> <span th:text="${invoice.paymentConfirmation}">Paid</span></p>
+
+
+        </article>
+</div>
+
+
+</body>
+</html>
