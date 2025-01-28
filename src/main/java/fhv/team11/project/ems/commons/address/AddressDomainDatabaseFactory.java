@@ -10,6 +10,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AddressDomainDatabaseFactory extends DomainDatabaseFactory implements ISimpleDomainDatabaseMapper<Address, AddressEntity>{
+    //TODO: change form Bean to just static singleton instance
+    public static final AddressDomainDatabaseFactory INSTANCE = new AddressDomainDatabaseFactory();
+
+    private AddressDomainDatabaseFactory() {
+    }
 
     @Override
     public AddressEntity toEntity(Address domain) {

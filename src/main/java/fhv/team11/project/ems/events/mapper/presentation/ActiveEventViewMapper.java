@@ -16,7 +16,7 @@ public class ActiveEventViewMapper implements IDomainPresentationMapper<ActiveEv
 
         view.setEventTemplateView(EventTemplateViewMapper.INSTANCE.getView(domain.getEventTemplate()));
         view.setEventDates(domain.getEventDates().stream().map(EventDateDTOMapper.INSTANCE::getView).toList());
-
+        view.setBookedPlaces(domain.getBookedPlaces());
         return view;
     }
 }

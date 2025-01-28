@@ -26,6 +26,7 @@ public class ActiveEventListViewMapper implements IDomainPresentationMapper<Acti
             log.error("Active event has no event dates set");
             log.error(Arrays.stream(e.getStackTrace()).toList().toString());
         }
+        view.setBookedPlaces(domain.getBookedPlaces());
         return view;
     }
 }

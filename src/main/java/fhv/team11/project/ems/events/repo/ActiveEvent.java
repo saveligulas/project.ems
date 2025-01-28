@@ -25,6 +25,6 @@ public class ActiveEvent {
     @JoinColumn(name = "template_id",nullable = false)
     private EventTemplateEntity eventTemplate;
 
-    @OneToMany(mappedBy = "bookedEvent",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "bookedEvent", fetch = FetchType.LAZY)
     private Set<BookingEntity> bookings = new HashSet<>();
 }

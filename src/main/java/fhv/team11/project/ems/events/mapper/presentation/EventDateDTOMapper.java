@@ -6,6 +6,8 @@ import fhv.team11.project.ems.domain.events.EventDate;
 import fhv.team11.project.ems.events.transfer.EventDateDTO;
 import org.jspecify.annotations.NullMarked;
 
+import java.util.ArrayList;
+
 @NullMarked
 public class EventDateDTOMapper implements IBiPresentationDomainMapper<EventDateDTO, EventDate> {
     public static final EventDateDTOMapper INSTANCE = new EventDateDTOMapper();
@@ -19,7 +21,8 @@ public class EventDateDTOMapper implements IBiPresentationDomainMapper<EventDate
                 null,
                 presentationObject.getDate(),
                 presentationObject.getName(),
-                EventScheduleDTOMapper.INSTANCE.getDomain(presentationObject.getEventSchedule()));
+                EventScheduleDTOMapper.INSTANCE.getDomain(presentationObject.getEventSchedule()),
+                new ArrayList<>());
     }
 
     @Override

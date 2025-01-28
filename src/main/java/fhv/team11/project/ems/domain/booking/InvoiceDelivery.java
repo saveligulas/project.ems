@@ -4,7 +4,6 @@ import lombok.Getter;
 
 @Getter
 public enum InvoiceDelivery {
-    EMAIL("Email"),
     MOBILE_PHONE("Mobile Phone"),
     COURIER_DELIVERY("Courier Delivery");
 

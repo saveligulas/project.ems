@@ -15,4 +15,5 @@ import java.util.TreeSet;
 public class ActiveEventView implements IModelAttribute {
     private EventTemplateView eventTemplateView;
     private List<EventDateDTO> eventDates;
+    private int bookedPlaces;
 }

@@ -22,6 +22,7 @@
     <hgroup>
         <h2 th:text="${activeEvent.eventTemplateView.name}"></h2>
         <p th:text="${'Starting on ' + #temporals.format(activeEvent.eventDates.get(0).date, 'EEEE, MMMM d, yyyy')}"></p>
+        <p th:text="${'Reserved places: ' + activeEvent.bookedPlaces + '/' + activeEvent.eventTemplateView.maxParticipants}"></p>
     </hgroup>
 </div>
 <div layout:fragment="center" class="container">
@@ -48,10 +49,15 @@
                             <span th:text="${#temporals.format(appointment.endTime, 'HH:mm')}"></span>
                         </td>
                         <td>
-                            <details role="list">
-                                <summary th:text="${appointment.title}"></summary>
-                                <p th:text="${appointment.description}"></p>
-                            </details>
+                            <th:block th:if="${appointment.description != null}">
+                                <details role="list">
+                                    <summary th:text="${appointment.title}"></summary>
+                                    <p th:text="${appointment.description}"></p>
+                                </details>
+                            </th:block>
+                            <th:block th:if="${appointment.description == null}">
+                                <span th:text="appointment.title"></span>
+                            </th:block>
                         </td>
                     </tr>
                     </tbody>

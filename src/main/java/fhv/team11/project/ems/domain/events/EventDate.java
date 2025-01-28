@@ -11,7 +11,10 @@ import lombok.Getter;
 import org.jspecify.annotations.Nullable;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Getter
 public class EventDate implements IDomainObject, Comparable<EventDate> {
@@ -23,16 +26,17 @@ public class EventDate implements IDomainObject, Comparable<EventDate> {
     @Nullable
     private String name;
     private EventSchedule schedule;
+    private List<UUID> checkedInBookingIdentifiers;
 
     public EventDate(Long id, LocalDate date) throws DomainValidationException {
         this(id, date, date.toString());
     }
 
     public EventDate(Long id, LocalDate date, String name) throws DomainValidationException {
-        this(id, date, name, new EventSchedule());
+        this(id, date, name, new EventSchedule(), new ArrayList<>());
     }
 
-    public EventDate(Long id, LocalDate date, String name, EventSchedule eventSchedule) throws DomainValidationException {
+    public EventDate(Long id, LocalDate date, String name, EventSchedule eventSchedule, List<UUID> checkedInBookingIdentifiers) throws DomainValidationException {
         this.constructorHelper = new DomainObjectConstructorHelper();
 
         setId(id);
@@ -43,6 +47,7 @@ public class EventDate implements IDomainObject, Comparable<EventDate> {
             setName(name);
         }
         setSchedule(eventSchedule);
+        this.checkedInBookingIdentifiers = checkedInBookingIdentifiers;
 
         this.constructorHelper.finish();
     }
@@ -90,6 +95,14 @@ public class EventDate implements IDomainObject, Comparable<EventDate> {
 
     public void setSchedule(EventSchedule schedule) throws DomainValidationException {
         this.schedule = schedule;
+    }
+
+    public void addBookingIdentifier(UUID bookingIdentifier) {
+        this.checkedInBookingIdentifiers.add(bookingIdentifier);
+    }
+
+    public boolean isCheckedInForDate(UUID bookingIdentifier) {
+        return this.checkedInBookingIdentifiers.contains(bookingIdentifier);
     }
 
     @Override

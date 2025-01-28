@@ -6,31 +6,38 @@ import fhv.team11.project.ems.domain.commons.interfaces.IDomainObject;
 import fhv.team11.project.ems.domain.commons.interfaces.ILineItem;
 import fhv.team11.project.ems.domain.commons.interfaces.IPayable;
 import fhv.team11.project.ems.domain.commons.interfaces.IRepresentRealWorldEntity;
+import fhv.team11.project.ems.domain.user.CustomerProfile;
 import fhv.team11.project.ems.domain.user.SellerProfile;
+import lombok.Getter;
+import org.jspecify.annotations.Nullable;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-public class Invoice implements IDomainObject, IPayable {
+@Getter
+public class Invoice implements IDomainObject {
     private final DomainObjectConstructorHelper constructorHelper;
 
     private Long id;
+    private CustomerProfile customerProfile;
     private IRepresentRealWorldEntity seller;
     private IRepresentRealWorldEntity buyer;
     private InvoiceDelivery invoiceDelivery;
     private PaymentMethod paymentMethod;
     private List<ILineItem> lineItems;
-    private InvoiceIdentifier identifier;
+    private UUID identifier;
     private LocalDate dueDate;
     private LocalDate createdDate;
     private LocalDate supplyDate;
+    @Nullable
     private LocalDateTime paymentDate;
 
-    public Invoice(LocalDateTime paymentDate, LocalDate supplyDate, LocalDate createdDate, LocalDate dueDate, InvoiceIdentifier identifier, List<ILineItem> lineItems, PaymentStatus paymentStatus, PaymentMethod paymentMethod, InvoiceDelivery invoiceDelivery, IRepresentRealWorldEntity buyer, IRepresentRealWorldEntity seller, Long id) throws DomainInstantiationException {
+    public Invoice(CustomerProfile customerProfile, @Nullable LocalDateTime paymentDate, LocalDate supplyDate, LocalDate createdDate, LocalDate dueDate, UUID identifier, List<ILineItem> lineItems, PaymentMethod paymentMethod, InvoiceDelivery invoiceDelivery, IRepresentRealWorldEntity buyer, IRepresentRealWorldEntity seller, Long id) throws DomainInstantiationException {
         this.constructorHelper = new DomainObjectConstructorHelper();
 
+        this.customerProfile = customerProfile;
         setId(id);
         setSeller(seller);
         setBuyer(buyer);
@@ -72,7 +79,7 @@ public class Invoice implements IDomainObject, IPayable {
         this.lineItems = lineItems;
     }
 
-    public void setIdentifier(InvoiceIdentifier identifier) {
+    public void setIdentifier(UUID identifier) {
         this.identifier = identifier;
     }
 
@@ -92,12 +99,7 @@ public class Invoice implements IDomainObject, IPayable {
         this.paymentDate = paymentDate;
     }
 
-    public PaymentStatus getPaymentStatus() {
-        return null;
-    }
-
-    @Override
-    public void pay() {
-
+    public boolean isPayed() {
+        return this.paymentDate != null;
     }
 }

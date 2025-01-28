@@ -15,4 +15,7 @@ public interface BookingRepository extends JpaRepository<BookingEntity, Long>, B
 
     @Query("SELECT b FROM BookingEntity b JOIN b.bookingIdentifier bi WHERE bi.token = :token")
     Optional<BookingEntity> findByBookingIdentifierToken(@Param("token") UUID token);
+
+    @Query("SELECT b FROM BookingEntity b WHERE b.bookedEvent.id = :eventId")
+    List<BookingEntity> findBookingsByEventId(@Param("eventId") Long eventId);
 }

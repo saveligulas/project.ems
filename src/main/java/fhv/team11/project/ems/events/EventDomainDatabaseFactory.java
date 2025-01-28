@@ -1,5 +1,6 @@
 package fhv.team11.project.ems.events;
 
+import fhv.team11.project.ems.booking.repo.BookingEntity;
 import fhv.team11.project.ems.commons.domain.DomainDatabaseFactory;
 import fhv.team11.project.ems.commons.domain.IFindByIdDomainDatabaseMapper;
 import fhv.team11.project.ems.commons.domain.IHandleDomainPersistenceShallow;
@@ -8,7 +9,7 @@ import fhv.team11.project.ems.commons.error.EntityNotFoundException;
 import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
 import fhv.team11.project.ems.domain.events.Event;
 import fhv.team11.project.ems.domain.events.EventDate;
-import fhv.team11.project.ems.events.mapper.persistence.EventDateDomainMapper;
+import fhv.team11.project.ems.events.mapper.persistence.EventDateDomainDatabaseFactory;
 import fhv.team11.project.ems.events.repo.ActiveEvent;
 import fhv.team11.project.ems.events.repo.ActiveEventRepository;
 import fhv.team11.project.ems.events.repo.EventDateEntity;
@@ -27,20 +28,23 @@ public class EventDomainDatabaseFactory extends DomainDatabaseFactory implements
 
     private final ActiveEventRepository activeEventRepository;
     private final EventTemplateDomainDatabaseFactory eventTemplateDomainDatabaseFactory;
+    private final EventDateDomainDatabaseFactory eventDateDomainDatabaseFactory;
 
     @Autowired
-    public EventDomainDatabaseFactory(ActiveEventRepository activeEventRepository, EventTemplateDomainDatabaseFactory eventTemplateDomainDatabaseFactory) {
+    public EventDomainDatabaseFactory(ActiveEventRepository activeEventRepository, EventTemplateDomainDatabaseFactory eventTemplateDomainDatabaseFactory, EventDateDomainDatabaseFactory eventDateDomainDatabaseFactory) {
         this.activeEventRepository = activeEventRepository;
         this.eventTemplateDomainDatabaseFactory = eventTemplateDomainDatabaseFactory;
+
+        this.eventDateDomainDatabaseFactory = eventDateDomainDatabaseFactory;
     }
 
     @Override
     public void persist(Event domainObject) throws DomainValidationException {
         ActiveEvent activeEvent = new ActiveEvent();
-        activeEvent.setId(null);
+        activeEvent.setId(domainObject.getId());
         activeEvent.setEventDates(domainObject.getEventDates()
                 .stream()
-                .map(EventDateDomainMapper.INSTANCE::toEntity)
+                .map(eventDateDomainDatabaseFactory::toEntity)
                 .collect(Collectors.toSet()));
         if (domainObject.getEventTemplate() == null) {
             throw new PersistenceException("No event template set for the event");
@@ -60,7 +64,7 @@ public class EventDomainDatabaseFactory extends DomainDatabaseFactory implements
         activeEvent.setId(domain.getId());
         activeEvent.setEventDates(domain.getEventDates()
                 .stream()
-                .map(EventDateDomainMapper.INSTANCE::toEntity)
+                .map(eventDateDomainDatabaseFactory::toEntity)
                 .collect(Collectors.toSet()));
         activeEvent.setEventTemplate(eventTemplateDomainDatabaseFactory.toEntity(domain.getEventTemplate()));
         return activeEvent;
@@ -70,13 +74,19 @@ public class EventDomainDatabaseFactory extends DomainDatabaseFactory implements
     public Event toDomain(ActiveEvent entity) throws DomainValidationException {
         List<EventDate> eventDates = new ArrayList<>();
         for (EventDateEntity eventDateEntity : entity.getEventDates()) {
-            eventDates.add(EventDateDomainMapper.INSTANCE.toDomain(eventDateEntity));
+            eventDates.add(eventDateDomainDatabaseFactory.toDomain(eventDateEntity));
         }
-        return new Event(
+        Event event = new Event(
                 entity.getId(),
                 eventDates,
                 eventTemplateDomainDatabaseFactory.toDomain(entity.getEventTemplate())
         );
+        int bookedPlaces = 0;
+        for (BookingEntity booking : entity.getBookings()) {
+            bookedPlaces += booking.getBookedPlaces();
+        }
+        event.setBookedPlaces(bookedPlaces);
+        return event;
     }
 
     public List<Event> findAllByTemplateId(Long templateId) {

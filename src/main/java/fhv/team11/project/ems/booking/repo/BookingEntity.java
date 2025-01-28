@@ -35,10 +35,10 @@ public class BookingEntity {
     @Enumerated(EnumType.ORDINAL)
     private BookingStatus status;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "deposit_id", nullable = true)
     private InvoiceEntity deposit;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "booking_id", nullable = true)
     private InvoiceEntity booking;
 

@@ -11,4 +11,5 @@ public class ActiveEventListView {
     private LocalDate start;
     @Nullable
     private LocalDate end;
+    private int bookedPlaces;
 }

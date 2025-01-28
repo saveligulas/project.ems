@@ -7,16 +7,14 @@ import fhv.team11.project.ems.booking.transfer.BookingListDTO;
 import fhv.team11.project.ems.booking.transfer.CreateBookingDTO;
 import fhv.team11.project.ems.commons.error.BackEndError;
 import fhv.team11.project.ems.commons.error.EntityNotFoundException;
-import fhv.team11.project.ems.commons.validation.domain.IValidationException;
 import fhv.team11.project.ems.commons.validation.error.SimpleValidationException;
 import fhv.team11.project.ems.customer.CustomerProfileDomainDatabaseFactory;
 import fhv.team11.project.ems.customer.CustomerProfileRepository;
-import fhv.team11.project.ems.customer.transfer.CustomerProfileDTOMapper;
 import fhv.team11.project.ems.domain.booking.Booking;
-import fhv.team11.project.ems.domain.booking.CancellationDates;
 import fhv.team11.project.ems.domain.booking.Invoice;
 import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
 import fhv.team11.project.ems.domain.events.Event;
+import fhv.team11.project.ems.domain.events.EventDate;
 import fhv.team11.project.ems.domain.user.CustomerProfile;
 import fhv.team11.project.ems.events.EventDomainDatabaseFactory;
 import fhv.team11.project.ems.events.repo.ActiveEventRepository;
@@ -26,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -55,7 +54,7 @@ public class BookingService {
         Event event;
 
         try {
-            financer = customerProfileDomainDatabaseFactory.getDomainById(createBookingDTO.getFinancer());
+            financer = customerProfileDomainDatabaseFactory.getDomainById(createBookingDTO.getFinancerId());
         } catch (EntityNotFoundException e) {
             throw new SimpleValidationException("financer", "Customer does not exist");
         }
@@ -70,9 +69,7 @@ public class BookingService {
         }
         double price = event.getEventTemplate().getPrice() * createBookingDTO.getBookedPlaces();
         //TODO: implement invoices with a factory
-        Invoice invoiceDeposit = null;
         UUID uuid = UUID.randomUUID();
-
         Booking booking = new Booking(
                 null,
                 financer,
@@ -80,10 +77,32 @@ public class BookingService {
                 createBookingDTO.getBookedPlaces(),
                 price,
                 BookingStatus.VALID,
-                invoiceDeposit,
+                null,
                 null,
                 uuid
         );
+
+        Invoice invoiceDeposit = new Invoice(
+                financer,
+                null,
+                event.getFirstEventDate(),
+                LocalDate.now(),
+                event.getFirstEventDate().minusDays(1),
+                UUID.randomUUID(),
+                List.of(booking),
+                createBookingDTO.getPaymentOption().getPaymentMethod(),
+                createBookingDTO.getPaymentOption().getInvoiceDelivery(),
+                financer,
+                event,
+                null
+
+        );
+
+        booking.setInvoiceDeposit(invoiceDeposit);
+
+        if (event.getPlacesLeft() < createBookingDTO.getBookedPlaces()) {
+            throw new SimpleValidationException("bookedPlaces", "Event has not enough places left");
+        }
 
         bookingDomainDatabaseFactory.persist(booking);
     }
@@ -110,14 +129,31 @@ public class BookingService {
         UUID uuid = UUID.fromString(identifier);
         Booking booking = bookingDomainDatabaseFactory.toDomain(bookingRepository.findByBookingIdentifierToken(uuid)
                 .orElseThrow(() -> new BookingIdentifierNotFoundException(uuid)));
+
+        Event event = booking.getBookedEvent();
+        EventDate eventDateToday = event.getEventDateForDate(LocalDate.now());
+
+        if (eventDateToday == null) {
+            throw new CheckInException(List.of("Event does not take place today."));
+        }
+
+        if (eventDateToday.getCheckedInBookingIdentifiers().contains(uuid)) {
+            throw new CheckInException(List.of("Participant is already checked in."));
+        }
+
         if (booking.getStatus() == BookingStatus.VALID) {
             booking.setStatus(BookingStatus.CHECKED_IN);
             bookingDomainDatabaseFactory.persist(booking);
-            return BookingListDTODatabaseMapper.INSTANCE.getView(bookingRepository.findByBookingIdentifierToken(uuid)
-                    .orElseThrow(() -> new BookingIdentifierNotFoundException(uuid)));
-        } else {
-            throw new CheckInException(List.of("Invalid Booking status"));
         }
+
+        if (booking.getStatus() == BookingStatus.CHECKED_OUT) {
+            throw new CheckInException(List.of("Participant is already checked out."));
+        }
+
+        eventDateToday.addBookingIdentifier(uuid);
+        eventDomainDatabaseFactory.persist(event);
+        return BookingListDTODatabaseMapper.INSTANCE.getView(bookingRepository.findByBookingIdentifierToken(uuid)
+                .orElseThrow(() -> new BookingIdentifierNotFoundException(uuid)));
     }
 
     //TODO: change this to invoice identifier that the bank uses
