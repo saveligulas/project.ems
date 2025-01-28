@@ -12,6 +12,7 @@ import fhv.team11.project.ems.security.transfer.RegisterRequest;
 import fhv.team11.project.ems.security.jwt.AuthenticationService;
 import fhv.team11.project.ems.security.transfer.domain.error.AuthenticationRequestValidationException;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -48,7 +49,7 @@ public class AuthenticationController {
 
     @PostMapping("/register/user")
     public String register(
-            @ModelAttribute("registerRequest") RegisterRequest registerRequest,
+            @Valid @ModelAttribute("registerRequest") RegisterRequest registerRequest,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes) {
 
@@ -101,5 +102,14 @@ public class AuthenticationController {
             return "redirect:/login";
         }
         return "redirect:/index";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session, HttpServletResponse response) {
+        session.invalidate();
+        Cookie cookie = new Cookie("authToken", null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        return "redirect:/home";
     }
 }
