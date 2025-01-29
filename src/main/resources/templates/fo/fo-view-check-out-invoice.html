@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{base}"
+      th:with="title='Invoice'">
+<body>
+<div layout:fragment="content">
+    <article>
+        <header>
+            <h1>Invoice - Status: <span th:text="${invoice.getPaymentDate() == null ? 'Unpaid' : 'Paid'}"></span></h1>
+            <p>Invoice Issuer: <strong th:text="${invoice.seller.getLegalName()}"></strong></p>
+        </header>
+        <p><strong>Invoice Date:</strong> <span th:text="${invoice.createdDate}"></span></p>
+        <p><strong>Due Date:</strong> <span th:text="${invoice.dueDate}"></span></p>
+        <p><strong>Buyer Name:</strong> <span th:text="${invoice.buyer.getName()}"></span></p>
+        <table>
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total Price</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${invoice.lineItems}">
+                <td th:text="${item.getId}">event id</td>
+                <td th:text="${item.getName}">Description</td>
+                <td th:text="${item.getCount}">Quantity</td>
+                <td th:text="${item.getPrice + '€'}"></td>
+                <td th:text="${item.getTotalPrice() + '€'}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <table>
+            <tfoot>
+            <tr>
+                <td colspan="4"><strong>Total (Excl. VAT):</strong></td>
+                <td th:text="${invoice.getTotalPriceBeforeTax()}"></td>
+            </tr>
+            <tr>
+                <td colspan="4"><strong>VAT Total:</strong></td>
+                <td th:text="${invoice.getTotalVatAmount()}"></td>
+            </tr>
+            <tr>
+                <td colspan="4"><strong>Total (Incl. VAT):</strong></td>
+                <td th:text="${invoice.getTotalPrice()}"></td>
+            </tr>
+            </tfoot>
+        </table>
+        <p><strong>Payment Method:</strong> <span th:text="${invoice.paymentMethod.getName()}"></span></p>
+        <p><strong>Date of Payment:</strong> <span th:text="${invoice.getPaymentDate()}"></span></p>
+    </article>
+</div>
+</body>
+

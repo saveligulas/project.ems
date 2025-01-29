@@ -52,6 +52,22 @@ public class Event implements IDomainObject, IRepresentRealWorldEntity {
         this.constructorHelper.finish();
     }
 
+    private Event(@Nullable Long id, List<EventDate> eventDates, @Nullable EventTemplate eventTemplate, boolean bypass) {
+        this.constructorHelper = new DomainObjectConstructorHelper();
+        this.id = id;
+        this.eventDates = eventDates;
+        this.eventTemplate = eventTemplate;
+    }
+
+
+    public static Event createWithoutValidation(@Nullable Long id, List<EventDate> eventDates) {
+        return createWithoutValidation(id, eventDates, null);
+    }
+
+    public static Event createWithoutValidation(@Nullable Long id, List<EventDate> eventDates, @Nullable EventTemplate eventTemplate) {
+        return new Event(id, eventDates, eventTemplate, true);
+    }
+
     public void setId(@Nullable Long id) throws DomainValidationException {
         validateId(id, constructorHelper);
         this.id = id;
@@ -86,14 +102,9 @@ public class Event implements IDomainObject, IRepresentRealWorldEntity {
         return eventDates.get(0).getDate();
     }
 
-    //Returns null if first and last are the same
-    public @Nullable LocalDate getLastEventDate() throws DomainStateException {
+    public LocalDate getLastEventDate() throws DomainStateException {
         if (isDatesEmpty()) {
             throw new DomainStateException(List.of("No event dates to access"));
-        }
-
-        if (eventDates.size() == 1) {
-            return null;
         }
 
         return eventDates.get(eventDates.size() - 1).getDate();

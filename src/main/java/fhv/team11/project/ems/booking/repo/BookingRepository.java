@@ -18,4 +18,13 @@ public interface BookingRepository extends JpaRepository<BookingEntity, Long>, B
 
     @Query("SELECT b FROM BookingEntity b WHERE b.bookedEvent.id = :eventId")
     List<BookingEntity> findBookingsByEventId(@Param("eventId") Long eventId);
+
+    @Query("SELECT DISTINCT b FROM BookingEntity b " +
+            "LEFT JOIN FETCH b.deposit d " +
+            "LEFT JOIN FETCH b.booking bk " +
+            "LEFT JOIN FETCH b.financer " +
+            "LEFT JOIN FETCH b.bookedEvent " +
+            "WHERE d.identifier = :invoiceIdentifier " +
+            "OR bk.identifier = :invoiceIdentifier")
+    Optional<BookingEntity> findByInvoiceIdentifierWithFetch(@Param("invoiceIdentifier") UUID invoiceIdentifier);
 }

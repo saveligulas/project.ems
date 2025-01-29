@@ -52,6 +52,27 @@ public class EventDate implements IDomainObject, Comparable<EventDate> {
         this.constructorHelper.finish();
     }
 
+    private EventDate(Long id, LocalDate date, String name, EventSchedule eventSchedule, List<UUID> checkedInBookingIdentifiers, boolean bypass) {
+        this.id = id;
+        this.date = date;
+        this.name = name;
+        this.schedule = eventSchedule;
+        this.checkedInBookingIdentifiers = checkedInBookingIdentifiers;
+        this.constructorHelper = new DomainObjectConstructorHelper();
+    }
+
+    public static EventDate createWithoutValidation(Long id, LocalDate date) throws DomainValidationException {
+        return createWithoutValidation(id, date, date.toString());
+    }
+
+    public static EventDate createWithoutValidation(Long id, LocalDate date, String name) throws DomainValidationException {
+        return createWithoutValidation(id, date, name, new EventSchedule(), new ArrayList<>());
+    }
+
+    public static EventDate createWithoutValidation(Long id, LocalDate date, String name, EventSchedule eventSchedule, List<UUID> checkedInBookingIdentifiers) {
+        return new EventDate(id, date, Validator.isBlank(name) ? date.toString() : name, eventSchedule, checkedInBookingIdentifiers, true);
+    }
+
     public void setId(Long id) throws DomainValidationException {
         validateId(id, constructorHelper);
         this.id = id;

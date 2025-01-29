@@ -1,9 +1,7 @@
 package fhv.team11.project.ems.booking.controller;
 
 import fhv.team11.project.ems.booking.service.BookingService;
-import fhv.team11.project.ems.commons.qrcode.QRCodeGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,8 +14,6 @@ import java.util.Map;
 public class QrCodeGeneratorController {
 
     private final BookingService bookingService;
-    @Value("server.address")
-    private String serverAddress;
 
     @Autowired
     public QrCodeGeneratorController(BookingService bookingService) {

@@ -3,7 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{base}"
-      th:with="title='Check-In'">
+      th:with="title='Check-Out'">
 <body>
 <!--@thymesVar id="user" type="fhv.team11.project.ems.commons.controller.base.attribute.user.UserAttributes"-->
 <div layout:fragment="center" class="container text-center">
@@ -11,10 +11,6 @@
     <th:block th:each="error : ${errors}">
         <p th:text="${error}"></p>
     </th:block>
-
-    <a role="button" th:href="@{/bookings/checkout(token=${token})}">
-        Check-Out
-    </a>
 
 </div>
 </body>

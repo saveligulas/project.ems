@@ -13,7 +13,7 @@ import java.time.LocalDate;
 public class BookingListDTO {
 
     private Long id;
-    //TODO participant to String
+
     private Long financerId;
 
     private String eventName;

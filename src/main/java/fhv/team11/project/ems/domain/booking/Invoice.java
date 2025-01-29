@@ -2,15 +2,13 @@ package fhv.team11.project.ems.domain.booking;
 
 import fhv.team11.project.ems.domain.commons.exception.DomainInstantiationException;
 import fhv.team11.project.ems.domain.commons.exception.error.DomainObjectConstructorHelper;
-import fhv.team11.project.ems.domain.commons.interfaces.IDomainObject;
-import fhv.team11.project.ems.domain.commons.interfaces.ILineItem;
-import fhv.team11.project.ems.domain.commons.interfaces.IPayable;
-import fhv.team11.project.ems.domain.commons.interfaces.IRepresentRealWorldEntity;
+import fhv.team11.project.ems.domain.commons.interfaces.*;
 import fhv.team11.project.ems.domain.user.CustomerProfile;
 import fhv.team11.project.ems.domain.user.SellerProfile;
 import lombok.Getter;
 import org.jspecify.annotations.Nullable;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,9 +16,16 @@ import java.util.UUID;
 
 @Getter
 public class Invoice implements IDomainObject {
+    private static final VATLineItem VAT_LINE_ITEM = VATLineItem.INSTANCE;
+
+    public static VATLineItem getVatLineItem() {
+        return VAT_LINE_ITEM;
+    }
+
     private final DomainObjectConstructorHelper constructorHelper;
 
     private Long id;
+    //TODO: can be removed in future to allow Invoice to be used for other profiles, once profiles are abstracted
     private CustomerProfile customerProfile;
     private IRepresentRealWorldEntity seller;
     private IRepresentRealWorldEntity buyer;
@@ -97,6 +102,18 @@ public class Invoice implements IDomainObject {
 
     public void setPaymentDate(LocalDateTime paymentDate) {
         this.paymentDate = paymentDate;
+    }
+
+    public BigDecimal getTotalPriceBeforeTax() {
+        return ILineItem.getTotalPrice(lineItems);
+    }
+
+    public BigDecimal getTotalVatAmount() {
+        return VAT_LINE_ITEM.getAppliedRateAmount(getTotalPriceBeforeTax());
+    }
+
+    public BigDecimal getTotalPrice() {
+        return getTotalVatAmount().add(getTotalPriceBeforeTax());
     }
 
     public boolean isPayed() {

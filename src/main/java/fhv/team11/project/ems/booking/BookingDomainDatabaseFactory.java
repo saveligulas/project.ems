@@ -72,13 +72,12 @@ public class BookingDomainDatabaseFactory extends DomainDatabaseFactory implemen
                     entity.getBookedPlaces(),
                     entity.getPrice().doubleValue(),
                     entity.getStatus(),
-                    invoiceDomainDatabaseFactory.toDomain(entity.getDeposit()),
-                    invoiceDomainDatabaseFactory.toDomain(entity.getBooking()),
+                    invoiceDomainDatabaseFactory.toDomain(entity.getDeposit() == null ? null : entity.getDeposit()),
+                    invoiceDomainDatabaseFactory.toDomain(entity.getBooking() == null ? null : entity.getBooking()),
                     entity.getBookingIdentifier().getToken()
             );
         } catch (DomainValidationException e) {
             throw new DatabaseException(e.getMessage());
         }
-
     }
 }

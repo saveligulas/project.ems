@@ -4,6 +4,7 @@ import fhv.team11.project.ems.booking.repo.LineItemEntity;
 import fhv.team11.project.ems.commons.domain.ISimpleDomainDatabaseMapper;
 import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
 import fhv.team11.project.ems.domain.commons.interfaces.ILineItem;
+import fhv.team11.project.ems.domain.commons.interfaces.SimpleLineItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,14 @@ public class LineItemDomainMapper implements ISimpleDomainDatabaseMapper<ILineIt
     }
 
     @Override
-    public ILineItem toDomain(LineItemEntity entity) throws DomainValidationException {
-        return null;
+    public ILineItem toDomain(LineItemEntity entity) {
+        return new SimpleLineItem(
+                entity.getPrice(),
+                entity.getId(),
+                entity.getName(),
+                entity.getDescription(),
+                entity.getCount(),
+                entity.getSubLineItems() == null ? null : entity.getSubLineItems().stream().map(LineItemDomainMapper.INSTANCE::toDomain).toList()
+        );
     }
 }

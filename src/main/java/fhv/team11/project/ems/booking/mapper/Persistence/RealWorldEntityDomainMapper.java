@@ -5,6 +5,7 @@ import fhv.team11.project.ems.commons.address.AddressDomainDatabaseFactory;
 import fhv.team11.project.ems.commons.domain.ISimpleDomainDatabaseMapper;
 import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
 import fhv.team11.project.ems.domain.commons.interfaces.IRepresentRealWorldEntity;
+import fhv.team11.project.ems.domain.commons.interfaces.SimpleRepresentRealWorldEntity;
 
 public class RealWorldEntityDomainMapper implements ISimpleDomainDatabaseMapper<IRepresentRealWorldEntity, RealWorldEntity> {
     public static final RealWorldEntityDomainMapper INSTANCE = new RealWorldEntityDomainMapper();
@@ -24,6 +25,11 @@ public class RealWorldEntityDomainMapper implements ISimpleDomainDatabaseMapper<
 
     @Override
     public IRepresentRealWorldEntity toDomain(RealWorldEntity entity) throws DomainValidationException {
-        return null;
+        return new SimpleRepresentRealWorldEntity(
+                entity.getId(),
+                AddressDomainDatabaseFactory.INSTANCE.toDomain(entity.getAddress()),
+                entity.getSurname(),
+                entity.getName()
+        );
     }
 }

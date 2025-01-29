@@ -11,7 +11,7 @@
     </thead>
     <tbody>
     <tr th:each="booking : ${bookings}">
-      <td th:text="${booking.eventName}"></td>
+      <td><a th:href="${'/bookings/details/' + booking.id}" th:text="${booking.eventName}"></a></td>
       <td th:text="${booking.startDate}"></td>
       <td th:text="${booking.bookedPlaces}"></td>
       <td th:attr="data-tooltip=${booking.status.getDescription()}" th:text="${booking.status.getTitle()}"></td>

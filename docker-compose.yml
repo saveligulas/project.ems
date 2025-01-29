@@ -7,12 +7,26 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: ems-postgres-db  # Name your database here
+      POSTGRES_DB: ems-postgres-db  # Name your main database here
     ports:
-      - "5433:5433"  # Expose the container's port 5432 to localhost
+      - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data  # Persist your data
+      - postgres_data:/var/lib/postgresql/data  # Persist your main database data
+
+  postgres_test:
+    image: postgres:15  # Use the same PostgreSQL image
+    container_name: postgres-test-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ems-test-db  # Name your test database here
+    ports:
+      - "5433:5433"
+    volumes:
+      - postgres_test_data:/var/lib/postgresql/data  # Persist your test database data
 
 volumes:
   postgres_data:
+    driver: local
+  postgres_test_data:
     driver: local

@@ -2,12 +2,14 @@ package fhv.team11.project.ems.booking.controller;
 
 import fhv.team11.project.ems.booking.service.BookingService;
 import fhv.team11.project.ems.booking.service.CheckInException;
+import fhv.team11.project.ems.booking.service.CheckOutException;
 import fhv.team11.project.ems.booking.transfer.BookingListDTO;
 import fhv.team11.project.ems.booking.transfer.CreateBookingDTO;
 import fhv.team11.project.ems.commons.qrcode.QRCodeGenerator;
 import fhv.team11.project.ems.commons.validation.ValidationExceptionToBindingResultFactory;
 import fhv.team11.project.ems.commons.validation.domain.handler.IHandleBindingResultException;
 import fhv.team11.project.ems.commons.validation.error.SimpleValidationException;
+import fhv.team11.project.ems.domain.booking.Invoice;
 import fhv.team11.project.ems.domain.booking.InvoiceDelivery;
 import fhv.team11.project.ems.domain.booking.PaymentMethod;
 import fhv.team11.project.ems.domain.commons.exception.DomainValidationException;
@@ -118,11 +120,36 @@ public class BookingController implements IHandleBindingResultException {
             bookingListDTO = bookingService.checkInParticipant(token);
         } catch (CheckInException e) {
             model.addAttribute("errors", e.getErrorMessages());
+            model.addAttribute("token", token);
             return "fo/fo-booking-status-invalid";
         }
 
         model.addAttribute("booking", bookingListDTO);
         return "fo/fo-booking-status-valid";
         //TODO: redirect to Dashboard for active event
+    }
+
+    @GetMapping("/bookings/checkout")
+    public String checkoutBooking(@RequestParam("token")String token, Model model) throws DomainValidationException {
+        try {
+            Invoice invoice = bookingService.checkOutParticipant(token);
+            model.addAttribute("invoice", invoice);
+            return "fo/fo-view-check-out-invoice";
+        } catch (CheckOutException e) {
+            model.addAttribute("errors", e.getErrorMessages());
+            model.addAttribute("token", token);
+            return "fo/fo-view-check-out-invalid";
+        }
+    }
+
+    @GetMapping("/bookings/details/{id}")
+    public ModelAndView getBookingDetails(@PathVariable(name = "id") Long id) {
+        ModelAndView modelAndView = new ModelAndView("invoice");
+        Invoice depositInvoice = bookingService.getDepositInvoiceForBooking(id);
+        Invoice generalInvoice = bookingService.getGeneralInvoiceForBooking(id);
+        modelAndView.addObject("invoice", depositInvoice);
+        modelAndView.addObject("generalInvoice", generalInvoice);
+
+        return modelAndView;
     }
 }

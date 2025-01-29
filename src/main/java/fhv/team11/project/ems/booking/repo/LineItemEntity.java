@@ -2,6 +2,7 @@ package fhv.team11.project.ems.booking.repo;
 
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Entity
 @Setter
+@Getter
 public class LineItemEntity {
     @Id
     @GeneratedValue

@@ -7,6 +7,7 @@ import fhv.team11.project.ems.domain.booking.PaymentMethod;
 import fhv.team11.project.ems.domain.booking.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
@@ -18,6 +19,7 @@ import java.util.UUID;
 
 @Entity
 @Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class InvoiceEntity {

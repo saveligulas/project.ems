@@ -40,7 +40,7 @@ public class EventDateDomainDatabaseFactory implements ISimpleDomainDatabaseMapp
 
     @Override
     public EventDate toDomain(EventDateEntity entity) throws DomainValidationException {
-        return new EventDate(
+        return EventDate.createWithoutValidation(
                 entity.getId(),
                 entity.getDate(),
                 entity.getName(),

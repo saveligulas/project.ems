@@ -9,6 +9,6 @@ public class CreateBookingDTO implements IModelAttribute {
     @NotNull
     private Long financerId;
     @NotNull
-    private Integer bookedPlaces;
+    private Integer bookedEvent;
     private PaymentOptionDTO paymentOption = new PaymentOptionDTO();
 }
